@@ -2,14 +2,12 @@
 
 lappend auto_path "../"
 lappend auto_path "/home/georgtree/tcl/"
+set path_to_hl_tcl "/home/georgtree/tcl/hl_tcl"
 package require ruff
 package require fileutil
 set dir [file dirname [file normalize [info script]]]
 set sourceDir "${dir}/../src"
 source startPage.ruff
-#source tutorials.ruff
-#source faq.ruff
-#source tips.ruff
 source [file join $sourceDir gnuplotutil.tcl]
 source [file join $sourceDir mathutil.tcl]
 source [file join $sourceDir rfutil.tcl]
@@ -45,12 +43,9 @@ if {[llength $argv] == 0 || "html" in $argv} {
 }
 
 
-exec tclsh /home/georgtree/tcl/hl_tcl/tcl_html.tcl "./index.html" 
-exec tclsh /home/georgtree/tcl/hl_tcl/tcl_html.tcl "./index-gnuplotutil.html" 
-exec tclsh /home/georgtree/tcl/hl_tcl/tcl_html.tcl "./index-mathutil.html" 
-exec tclsh /home/georgtree/tcl/hl_tcl/tcl_html.tcl "./index-rfutil.html" 
-exec tclsh /home/georgtree/tcl/hl_tcl/tcl_html.tcl "./index-touchstoneutil.html" 
-exec tclsh /home/georgtree/tcl/hl_tcl/tcl_html.tcl "./index-docindex.html" 
+foreach file [glob *.html] {
+    exec tclsh "${path_to_hl_tcl}/tcl_html.tcl" "./$file"
+}
 
 proc processContents {fileContents} {
     # Search: AA, replace: aa

@@ -124,7 +124,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
         <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$i</font>*2+1)}]]]
         <b><font color=#923B23>lappend</font></b> xLengths <font color=#4A181B>$xLen</font>
         <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
-            <b><font color=#923B23>puts</font></b> stderr <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>[</font>expr <font color=#4A181B>{</font>1+<font color=#4A181B>$</font>yColumnCount<font color=#4A181B>}]</font>) doesn't match the number of points of x-axis data (column <font color=#4A181B>$</font>yColumnCount)&quot;</font>
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>[</font>expr <font color=#4A181B>{</font>1+<font color=#4A181B>$</font>yColumnCount<font color=#4A181B>}]</font>) doesn't match the number of points of x-axis data (column <font color=#4A181B>$</font>yColumnCount)&quot;</font>
         }
         <b><font color=#923B23>incr</font></b> yColumnCount
     }
