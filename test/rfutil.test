@@ -1,0 +1,212 @@
+package require tcltest
+namespace import ::tcltest::*
+package require math::complexnumbers
+namespace import ::math::complexnumbers::*
+
+set script_path [file dirname [file normalize [info script]]]
+lappend auto_path "$script_path/../"
+package require rfutil
+
+
+set epsilon 1e-6
+
+proc matchComplexMatrix {expected actual} {
+    variable epsilon
+    set match 1
+    set len [llength [dict get $expected 11]]
+    for {set i 0} {$i<$len} {incr i} {
+        set exp11 [lindex [dict get $expected 11] $i]
+        set exp21 [lindex [dict get $expected 21] $i]
+        set exp12 [lindex [dict get $expected 12] $i]
+        set exp22 [lindex [dict get $expected 22] $i]
+        set act11 [lindex [dict get $actual 11] $i]
+        set act21 [lindex [dict get $actual 21] $i]
+        set act12 [lindex [dict get $actual 12] $i]
+        set act22 [lindex [dict get $actual 22] $i]
+        if {(abs([real $act11]-[real $exp11]) > $epsilon) || (abs([imag $act11]-[imag $exp11]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $act21]-[real $exp21]) > $epsilon) || (abs([imag $act21]-[imag $exp21]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $act12]-[real $exp12]) > $epsilon) || (abs([imag $act12]-[imag $exp12]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $act22]-[real $exp22]) > $epsilon) || (abs([imag $act22]-[imag $exp22]) > $epsilon)} {
+            set match 0
+            break
+        }
+    }
+    return $match
+}
+
+proc matchComplexMatrixEqTZ {expected actual} {
+    variable epsilon
+    set match 1
+    set len [llength [dict get $expected z1]]
+    for {set i 0} {$i<$len} {incr i} {
+        set expZ1 [lindex [dict get $expected z1] $i]
+        set expZ2 [lindex [dict get $expected z2] $i]
+        set expZ3 [lindex [dict get $expected z3] $i]
+        set actZ1 [lindex [dict get $actual z1] $i]
+        set actZ2 [lindex [dict get $actual z2] $i]
+        set actZ3 [lindex [dict get $actual z3] $i]
+        if {(abs([real $actZ1]-[real $expZ1]) > $epsilon) || (abs([imag $actZ1]-[imag $expZ1]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $actZ2]-[real $expZ2]) > $epsilon) || (abs([imag $actZ2]-[imag $expZ2]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $actZ3]-[real $expZ3]) > $epsilon) || (abs([imag $actZ3]-[imag $expZ3]) > $epsilon)} {
+            set match 0
+            break
+        }
+    }
+    return $match
+}
+
+proc matchComplexMatrixEqPY {expected actual} {
+    variable epsilon
+    set match 1
+    set len [llength [dict get $expected y1]]
+    for {set i 0} {$i<$len} {incr i} {
+        set expY1 [lindex [dict get $expected y1] $i]
+        set expY2 [lindex [dict get $expected y2] $i]
+        set expY3 [lindex [dict get $expected y3] $i]
+        set actY1 [lindex [dict get $actual y1] $i]
+        set actY2 [lindex [dict get $actual y2] $i]
+        set actY3 [lindex [dict get $actual y3] $i]
+        if {(abs([real $actY1]-[real $expY1]) > $epsilon) || (abs([imag $actY1]-[imag $expY1]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $actY2]-[real $expY2]) > $epsilon) || (abs([imag $actY2]-[imag $expY2]) > $epsilon)} {
+            set match 0
+            break
+        } elseif {(abs([real $actY3]-[real $expY3]) > $epsilon) || (abs([imag $actY3]-[imag $expY3]) > $epsilon)} {
+            set match 0
+            break
+        }
+    }
+    return $match
+}
+
+proc matchList {expected actual} {
+    variable epsilon
+    set match 1
+    set len [llength $expected]
+    for {set i 0} {$i<$len} {incr i} {
+        set exp [lindex $expected $i]
+        set act [lindex $actual $i]
+        if {(abs($act-$exp) > $epsilon) || (abs($act-$exp) > $epsilon)} {
+            set match 0
+            break
+        }
+    }
+    return $match
+}
+
+customMatch mtchCmpMat matchComplexMatrix
+customMatch mtchCmpMatEqTZ matchComplexMatrixEqTZ
+customMatch mtchCmpMatEqPY matchComplexMatrixEqPY
+customMatch mtchLst matchList
+
+test s2zProcTest {test s to z parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                           12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+} -body {
+    rfutil::s2z $input [complex 50 0]
+} -result [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]] 21 [list [complex 347.6850372060927 -444.4716615335903]] \
+                        12 [list [complex 356.19867545712253 -467.38380377408123]] 22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+
+test z2sProcTest {test z to s parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]] 21 [list [complex 347.6850372060927 -444.4716615335903]] \
+                           12 [list [complex 356.19867545712253 -467.38380377408123]] 22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    rfutil::z2s $input [complex 50 0]
+} -result [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+
+test s2yProcTest {test s to y parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                           12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+} -body {
+    rfutil::s2y $input [complex 50 0]
+} -result [dict create 11 [list [complex 0.0009319427169542614 0.003980281912372034]] 21 [list [complex -0.0002465661361646395 -0.003760220994777801]] \
+                        12 [list [complex -0.00030612711544994274 -0.003912188910222377]] 22 [list [complex 0.0004699080361578966 0.005037926386021431]]] 
+
+test y2sProcTest {test y to s parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 0.0009319427169542614 0.003980281912372034]] 21 [list [complex -0.0002465661361646395 -0.003760220994777801]] \
+                       12 [list [complex -0.00030612711544994274 -0.003912188910222377]] 22 [list [complex 0.0004699080361578966 0.005037926386021431]]] 
+} -body {
+    rfutil::y2s $input [complex 50 0]
+} -result [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+
+test s2tProcTest {test s to transfer parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                           12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+} -body {
+    rfutil::s2t $input
+} -result [dict create 11 [list [complex 1.0052626641651032 2.5058255159474676]] 21 [list [complex -0.010318949343339753 2.7532833020637897]] \
+                        12 [list [complex 0.28236397748592873 -2.612570356472795]] 22 [list [complex 1.4071294559099436 -2.720450281425891]]] 
+
+test t2sProcTest {test transfer to s parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 1.0052626641651032 2.5058255159474676]] 21 [list [complex -0.010318949343339753 2.7532833020637897]] \
+                           12 [list [complex 0.28236397748592873 -2.612570356472795]] 22 [list [complex 1.4071294559099436 -2.720450281425891]]] 
+} -body {
+    rfutil::t2s $input
+} -result [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+
+test zTEqProcTest {test of element values calculation of equivalent T circuit } -match mtchCmpMatEqTZ -setup {
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]] 21 [list [complex 347.6850372060927 -444.4716615335903]] \
+                           12 [list [complex 356.19867545712253 -467.38380377408123]] 22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    rfutil::zTEq $input
+} -result [dict create z1 [list [complex 102.55842297547184 -164.95547516556798]] z2 [list [complex -54.57047948213176 -92.96295521826283]] \
+                        z3 [list [complex 347.6850372060927 -444.4716615335903]]] 
+
+test yPEqProcTest {test of element values calculation of equivalent P circuit } -match mtchCmpMatEqPY -setup {
+    set input [dict create 11 [list [complex 0.0009319427169542614 0.003980281912372034]] 21 [list [complex -0.0002465661361646395 -0.003760220994777801]] \
+                           12 [list [complex -0.00030612711544994274 -0.003912188910222377]] 22 [list [complex 0.0004699080361578966 0.005037926386021431]]] 
+} -body {
+    rfutil::yPEq $input
+} -result [dict create y1 [list [complex 0.0006853765807896219 0.00022006091759423346]] y2 [list [complex 0.0002233418999932571 0.00127770539124363]] \
+                        y3 [list [complex 0.0002465661361646395 0.003760220994777801]]] 
+
+test magProcTest {test procedure of magnitude calculation} -match mtchLst -setup {
+    set input [list [complex 0.8 -0.31]]
+} -body {
+    rfutil::mag $input
+} -result [list 0.857962703152066]
+
+test magDbProcTest {test procedure of magnitude calculation with db units} -match mtchLst -setup {
+    set input [list [complex 0.8 -0.31]]
+} -body {
+    rfutil::mag $input -db
+} -result [list -1.3306318226836054]
+
+test angleProcTest {test procedure of angle calculation} -match mtchLst -setup {
+    set input [list [complex 0.8 -0.31]]
+} -body {
+    rfutil::angle $input
+} -result [list -0.36968428879530135]
+
+test angleDegProcTest {test procedure of angle calculation in degrees} -match mtchLst -setup {
+    set input [list [complex 0.8 -0.31]]
+} -body {
+    rfutil::angle $input -deg
+} -result [list -21.18134950027277]
+
+test matMul2x2ProcTest {test multiplication of 2x2 matrix} -match mtchCmpMat -setup {
+    set mat1 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                          12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+    set mat2 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
+                          12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+} -body {
+    rfutil::matMul2x2 $mat1 $mat2
+} -result [dict create 11 [list [complex 0.48090000000000016 -0.4046]] 21 [list [complex 0.4488 0.356]] \
+                           12 [list [complex 0.472 0.3648]] 22 [list [complex 0.40890000000000015 -0.5646]]] 
+
+
+cleanupTests

@@ -1,0 +1,6 @@
+variable startPage {
+    # tcl_rools
+
+    This package provides Tcl different Tcl tools.
+
+}

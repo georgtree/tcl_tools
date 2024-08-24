@@ -1,0 +1,42 @@
+package require tcltest
+namespace import ::tcltest::*
+
+set script_path [file dirname [file normalize [info script]]]
+lappend auto_path "$script_path/../"
+package require mathutil
+
+set epsilon 1e-6
+
+proc matchList {expected actual} {
+    variable epsilon
+    set match 1
+    set len [llength $expected]
+    for {set i 0} {$i<$len} {incr i} {
+        set exp [lindex $expected $i]
+        set act [lindex $actual $i]
+        if {(abs($act-$exp) > $epsilon) || (abs($act-$exp) > $epsilon)} {
+            set match 0
+            break
+        }
+    }
+    return $match
+}
+ 
+customMatch mtchLst matchList
+
+test trapzProcTest {test procedure of trapezoidal integration} -setup {
+    set x [list 0 1 2 3 4 5 6 7 8 9 10]
+    set y [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    mathutil::trapz $x $y
+} -result 335.0
+
+test cumtrapzProcTest {test procedure of cumulative trapezoidal integration} -setup {
+    set x [list 0 1 2 3 4 5 6 7 8 9 10]
+    set y [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    mathutil::cumtrapz $x $y
+} -result [list 0.5 3.0 9.5 22.0 42.5 73.0 115.5 172.0 244.5 335.0]
+
+
+cleanupTests

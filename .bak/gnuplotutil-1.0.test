@@ -1,0 +1,57 @@
+package require tcltest
+namespace import ::tcltest::*
+package require csv
+package require argparse
+
+source gnuplotutil-1.0.tm
+
+
+test test-1-plotXYN {test for all on switches} -setup {
+    set x [list 0 1 2 3 4 5 6]
+    set y1 [list 0 1 4 9 16 25 36]
+    set y2 [list 0 1 8 27 64 125 216]
+} -body {
+    gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -delete -grid -names [list  y1 y2] -columns $y1 $y2
+    set dummyResult 1
+} -result 1
+
+test test-2-plotXYN {test with no switches} -setup {
+    set x [list 0 1 2 3 4 5 6]
+    set y1 [list 0 1 4 9 16 25 36]
+    set y2 [list 0 1 8 27 64 125 216]
+} -body {
+    gnuplotutil::plotXYN $x -delete -names [list y1 y2] -columns $y1 $y2
+    set dummyResult 1
+} -result 1
+
+test test-3-plotXYN {test with data of different length} -setup {
+    set x [list 0 1 2 3 4 5 6]
+    set y1 [list 0 1 4 9 16 25 36]
+    set y2 [list 0 1 8 27 64 125]
+} -body {
+    gnuplotutil::plotXYN $x -xlabel "x label" -ylabel "y label" -delete -grid -names [list  y1 y2] -columns $y1 $y2
+    set dummyResult 1
+} -result 1
+
+test test-4-plotXYN {test mismatched -names length} -setup {
+    set x [list 0 1 2 3 4 5 6]
+    set y1 [list 0 1 4 9 16 25 36]
+    set y2 [list 0 1 8 27 64 125 216]
+} -body {
+    gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -delete -grid -names [list  y1] -columns $y1 $y2
+    set dummyResult 1
+} -result 1
+
+test test-1-plotXNYN {test for all on switches} -setup {
+    set x1 [list 0 1 2 3 4 5 6]
+    set y1 [list 0 1 4 9 16 25 36]
+    set x2 [list 0 1 2 3 4 5 6 7]
+    set y2 [list 0 1 8 27 64 125 216 350]
+} -body {
+    gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -delete -grid -names [list y1 y2] -columns $x1 $y1 $x2 $y2
+    set dummyResult 1
+} -result 1
+
+
+
+cleanupTests
