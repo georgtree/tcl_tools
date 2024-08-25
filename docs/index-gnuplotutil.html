@@ -6,7 +6,7 @@
 <body>
 <div class='ruff-layout'>
 <header class='ruff-layout-header ruff-hd'>
-<a style='text-decoration:none;' href='index.html'>Collection of Tcl tools (v)</a>
+<a style='text-decoration:none;' href='index.html'>Collection of Tcl tools (v0.1)</a>
 
 
             <div id="ruffButtonBar">
@@ -19,7 +19,7 @@
 <div style='clear:both;'></div>
 <h3 class='ruffproc'><a name='::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
-<p class='ruff'>Procedure create input and command files to plot 2D graphs with the individual x points, and send it to gnuplot</p>
+<p class='ruff'>Creates input and command files to plot 2D graphs with the individual x points, and send it to gnuplot.</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>plotXNYN</span> <span class='ruff_arg'>?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><font color=#463e11>-columns</font></code></td><td>Argument that provides the x and y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches.</td></tr>
@@ -49,7 +49,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_1' href="javascript:toggleSource('1')">Show source</a></p>
 <div id='1' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYN {args} {
 
-    <i><font color=#4b5d50># Procedure create input and command files to plot 2D graphs with the individual x points, and send it to gnuplot</font></i>
+    <i><font color=#4b5d50># Creates input and command files to plot 2D graphs with the individual x points, and send it to gnuplot.</font></i>
     <i><font color=#4b5d50>#  -xlog - arg xlog boolean switch of log scale of x axis, default off</font></i>
     <i><font color=#4b5d50>#  -ylog - boolean switch of log scale of y axis, default off</font></i>
     <i><font color=#4b5d50>#  -delete - boolean switch that enables deleting of temporary file after end of plotting, default off</font></i>
@@ -185,7 +185,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotXYN'>plotXYN</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
-<p class='ruff'>Procedure create input and command files to plot 2D graphs with the same x points, and send it to gnuplot</p>
+<p class='ruff'>Creates input and command files to plot 2D graphs with the same x points, and send it to gnuplot.</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>plotXYN</span> <span class='ruff_arg'>x ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>x</code></td><td>List that contains x-point for 2D graph.</td></tr>
@@ -211,7 +211,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_2' href="javascript:toggleSource('2')">Show source</a></p>
 <div id='2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXYN {x args} {
 
-    <i><font color=#4b5d50># Procedure create input and command files to plot 2D graphs with the same x points, and send it to gnuplot</font></i>
+    <i><font color=#4b5d50># Creates input and command files to plot 2D graphs with the same x points, and send it to gnuplot.</font></i>
     <i><font color=#4b5d50>#  x - List that contains x-point for 2D graph</font></i>
     <i><font color=#4b5d50>#  -xlog - arg xlog boolean switch of log scale of x axis, default off</font></i>
     <i><font color=#4b5d50>#  -ylog - boolean switch of log scale of y axis, default off</font></i>
@@ -330,7 +330,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <li class='ruff-toc1'><a href='index-mathutil.html'>mathutil</a></li>
 <li class='ruff-toc1'><a href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
-<hr><li class='ruff-toc2'><a href='#::gnuplotutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotXNYN&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Procedure create input and command files to plot 2D graphs with the individual x points, and send it to gnuplot
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXYN'>plotXYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotXYN&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Procedure create input and command files to plot 2D graphs with the same x points, and send it to gnuplot
+<hr><li class='ruff-toc2'><a href='#::gnuplotutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXNYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Creates input and command files to plot 2D graphs with the individual x points, and send it to gnuplot.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXYN'>plotXYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Creates input and command files to plot 2D graphs with the same x points, and send it to gnuplot.
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>

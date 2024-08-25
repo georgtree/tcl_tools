@@ -13,7 +13,7 @@ source [file join $sourceDir mathutil.tcl]
 source [file join $sourceDir rfutil.tcl]
 source [file join $sourceDir touchstoneutil.tcl]
 
-set packageVersion [package versions SpiceGenTcl]
+set packageVersion 0.1
 
 set title "Collection of Tcl tools"
 

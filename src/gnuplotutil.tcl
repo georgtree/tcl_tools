@@ -10,7 +10,7 @@ namespace eval ::gnuplotutil {
 
 
 proc gnuplotutil::plotXYN {x args} {
-    # Procedure create input and command files to plot 2D graphs with the same x points, and send it to gnuplot
+    # Creates input and command files to plot 2D graphs with the same x points, and send it to gnuplot.
     #  x - List that contains x-point for 2D graph
     #  -xlog - arg xlog boolean switch of log scale of x axis, default off
     #  -ylog - boolean switch of log scale of y axis, default off
@@ -124,7 +124,7 @@ proc gnuplotutil::plotXYN {x args} {
 }
 
 proc gnuplotutil::plotXNYN {args} {
-    # Procedure create input and command files to plot 2D graphs with the individual x points, and send it to gnuplot
+    # Creates input and command files to plot 2D graphs with the individual x points, and send it to gnuplot.
     #  -xlog - arg xlog boolean switch of log scale of x axis, default off
     #  -ylog - boolean switch of log scale of y axis, default off
     #  -delete - boolean switch that enables deleting of temporary file after end of plotting, default off

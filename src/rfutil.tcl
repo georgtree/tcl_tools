@@ -11,13 +11,13 @@ package provide rfutil 0.1
 namespace eval ::rfutil {
 
     namespace import ::math::complexnumbers::*
-    namespace export s2z s2y z2s y2s z2y y2z zTEq yPEq inv2x2 deemb mag angle cxxTEq
+    namespace export s2z s2t t2s s2y z2s y2s z2y y2z zTEq cxxTEq lxxTEq yPEq cxxPEq lxxPEq inv2x2 matMul2x2 deemb mag angle 
     ::math::constants::constants radtodeg degtorad pi
 }
 
 
 proc ::rfutil::s2z {sxx z0} {
-    # Procedure convert 2-port s-parameters to z-parameters
+    # Converts 2-port s-parameters to z-parameters.
     #
     #  sxx - Dictionary that contains 2-port matrix of s-parameters,
     #   each matrix element is the list of values at different
@@ -44,7 +44,7 @@ proc ::rfutil::s2z {sxx z0} {
 }
 
 proc ::rfutil::s2t {sxx} {
-    # Procedure convert 2-port s-parameters to transfer parameters
+    # Converts 2-port s-parameters to transfer parameters.
     #
     #  sxx - Dictionary that contains 2-port matrix of s-parameters,
     #   each matrix element is the list of values at different
@@ -70,7 +70,7 @@ proc ::rfutil::s2t {sxx} {
 }
 
 proc ::rfutil::t2s {txx} {
-    # Procedure convert 2-port transfer parameters to s-parameters
+    # Converts 2-port transfer parameters to s-parameters.
     #
     #  txx - Dictionary that contains 2-port matrix of transfer parameters,
     #   each matrix element is the list of values at different
@@ -95,7 +95,7 @@ proc ::rfutil::t2s {txx} {
 }
 
 proc ::rfutil::s2y {sxx z0} {
-    # Procedure convert 2-port s-parameters to y-parameters
+    # Converts 2-port s-parameters to y-parameters.
     #
     #  sxx - Dictionary that contains 2-port matrix of s-parameters,
     #   each matrix element is the list of values at different
@@ -124,7 +124,7 @@ proc ::rfutil::s2y {sxx z0} {
 }
 
 proc ::rfutil::z2s {zxx z0} {
-    # Procedure convert 2-port z-parameters to s-parameters
+    # Converts 2-port z-parameters to s-parameters.
     #
     #  zxx - Dictionary that contains 2-port matrix of z-parameters,
     #   each matrix element is the list of values at different
@@ -151,7 +151,7 @@ proc ::rfutil::z2s {zxx z0} {
 }
 
 proc ::rfutil::y2s {yxx z0} {
-    # Procedure convert 2-port y-parameters to s-parameters
+    # Converts 2-port y-parameters to s-parameters.
     #
     #   yxx - Dictionary that contains 2-port matrix of y-parameters,
     #    each matrix element is the list of values at different
@@ -180,7 +180,7 @@ proc ::rfutil::y2s {yxx z0} {
 }
 
 proc ::rfutil::z2y {zxx} {
-    # Procedure convert 2-port z-parameters to y-parameters
+    # Converts 2-port z-parameters to y-parameters.
     #
     #   zxx - Dictionary that contains 2-port matrix of z-parameters,
     #    each matrix element is the list of values at different
@@ -206,7 +206,7 @@ proc ::rfutil::z2y {zxx} {
 }
 
 proc ::rfutil::y2z {yxx} {
-    # Procedure convert 2-port y-parameters to z-parameters
+    # Converts 2-port y-parameters to z-parameters.
     #
     #   yxx - Dictionary that contains 2-port matrix of y-parameters,
     #    each matrix element is the list of values at different
@@ -232,7 +232,7 @@ proc ::rfutil::y2z {yxx} {
 }
 
 proc ::rfutil::zTEq {zxx} {
-    # Procedure calculates equivalent T circuit elements values
+    # Calculates equivalent T circuit elements values.
     # 
     #  zxx - Dictionary that contains 2-port matrix of z-parameters,
     #   each matrix element is the list of values at different
@@ -265,7 +265,7 @@ proc ::rfutil::zTEq {zxx} {
 }
 
 proc ::rfutil::cxxTEq {freq zxx} {
-    # Procedure calculates capacitive part equivalent T circuit elements values
+    # Calculates capacitive part equivalent T circuit elements values.
     #
     #  freq - Frequency values list
     #  zxx - Dictionary that contains 2-port matrix of z-parameters,
@@ -303,7 +303,7 @@ proc ::rfutil::cxxTEq {freq zxx} {
 }
 
 proc ::rfutil::lxxTEq {freq zxx} {
-    # Procedure calculates inductive part equivalent T circuit elements values
+    # Calculates inductive part equivalent T circuit elements values.
     #
     #  freq - Frequency values list
     #  zxx - Dictionary that contains 2-port matrix of z-parameters,
@@ -340,7 +340,7 @@ proc ::rfutil::lxxTEq {freq zxx} {
 }
 
 proc ::rfutil::yPEq {yxx} {
-    # Procedure calculates equivalent P circuit elements values
+    # Calculates equivalent P circuit elements values.
     #
     #  yxx - Dictionary that contains 2-port matrix of y-parameters,
     #   each matrix element is the list of values at different
@@ -374,7 +374,7 @@ proc ::rfutil::yPEq {yxx} {
 }
 
 proc ::rfutil::cxxPEq {freq yxx} {
-    # Procedure calculates capacitive part equivalent P circuit elements values
+    # Calculates capacitive part equivalent P circuit elements values.
     #
     #  freq - Frequency values list
     #  yxx - Dictionary that contains 2-port matrix of y-parameters,
@@ -411,7 +411,7 @@ proc ::rfutil::cxxPEq {freq yxx} {
 }
 
 proc ::rfutil::lxxPEq {freq yxx} {
-    # Procedure calculates inductive part equivalent P circuit elements values
+    # Calculates inductive part equivalent P circuit elements values.
     #
     #  freq - Frequency values list
     #  yxx - Dictionary that contains 2-port matrix of y-parameters,
@@ -448,7 +448,7 @@ proc ::rfutil::lxxPEq {freq yxx} {
 }
 
 proc ::rfutil::inv2x2 {mat} {
-    # Procedure calculates inverse matrix of input matrix with size 2x2
+    # Calculates inverse matrix of input matrix with size 2x2.
     #
     #  mat - Dictionary that contains 2-port matrix,
     #   each matrix element is the list of values at different
@@ -479,7 +479,7 @@ proc ::rfutil::inv2x2 {mat} {
 }
 
 proc ::rfutil::matMul2x2 {mat1 mat2} {
-    # Procedure calculates multiply matrices with 2x2 size
+    # Calculates multiply matrices with 2x2 size.
     #
     #  mat1 - First matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
     #  mat2 - Second matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
@@ -509,7 +509,7 @@ proc ::rfutil::matMul2x2 {mat1 mat2} {
 }
 
 proc ::rfutil::deemb {sMeas sFixtL sFixtR} {
-    # Procedure for deembedding of DUT from test fixture 
+    # Procedure for deembedding of DUT from test fixture.
     #
     #  sMeas - Measured s-parameters matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
     #  sFixtL - s-parameters matrix of left fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
@@ -530,7 +530,7 @@ proc ::rfutil::deemb {sMeas sFixtL sFixtR} {
 }
 
 proc ::rfutil::mag {data args} {
-    # Procedure calculates magnitude of complex number
+    # Calculates magnitude of complex number.
     #
     #  data - List with complex data in form a+i*b
     #  -db - Option to select magnitude in db scale
@@ -553,7 +553,7 @@ proc ::rfutil::mag {data args} {
 }
 
 proc ::rfutil::angle {data args} {
-    # Procedure calculates angle (phase) of complex number
+    # Calculates angle (phase) of complex number.
     #
     #  data - List with complex data in form a+i*b
     #  -deg - Option to select angle in degrees units

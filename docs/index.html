@@ -6,16 +6,36 @@
 <body>
 <div class='ruff-layout'>
 <header class='ruff-layout-header ruff-hd'>
-<a style='text-decoration:none;' href='index.html'>Collection of Tcl tools (v)</a>
+<a style='text-decoration:none;' href='index.html'>Collection of Tcl tools (v0.1)</a>
 
 
             <div id="ruffButtonBar">
             <button id="ruffNavMove" onclick="ruffMoveNavPane()"></button>
             <button id="ruffToggleTheme" onclick="ruffNextTheme()"></button>
             </div>
-        </header><main class='ruff-layout-main ruff-bd'><h1 class='ruff'><a name='tcl_rools'></a>tcl_rools<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
+        </header><main class='ruff-layout-main ruff-bd'><h1 class='ruff'><a name='Content'></a>Content<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
 <div style='clear:both;'></div>
-<p class='ruff'>This package provides Tcl different Tcl tools.</p>
+<p class='ruff'>This package provides different Tcl tools:</p>
+<ul class='ruff'>
+<li><a href="./index-gnuplotutil.html" >Simple wrapper to some 2D plots of Gnuplot</a> - &quot;src/gnuplotutil.tcl&quot;</li>
+<li><a href="./index-mathutil.html" >Some math function</a> - &quot;src/mathutil.tcl&quot;</li>
+<li><a href="./index-touchstoneutil.html" >Basic procedure to read touchstone .s2p files</a> - &quot;src/touchstoneutil.tcl&quot;</li>
+<li><a href="./index-rfutil.html" >Collection of functions to work with 2-port network parameters</a> - &quot;src/rfutil.tcl&quot;</li>
+</ul>
+<h1 class='ruff'><a name='Installation and dependencies'></a>Installation and dependencies<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
+<div style='clear:both;'></div>
+<p class='ruff'>To install this package just unzip code to folder and append <code>auto_path</code> variable with location.</p>
+<p class='ruff'>Packages are written in pure Tcl and relies on Tcllib. The only necessary external dependency is the <code>argparse</code> package.</p>
+<ul class='ruff'>
+<li><a href="https://www.tcl.tk/software/tcllib/" >Tcllib</a></li>
+<li><a href="https://wiki.tcl-lang.org/page/argparse" >argparse</a></li>
+</ul>
+<h1 class='ruff'><a name='Supported platforms'></a>Supported platforms<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
+<div style='clear:both;'></div>
+<p class='ruff'>Any OS that has tcl8.6 (Linux, Windows, FreeBSD).</p>
+<h1 class='ruff'><a name='Documentation'></a>Documentation<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
+<div style='clear:both;'></div>
+<p class='ruff'>You can find some documentation <a href="https://georgtree.github.io/tcl_tools" >here</a></p>
 </main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a class='ruff-highlight' style='padding-top:2px;' href='index.html'>Start page</a></li>
 <li class='ruff-toc1'><a href='index-docindex.html' accesskey='i'>Index</a></li>
 <hr>

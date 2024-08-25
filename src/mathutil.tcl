@@ -8,16 +8,11 @@ namespace eval ::mathutil {
     namespace export trapz cumtrapz
 }
 
-# trapz --
-#    Procedure for trapezoidal integration of x-y lists
-#
-# Arguments:
-#    xList           x-data list
-#    yList           y-data list
-# Result:
-#    Value of integral
-#
 proc mathutil::trapz {xList yList} {
+    # Does trapezoidal integration of x-y lists
+    #  xList - list of x values
+    #  yList - list of y values
+    # Returns: value of integral
     set xLen [llength $xList]
     set yLen [llength $yList]
     if {$xLen != $yLen} {error "Length of xList $xLen is not equal to length of yList $yLen"}
@@ -32,18 +27,12 @@ proc mathutil::trapz {xList yList} {
     return $result
 }
 
-
-# cumtrapz --
-#    Procedure for trapezoidal integration with cumulative data result
-#
-# Arguments:
-#    xList           x-data list
-#    yList           y-data list
-#    init            initial value of integral
-# Result:
-#    Each value of resulted list is the value of integral across all previous xy values
-#
 proc mathutil::cumtrapz {xList yList {init 0}} {
+    # Does trapezoidal integration with storing cumulative data at each point
+    #  xList - list of x values
+    #  yList - list of y values
+    #  init - start value, default is 0
+    # Returns: list each value of which is the value of integral across all previous xy values
     set xLen [llength $xList]
     set yLen [llength $yList]
     if {$xLen != $yLen} {error "Length of xList $xLen is not equal to length of yList $yLen"}
