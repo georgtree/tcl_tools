@@ -1,10 +1,10 @@
 # Content
 
 This package provides different Tcl tools:
-- [Simple wrapper to some 2D plots of Gnuplot](./index-gnuplotutil.html) - "src/gnuplotutil.tcl"
-- [Some math function](./index-mathutil.html) - "src/mathutil.tcl"
-- [Basic procedure to read touchstone .s2p files](./index-touchstoneutil.html) - "src/touchstoneutil.tcl"
-- [Collection of functions to work with 2-port network parameters](./index-rfutil.html) - "src/rfutil.tcl"
+- [Simple wrapper to some 2D plots of Gnuplot](https://georgtree.github.io/tcl_tools/index-gnuplotutil.html) - "src/gnuplotutil.tcl"
+- [Some math function](https://georgtree.github.io/tcl_tools/index-mathutil.html) - "src/mathutil.tcl"
+- [Basic procedure to read touchstone .s2p files](https://georgtree.github.io/tcl_tools/index-touchstoneutil.html) - "src/touchstoneutil.tcl"
+- [Collection of functions to work with 2-port network parameters](https://georgtree.github.io/tcl_tools/index-rfutil.html) - "src/rfutil.tcl"
 
 # Installation and dependencies
 
@@ -19,3 +19,7 @@ the `argparse` package.
 # Supported platforms
 
 Any OS that has tcl8.6 (Linux, Windows, FreeBSD).
+
+# Documentation
+
+You can find some documentation [here](https://georgtree.github.io/tcl_tools)
