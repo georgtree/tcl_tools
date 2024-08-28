@@ -70,4 +70,13 @@ test testMultiplotXNYN-1.1 {general test} -setup {
     set dummyResult 1
 } -result 1
 
+test testPlotHist-1.1 {test for all on switches} -setup {
+    set x1 [list 0 1 2 3 4 5 6]
+    set y1 [list 0 1 4 9 16 25 36]
+    set y2 [list 0 1 8 27 64 125 216]
+} -body {
+    gnuplotutil::plotHist $x1 -xlabel "x label" -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2
+    set dummyResult 1
+} -result 1
+
 cleanupTests

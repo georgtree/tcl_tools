@@ -5,12 +5,12 @@ package provide gnuplotutil 0.1
 
 namespace eval ::gnuplotutil {
 
-    namespace export plotXYN plotXNYN multiplotXNYN
+    namespace export plotXYN plotXNYN multiplotXNYN plotHist
 }
 
 
 proc gnuplotutil::plotXYN {x args} {
-    # Plots 2D graphs in Gnuplot with the same x-values.
+    # Plots 2D graphs in Gnuplot with the common x-values.
     #  x - List that contains x-point for 2D graph
     #  -xlog - arg xlog boolean switch of log scale of x axis, default off
     #  -ylog - boolean switch of log scale of y axis, default off
@@ -468,5 +468,105 @@ proc gnuplotutil::multiplotXNYN {layout args} {
             file delete $fileName
         }
     }
+}
 
+proc gnuplotutil::plotHist {x args} {
+    # Plots 2D histograms in Gnuplot with the common x-values.
+    #  x - List that contains x-point for 2D histogram
+    #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
+    #  -xlabel - argument to set x-axis label to display, string must be provided after it
+    #  -ylabel - argument to set y-axis label to display, string must be provided after it
+    #  -optcmd - argument with optional string that may contain additional commands to gnuplot
+    #  -names - argument that enable setting the column names of provided data, value must be provided as list
+    #    in the same order as data columns provided, must have the length 1+number of y data colums
+    #  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided
+    #    at the end of command after all switches
+    # Returns: gnuplot window with plotted data
+    # ```
+    # Example:
+    # set x1 [list 0 1 2 3 4 5 6]
+    # set y1 [list 0 1 4 9 16 25 36]
+    # set y2 [list 0 1 8 27 64 125 216]
+    # gnuplotutil::plotHist $x1 -xlabel "x label" -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2
+    # ```
+    set arguments [argparse -inline {
+        {-nodelete -boolean}
+        {-xlabel -argument}
+        {-ylabel -argument}
+        {-optcmd -argument}
+        {-names -argument}
+        {-columns -catchall}
+    }]
+    set xscaleStr ""
+    set yscaleStr ""
+    set autoTitleStr ""
+    set optcmdStr ""
+    if {[dict exist $arguments names]==1} {
+        set columnNames [dict get $arguments names]
+    }
+    if {[dict exist $arguments xlabel]==1} {
+        set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
+    }
+    if {[dict exist $arguments ylabel]==1} {
+        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    }
+    if {[dict exist $arguments optcmd]==1} {
+        set optcmdStr [dict get $arguments optcmd]
+    }
+    set yColumnCount 0
+    foreach val [dict get $arguments columns] {
+        if {[llength $val] != [llength $x]} {
+            error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of points of x-axis data"
+            incr yColumnCount
+        }
+    }
+    # fill output structure with values
+    set numCol [llength [dict get $arguments columns]]
+    if {([dict exist $arguments names]==1)} {
+        if {[llength $columnNames] != [expr {$numCol}]} {
+            error "Column names count is not the same as count of data columns"
+            set autoTitleStr ""
+        } else {
+            lappend outList "{ } $columnNames"
+            set autoTitleStr "set key autotitle columnheader"
+        }
+    }
+    set numRow [llength $x]
+    for {set i 0} {$i<$numRow} {incr i} {
+        set row [lindex $x $i]
+        foreach val [dict get $arguments columns] {
+            lappend row [lindex $val $i]
+        }
+        lappend outList $row
+    }
+    # save data to temporary file
+    set counter 0
+    while {true} {
+        if {[file exists gnuplotTemp${counter}.csv]} {
+           incr counter
+        } else {
+            set resFile [open gnuplotTemp${counter}.csv w+]
+            break
+        }
+    }
+    puts $resFile [::csv::joinlist $outList " "]
+    close $resFile
+    # create command strings for gnuplot
+    set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2 smooth freq w boxes fs transparent"
+    for {set i 1} {$i<$numCol} {incr i} {
+        set commandStr  "${commandStr}, '' using 1:[expr {$i+2}] smooth freq w boxes fs transparent"
+    }
+    catch {exec gnuplot << "
+        set mouse
+        $optcmdStr
+        $autoTitleStr
+        $xlabelStr
+        $ylabelStr
+        $commandStr
+        pause mouse close
+    "} errorStr
+    puts $errorStr
+    if {[dict get $arguments nodelete]==0} {
+        file delete gnuplotTemp${counter}.csv
+    }
 }

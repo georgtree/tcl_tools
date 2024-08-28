@@ -100,6 +100,130 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
         }
     }
 }</pre></div>
+</div><h3 class='ruffproc'><a name='::gnuplotutil::plotHist'>plotHist</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
+<div style='clear:both;'></div>
+<p class='ruff'>Plots 2D histograms in Gnuplot with the common x-values.</p>
+<div class='ruff_synopsis'><span class='ruff_cmd'>plotHist</span> <span class='ruff_arg'>x ?args?</span></div>
+<h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code>x</code></td><td>List that contains x-point for 2D histogram.</td></tr>
+<tr><td><code><font color=#463e11>-columns</font></code></td><td>Argument that provides the y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches.</td></tr>
+<tr><td><code><font color=#463e11>-names</font></code></td><td>Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums.</td></tr>
+<tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
+<tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
+<tr><td><code><font color=#463e11>-xlabel</font></code></td><td>Argument to set x-axis label to display, string must be provided after it.</td></tr>
+<tr><td><code><font color=#463e11>-ylabel</font></code></td><td>Argument to set y-axis label to display, string must be provided after it.</td></tr>
+</table>
+<h5 class='ruff'>Description</h5>
+<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>Example:
+<b><font color=#923B23>set</font></b> x1 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
+<b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
+<b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
+gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
+</pre>
+
+</figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_2' href="javascript:toggleSource('2')">Show source</a></p>
+<div id='2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotHist {x args} {
+
+    <i><font color=#4b5d50># Plots 2D histograms in Gnuplot with the common x-values.</font></i>
+    <i><font color=#4b5d50>#  x - List that contains x-point for 2D histogram</font></i>
+    <i><font color=#4b5d50>#  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off</font></i>
+    <i><font color=#4b5d50>#  -xlabel - argument to set x-axis label to display, string must be provided after it</font></i>
+    <i><font color=#4b5d50>#  -ylabel - argument to set y-axis label to display, string must be provided after it</font></i>
+    <i><font color=#4b5d50>#  -optcmd - argument with optional string that may contain additional commands to gnuplot</font></i>
+    <i><font color=#4b5d50>#  -names - argument that enable setting the column names of provided data, value must be provided as list</font></i>
+    <i><font color=#4b5d50>#    in the same order as data columns provided, must have the length 1+number of y data colums</font></i>
+    <i><font color=#4b5d50>#  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided</font></i>
+    <i><font color=#4b5d50>#    at the end of command after all switches</font></i>
+    <i><font color=#4b5d50># Returns: gnuplot window with plotted data</font></i>
+    <i><font color=#4b5d50># ```</font></i>
+    <i><font color=#4b5d50># Example:</font></i>
+    <i><font color=#4b5d50># set x1 [list 0 1 2 3 4 5 6]</font></i>
+    <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
+    <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -names [list  y1 y2] -columns $y1 $y2</font></i>
+    <i><font color=#4b5d50># ```</font></i>
+    <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
+        {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-xlabel</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-columns</font> <font color=#463e11>-catchall</font>}
+    }]
+    <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> yscaleStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1} {
+        <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> xlabel]==1} {
+        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> ylabel]==1} {
+        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> optcmd]==1} {
+        <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    }
+    <b><font color=#923B23>set</font></b> yColumnCount 0
+    <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$val</font>] != [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]} {
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>$</font>yColumnCount) doesn't match the number of points of x-axis data&quot;</font>
+            <b><font color=#923B23>incr</font></b> yColumnCount
+        }
+    }
+    <i><font color=#4b5d50># fill output structure with values</font></i>
+    <b><font color=#923B23>set</font></b> numCol [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]]
+    <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1)} {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$numCol</font>}]} {
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Column names count is not the same as count of data columns&quot;</font>
+            <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>lappend</font></b> outList <font color=#035103>&quot;<font color=#4A181B>{</font> <font color=#4A181B>}</font> <font color=#4A181B>$</font>columnNames&quot;</font>
+            <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;set key autotitle columnheader&quot;</font>
+        }
+    }
+    <b><font color=#923B23>set</font></b> numRow [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numRow</font>} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> row [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
+            <b><font color=#923B23>lappend</font></b> row [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$val</font> <font color=#4A181B>$i</font>]
+        }
+        <b><font color=#923B23>lappend</font></b> outList <font color=#4A181B>$row</font>
+    }
+    <i><font color=#4b5d50># save data to temporary file</font></i>
+    <b><font color=#923B23>set</font></b> counter 0
+    <b><font color=#923B23>while</font></b> {true} {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists gnuplotTemp<font color=#4A181B>${counter}</font>.csv]} {
+           <b><font color=#923B23>incr</font></b> counter
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> gnuplotTemp<font color=#4A181B>${counter}</font>.csv w+]
+            <b><font color=#ca14ca>break</font></b>
+        }
+    }
+    <b><font color=#923B23>puts</font></b> <font color=#4A181B>$resFile</font> [::csv::joinlist <font color=#4A181B>$outList</font> <font color=#035103>&quot; &quot;</font>]
+    <b><font color=#923B23>close</font></b> <font color=#4A181B>$resFile</font>
+    <i><font color=#4b5d50># create command strings for gnuplot</font></i>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 1:2 smooth freq w boxes fs transparent&quot;</font>
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using 1:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font> smooth freq w boxes fs transparent&quot;</font>
+    }
+    <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>        set mouse</font>
+<font color=#035103>        <font color=#4A181B>$</font>optcmdStr</font>
+<font color=#035103>        <font color=#4A181B>$</font>autoTitleStr</font>
+<font color=#035103>        <font color=#4A181B>$</font>xlabelStr</font>
+<font color=#035103>        <font color=#4A181B>$</font>ylabelStr</font>
+<font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>        pause mouse close</font>
+<font color=#035103>    &quot;</font>} errorStr
+    <b><font color=#923B23>puts</font></b> <font color=#4A181B>$errorStr</font>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
+        <b><font color=#923B23>file</font></b> delete gnuplotTemp<font color=#4A181B>${counter}</font>.csv
+    }
+}</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Plots 2D graphs in Gnuplot with individual x-values. Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.</p>
@@ -129,8 +253,8 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_2' href="javascript:toggleSource('2')">Show source</a></p>
-<div id='2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYN {args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_3' href="javascript:toggleSource('3')">Show source</a></p>
+<div id='3' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYN {args} {
 
     <i><font color=#4b5d50># Plots 2D graphs in Gnuplot with individual x-values.</font></i>
     <i><font color=#4b5d50># Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.</font></i>
@@ -289,8 +413,8 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <tr><td><code><font color=#463e11>-ylog</font></code></td><td>Boolean switch of log scale of y axis, default off.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list that contains command script and name of data file</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_3' href="javascript:toggleSource('3')">Show source</a></p>
-<div id='3' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYNMp {args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_4' href="javascript:toggleSource('4')">Show source</a></p>
+<div id='4' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYNMp {args} {
 
     <i><font color=#4b5d50># Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files</font></i>
     <i><font color=#4b5d50>#  for individual plots</font></i>
@@ -427,7 +551,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotXYN'>plotXYN</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
-<p class='ruff'>Plots 2D graphs in Gnuplot with the same x-values.</p>
+<p class='ruff'>Plots 2D graphs in Gnuplot with the common x-values.</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>plotXYN</span> <span class='ruff_arg'>x ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>x</code></td><td>List that contains x-point for 2D graph.</td></tr>
@@ -450,10 +574,10 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_4' href="javascript:toggleSource('4')">Show source</a></p>
-<div id='4' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXYN {x args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_5' href="javascript:toggleSource('5')">Show source</a></p>
+<div id='5' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXYN {x args} {
 
-    <i><font color=#4b5d50># Plots 2D graphs in Gnuplot with the same x-values.</font></i>
+    <i><font color=#4b5d50># Plots 2D graphs in Gnuplot with the common x-values.</font></i>
     <i><font color=#4b5d50>#  x - List that contains x-point for 2D graph</font></i>
     <i><font color=#4b5d50>#  -xlog - arg xlog boolean switch of log scale of x axis, default off</font></i>
     <i><font color=#4b5d50>#  -ylog - boolean switch of log scale of y axis, default off</font></i>
@@ -581,8 +705,9 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <li class='ruff-toc1'><a href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
 <hr><li class='ruff-toc2'><a href='#::gnuplotutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::multiplotXNYN'>multiplotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;multiplotXNYN&lt;/span&gt; &lt;span class='ruff_arg'&gt;layout ?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with individual x-values and by using multiplot.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotHist'>plotHist</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotHist&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Plots 2D histograms in Gnuplot with the common x-values.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXNYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with individual x-values. Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYNMp'>plotXNYNMp</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotXNYNMp&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files for individual plots
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXYN'>plotXYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with the same x-values.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXYN'>plotXYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with the common x-values.
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>
