@@ -479,6 +479,7 @@ proc gnuplotutil::plotHist {x args} {
     #  -optcmd - argument with optional string that may contain additional commands to gnuplot
     #  -names - argument that enable setting the column names of provided data, value must be provided as list
     #    in the same order as data columns provided, must have the length 1+number of y data colums
+    #  -xtickfmt - format of xticks
     #  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided
     #    at the end of command after all switches
     # Returns: gnuplot window with plotted data
@@ -495,12 +496,14 @@ proc gnuplotutil::plotHist {x args} {
         {-ylabel -argument}
         {-optcmd -argument}
         {-names -argument}
+        {-xtickfmt -argument}
         {-columns -catchall}
     }]
     set xscaleStr ""
     set yscaleStr ""
     set autoTitleStr ""
     set optcmdStr ""
+    set xtickfmt ""
     if {[dict exist $arguments names]==1} {
         set columnNames [dict get $arguments names]
     }
@@ -512,6 +515,9 @@ proc gnuplotutil::plotHist {x args} {
     }
     if {[dict exist $arguments optcmd]==1} {
         set optcmdStr [dict get $arguments optcmd]
+    }
+    if {[dict exist $arguments xtickfmt]==1} {
+        set xtickfmt "sprintf('[dict get $arguments xtickfmt]', \$1)"
     }
     set yColumnCount 0
     foreach val [dict get $arguments columns] {
@@ -552,12 +558,14 @@ proc gnuplotutil::plotHist {x args} {
     puts $resFile [::csv::joinlist $outList " "]
     close $resFile
     # create command strings for gnuplot
-    set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2 smooth freq w boxes fs transparent"
+    set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2:xtic(${xtickfmt}) smooth freq w boxes fs transparent"
     for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using 1:[expr {$i+2}] smooth freq w boxes fs transparent"
+        set commandStr  "${commandStr}, '' using 1:[expr {$i+2}]:xtic(${xtickfmt}) smooth freq w boxes fs transparent"
     }
     catch {exec gnuplot << "
         set mouse
+        set style histogram cluster
+        set style fill solid 1.0 border lt -1
         $optcmdStr
         $autoTitleStr
         $xlabelStr

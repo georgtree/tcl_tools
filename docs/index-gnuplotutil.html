@@ -111,6 +111,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
 <tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
 <tr><td><code><font color=#463e11>-xlabel</font></code></td><td>Argument to set x-axis label to display, string must be provided after it.</td></tr>
+<tr><td><code><font color=#463e11>-xtickfmt</font></code></td><td>Format of xticks.</td></tr>
 <tr><td><code><font color=#463e11>-ylabel</font></code></td><td>Argument to set y-axis label to display, string must be provided after it.</td></tr>
 </table>
 <h5 class='ruff'>Description</h5>
@@ -133,6 +134,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <i><font color=#4b5d50>#  -optcmd - argument with optional string that may contain additional commands to gnuplot</font></i>
     <i><font color=#4b5d50>#  -names - argument that enable setting the column names of provided data, value must be provided as list</font></i>
     <i><font color=#4b5d50>#    in the same order as data columns provided, must have the length 1+number of y data colums</font></i>
+    <i><font color=#4b5d50>#  -xtickfmt - format of xticks</font></i>
     <i><font color=#4b5d50>#  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided</font></i>
     <i><font color=#4b5d50>#    at the end of command after all switches</font></i>
     <i><font color=#4b5d50># Returns: gnuplot window with plotted data</font></i>
@@ -149,12 +151,14 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
         {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-xtickfmt</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-columns</font> <font color=#463e11>-catchall</font>}
     }]
     <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> yscaleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> xtickfmt <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1} {
         <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
     }
@@ -166,6 +170,9 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> optcmd]==1} {
         <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> xtickfmt]==1} {
+        <b><font color=#923B23>set</font></b> xtickfmt <font color=#035103>&quot;sprintf('<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xtickfmt<font color=#4A181B>]</font>', \$1)&quot;</font>
     }
     <b><font color=#923B23>set</font></b> yColumnCount 0
     <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
@@ -206,12 +213,14 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <b><font color=#923B23>puts</font></b> <font color=#4A181B>$resFile</font> [::csv::joinlist <font color=#4A181B>$outList</font> <font color=#035103>&quot; &quot;</font>]
     <b><font color=#923B23>close</font></b> <font color=#4A181B>$resFile</font>
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
-    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 1:2 smooth freq w boxes fs transparent&quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 1:2:xtic(<font color=#4A181B>${</font>xtickfmt<font color=#4A181B>}</font>) smooth freq w boxes fs transparent&quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using 1:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font> smooth freq w boxes fs transparent&quot;</font>
+        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using 1:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font>:xtic(<font color=#4A181B>${</font>xtickfmt<font color=#4A181B>}</font>) smooth freq w boxes fs transparent&quot;</font>
     }
     <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
+<font color=#035103>        set style histogram cluster</font>
+<font color=#035103>        set style fill solid 1.0 border lt -1</font>
 <font color=#035103>        <font color=#4A181B>$</font>optcmdStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>autoTitleStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>xlabelStr</font>
