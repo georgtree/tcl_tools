@@ -480,6 +480,7 @@ proc gnuplotutil::plotHist {x args} {
     #  -gap - gap between columns in clustered style,-style argument is required
     #  -boxwidth - width of columns, must be in range (0,1]
     #  -fill - set fill of columns, must be empty or solid
+    #  -grid - set grid of histogram
     #  -transparent - add transparent modificator to filling of columns, -fill argument is required
     #  -density - set density of solid filling, -fill argument is required
     #  -border - set border of columns with particular style, -fill argument is required
@@ -503,6 +504,7 @@ proc gnuplotutil::plotHist {x args} {
         {-style -argument -enum {clustered rowstacked columnstacked} -required}
         {-gap -argument -require {style}}
         {-optcmd -argument}
+        {-grid -boolean}
         {-names -argument}
         {-boxwidth -argument}
         {-fill -argument -enum {empty solid}}
@@ -516,10 +518,17 @@ proc gnuplotutil::plotHist {x args} {
     set autoTitleStr ""
     set optcmdStr ""
     set styleStr ""
+    set gridStr ""
     set boxwidthStr ""
     set fillStr ""
     if {[dict exists $arguments names]} {
         set columnNames [dict get $arguments names]
+    }
+    if {[dict exists $arguments optcmd]} {
+        set optcmdStr [dict get $arguments optcmd]
+    }
+    if {[dict get $arguments grid]==1} {
+        set gridStr "set grid"
     }
     if {[dict exists $arguments xlabel]} {
         set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
@@ -547,10 +556,11 @@ proc gnuplotutil::plotHist {x args} {
         }
     }
     if {[dict exists $arguments style]} {
-        if {([dict exists $arguments gap]) && ([dict get $arguments style] in {clustered })} {
+        if {([dict exists $arguments gap]) && ([dict get $arguments style] in {clustered})} {
              set styleStr "set style histogram [dict get $arguments style] gap [dict get $arguments gap]"
+        } else {
+            set styleStr "set style histogram [dict get $arguments style]"
         }
-        set styleStr "set style histogram [dict get $arguments style]"
     }
     set yColumnCount 0
     foreach val [dict get $arguments columns] {
@@ -595,12 +605,14 @@ proc gnuplotutil::plotHist {x args} {
     for {set i 1} {$i<$numCol} {incr i} {
         set commandStr  "${commandStr}, '' using [expr {$i+2}]"
     }
+
     catch {exec gnuplot << "
         set mouse
         set style data histogram
         $styleStr
         $fillStr
         $optcmdStr
+        $gridStr
         $autoTitleStr
         $xlabelStr
         $ylabelStr

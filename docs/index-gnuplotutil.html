@@ -112,6 +112,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <tr><td><code><font color=#463e11>-density</font></code></td><td>Set density of solid filling, -fill argument is required.</td></tr>
 <tr><td><code><font color=#463e11>-fill</font></code></td><td>Set fill of columns, must be empty or solid.</td></tr>
 <tr><td><code><font color=#463e11>-gap</font></code></td><td>Gap between columns in clustered style,-style argument is required.</td></tr>
+<tr><td><code><font color=#463e11>-grid</font></code></td><td>Set grid of histogram.</td></tr>
 <tr><td><code><font color=#463e11>-names</font></code></td><td>Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums.</td></tr>
 <tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
 <tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
@@ -141,6 +142,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <i><font color=#4b5d50>#  -gap - gap between columns in clustered style,-style argument is required</font></i>
     <i><font color=#4b5d50>#  -boxwidth - width of columns, must be in range (0,1]</font></i>
     <i><font color=#4b5d50>#  -fill - set fill of columns, must be empty or solid</font></i>
+    <i><font color=#4b5d50>#  -grid - set grid of histogram</font></i>
     <i><font color=#4b5d50>#  -transparent - add transparent modificator to filling of columns, -fill argument is required</font></i>
     <i><font color=#4b5d50>#  -density - set density of solid filling, -fill argument is required</font></i>
     <i><font color=#4b5d50>#  -border - set border of columns with particular style, -fill argument is required</font></i>
@@ -164,6 +166,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
         {<font color=#463e11>-style</font> <font color=#463e11>-argument</font> <font color=#463e11>-enum</font> {clustered rowstacked columnstacked} <font color=#463e11>-required</font>}
         {<font color=#463e11>-gap</font> <font color=#463e11>-argument</font> <font color=#463e11>-require</font> {style}}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-boxwidth</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-fill</font> <font color=#463e11>-argument</font> <font color=#463e11>-enum</font> {empty solid}}
@@ -177,10 +180,17 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> boxwidthStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> names]} {
         <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> optcmd]} {
+        <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> grid]==1} {
+        <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;set grid&quot;</font>
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> xlabel]} {
         <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
@@ -208,10 +218,11 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
         }
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> style]} {
-        <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> gap]) && ([<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> style] in {clustered })} {
+        <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> gap]) && ([<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> style] in {clustered})} {
              <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font> gap <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments gap<font color=#4A181B>]</font>&quot;</font>
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font>&quot;</font>
         }
-        <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font>&quot;</font>
     }
     <b><font color=#923B23>set</font></b> yColumnCount 0
     <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
@@ -256,12 +267,14 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font>&quot;</font>
     }
+
     <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
 <font color=#035103>        set style data histogram</font>
 <font color=#035103>        <font color=#4A181B>$</font>styleStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>fillStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>optcmdStr</font>
+<font color=#035103>        <font color=#4A181B>$</font>gridStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>autoTitleStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>xlabelStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>ylabelStr</font>
