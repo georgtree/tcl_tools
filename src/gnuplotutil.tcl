@@ -472,14 +472,20 @@ proc gnuplotutil::multiplotXNYN {layout args} {
 
 proc gnuplotutil::plotHist {x args} {
     # Plots 2D histograms in Gnuplot with the common x-values.
-    #  x - List that contains x-point for 2D histogram
+    #  x - List of strings that contains x-point for 2D histogram
     #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
     #  -xlabel - argument to set x-axis label to display, string must be provided after it
     #  -ylabel - argument to set y-axis label to display, string must be provided after it
+    #  -style - set style of diagram, must be clustered, rowstacked or columnstacked
+    #  -gap - gap between columns in clustered style,-style argument is required
+    #  -boxwidth - width of columns, must be in range (0,1]
+    #  -fill - set fill of columns, must be empty or solid
+    #  -transparent - add transparent modificator to filling of columns, -fill argument is required
+    #  -density - set density of solid filling, -fill argument is required
+    #  -border - set border of columns with particular style, -fill argument is required
     #  -optcmd - argument with optional string that may contain additional commands to gnuplot
     #  -names - argument that enable setting the column names of provided data, value must be provided as list
     #    in the same order as data columns provided, must have the length 1+number of y data colums
-    #  -xtickfmt - format of xticks
     #  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided
     #    at the end of command after all switches
     # Returns: gnuplot window with plotted data
@@ -494,30 +500,57 @@ proc gnuplotutil::plotHist {x args} {
         {-nodelete -boolean}
         {-xlabel -argument}
         {-ylabel -argument}
+        {-style -argument -enum {clustered rowstacked columnstacked} -required}
+        {-gap -argument -require {style}}
         {-optcmd -argument}
         {-names -argument}
-        {-xtickfmt -argument}
+        {-boxwidth -argument}
+        {-fill -argument -enum {empty solid}}
+        {-density -argument -require {fill}}
+        {-transparent -boolean -require {fill}}
+        {-border -argument -require {fill}}
         {-columns -catchall}
     }]
     set xscaleStr ""
     set yscaleStr ""
     set autoTitleStr ""
     set optcmdStr ""
-    set xtickfmt ""
-    if {[dict exist $arguments names]==1} {
+    set styleStr ""
+    set boxwidthStr ""
+    set fillStr ""
+    if {[dict exists $arguments names]} {
         set columnNames [dict get $arguments names]
     }
-    if {[dict exist $arguments xlabel]==1} {
+    if {[dict exists $arguments xlabel]} {
         set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
     }
-    if {[dict exist $arguments ylabel]==1} {
+    if {[dict exists $arguments ylabel]} {
         set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
     }
-    if {[dict exist $arguments optcmd]==1} {
-        set optcmdStr [dict get $arguments optcmd]
+    if {[dict exists $arguments ylabel]} {
+        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
     }
-    if {[dict exist $arguments xtickfmt]==1} {
-        set xtickfmt "sprintf('[dict get $arguments xtickfmt]', \$1)"
+    if {[dict exists $arguments boxwidth]} {
+        set boxwidthStr "set boxwidth '[dict get $arguments boxwidth]'"
+    }
+    if {[dict exists $arguments fill]} {
+        if {[dict get $arguments transparent]==1} {
+            set fillStr "set style fill transparent [dict get $arguments fill]"
+        } else {
+            set fillStr "set style fill [dict get $arguments fill]"
+        }
+        if {[dict exists $arguments density]} {
+            append fillStr " [dict get $arguments density]"
+        }
+        if {[dict exists $arguments border]} {
+            append fillStr " border lt [dict get $arguments border]"
+        }
+    }
+    if {[dict exists $arguments style]} {
+        if {([dict exists $arguments gap]) && ([dict get $arguments style] in {clustered })} {
+             set styleStr "set style histogram [dict get $arguments style] gap [dict get $arguments gap]"
+        }
+        set styleStr "set style histogram [dict get $arguments style]"
     }
     set yColumnCount 0
     foreach val [dict get $arguments columns] {
@@ -558,18 +591,20 @@ proc gnuplotutil::plotHist {x args} {
     puts $resFile [::csv::joinlist $outList " "]
     close $resFile
     # create command strings for gnuplot
-    set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2:xtic(${xtickfmt}) smooth freq w boxes fs transparent"
+    set commandStr "plot 'gnuplotTemp${counter}.csv' using 2:xtic(1)"
     for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using 1:[expr {$i+2}]:xtic(${xtickfmt}) smooth freq w boxes fs transparent"
+        set commandStr  "${commandStr}, '' using [expr {$i+2}]"
     }
     catch {exec gnuplot << "
         set mouse
-        set style histogram cluster
-        set style fill solid 1.0 border lt -1
+        set style data histogram
+        $styleStr
+        $fillStr
         $optcmdStr
         $autoTitleStr
         $xlabelStr
         $ylabelStr
+        $boxwidthStr
         $commandStr
         pause mouse close
     "} errorStr
