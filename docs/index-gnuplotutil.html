@@ -23,9 +23,13 @@
 <div class='ruff_synopsis'><span class='ruff_cmd'>multiplotXNYN</span> <span class='ruff_arg'>layout ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>layout</code></td><td>List of layout configurations values, for example, {2 2}</td></tr>
+<tr><td><code><font color=#463e11>-background</font></code></td><td>Boolean switch to run gnuplot in background, requires -nodelete switch, default off.</td></tr>
+<tr><td><code><font color=#463e11>-darkmode</font></code></td><td>Boolean switch that enables dark mode for graph, default off.</td></tr>
 <tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
 <tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
+<tr><td><code><font color=#463e11>-path</font></code></td><td>Location of temporary file, default is current location.</td></tr>
 <tr><td><code><font color=#463e11>-plots</font></code></td><td>Argument that provides the list of individual plots, the number of plots is not restricted and must be provided at the end of command after all switches, the inputs syntax is the same as <a href="index-gnuplotutil.html#::gnuplotutil::plotXNYN" title="plotXNYN" class='ruff_cmd'>plotXNYN</a></td></tr>
+<tr><td><code><font color=#463e11>-terminal</font></code></td><td>Select terminal, default x11.</td></tr>
 </table>
 <h5 class='ruff'>Description</h5>
 <figure  class='ruff-snippet ruff-figure'><pre class='ruff'>Example:
@@ -43,15 +47,19 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data as multiplot</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_1' href="javascript:toggleSource('1')">Show source</a></p>
-<div id='1' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::multiplotXNYN {layout args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_gnuplotutil_multiplotXNYN' href="javascript:toggleSource('gnuplotutil_multiplotXNYN')">Show source</a></p>
+<div id='gnuplotutil_multiplotXNYN' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::multiplotXNYN {layout args} {
 
     <i><font color=#4b5d50># Plots 2D graphs in Gnuplot with individual x-values and by using multiplot.</font></i>
     <i><font color=#4b5d50>#  layout - list of layout configurations values, for example, {2 2}</font></i>
     <i><font color=#4b5d50>#  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off</font></i>
+    <i><font color=#4b5d50>#  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off</font></i>
     <i><font color=#4b5d50>#  -optcmd - argument with optional string that may contain additional commands to gnuplot</font></i>
-    <i><font color=#4b5d50>#  -plots - argument that provides the list of individual plots, the number of plots is not restricted and must be provided</font></i>
-    <i><font color=#4b5d50>#    at the end of command after all switches, the inputs syntax is the same as [::gnuplotutil::plotXNYN]</font></i>
+    <i><font color=#4b5d50>#  -terminal - select terminal, default x11</font></i>
+    <i><font color=#4b5d50>#  -darkmode - boolean switch that enables dark mode for graph, default off</font></i>
+    <i><font color=#4b5d50>#  -path - location of temporary file, default is current location</font></i>
+    <i><font color=#4b5d50>#  -plots - argument that provides the list of individual plots, the number of plots is not restricted and must</font></i>
+    <i><font color=#4b5d50>#    be provided at the end of command after all switches, the inputs syntax is the same as [::gnuplotutil::plotXNYN]</font></i>
     <i><font color=#4b5d50># Returns: gnuplot window with plotted data as multiplot</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <i><font color=#4b5d50># Example:</font></i>
@@ -67,12 +75,16 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
     <i><font color=#4b5d50># set plot4 [list -grid -names [list name2] -columns $x2 $y2 ]</font></i>
     <i><font color=#4b5d50># gnuplotutil::multiplotXNYN {2 2} -plots $plot1 $plot2 $plot3 $plot4</font></i>
     <i><font color=#4b5d50># ```</font></i>
-    <b><font color=#923B23>set</font></b> arguments [argparse {
-        {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
+    <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-background</font> <font color=#463e11>-boolean</font> <font color=#463e11>-require</font> {nodelete}}
+        {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
+        {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
         {<font color=#463e11>-plots</font> <font color=#463e11>-catchall</font>}
     }]
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>info</font></b> exists optcmd]==0} {
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> optcmd]==0} {
         <b><font color=#923B23>set</font></b> optcmd <font color=#035103>&quot;&quot;</font>
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$layout</font>]&gt;2} {
@@ -80,24 +92,51 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> layoutStr <font color=#035103>&quot;set multiplot layout <font color=#4A181B>[</font>lindex <font color=#4A181B>$</font>layout 0<font color=#4A181B>]</font>,<font color=#4A181B>[</font>lindex <font color=#4A181B>$</font>layout 1<font color=#4A181B>]</font>&quot;</font>
     }
-
-    <b><font color=#923B23>foreach</font></b> plot <font color=#4A181B>$plots</font> {
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set border lc rgb 'white'</font>
+<font color=#035103>            set xlabel tc rgb 'white'</font>
+<font color=#035103>            set key textcolor rgb 'white'</font>
+<font color=#035103>            set grid ytics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>            set grid xtics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>        &quot;</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>        &quot;</font>
+    }
+    <b><font color=#923B23>foreach</font></b> plot [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> plots] {
         <b><font color=#923B23>set</font></b> plotResults [gnuplotutil::plotXNYNMp {<b><font color=#923B23>*</font></b>}<font color=#4A181B>$plot</font>]
         <b><font color=#923B23>lappend</font></b> cmdStrings [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$plotResults</font> cmdString]
         <b><font color=#923B23>lappend</font></b> fileNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$plotResults</font> file]
     }
-    <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        <font color=#4A181B>$</font>optcmd</font>
+<font color=#035103>        <font color=#4A181B>$</font>darkmodeStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>layoutStr</font>
 <font color=#035103>        <font color=#4A181B>[</font>join <font color=#4A181B>$</font>cmdStrings \n<font color=#4A181B>]</font></font>
 <font color=#035103>        unset multiplot</font>
 <font color=#035103>        pause mouse close</font>
-<font color=#035103>    &quot;</font>} errorStr
-    <b><font color=#923B23>puts</font></b> <font color=#4A181B>$errorStr</font>
-    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$nodelete</font>==0} {
+<font color=#035103>    &quot;</font>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font> & } errorStr]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font>} errorStr]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
         <b><font color=#923B23>foreach</font></b> fileName <font color=#4A181B>$fileNames</font> {
             <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$fileName</font>
         }
+    }
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {
+        <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$errorStr</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#ca14ca>return</font></b>
     }
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotHist'>plotHist</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -106,9 +145,11 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <div class='ruff_synopsis'><span class='ruff_cmd'>plotHist</span> <span class='ruff_arg'>x ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>x</code></td><td>List of strings that contains x-point for 2D histogram.</td></tr>
+<tr><td><code><font color=#463e11>-background</font></code></td><td>Boolean switch to run gnuplot in background, requires -nodelete switch, default off.</td></tr>
 <tr><td><code><font color=#463e11>-border</font></code></td><td>Set border of columns with particular style, -fill argument is required.</td></tr>
 <tr><td><code><font color=#463e11>-boxwidth</font></code></td><td>Width of columns, must be in range (0,1]</td></tr>
 <tr><td><code><font color=#463e11>-columns</font></code></td><td>Argument that provides the y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches.</td></tr>
+<tr><td><code><font color=#463e11>-darkmode</font></code></td><td>Boolean switch that enables dark mode for graph, default off.</td></tr>
 <tr><td><code><font color=#463e11>-density</font></code></td><td>Set density of solid filling, -fill argument is required.</td></tr>
 <tr><td><code><font color=#463e11>-fill</font></code></td><td>Set fill of columns, must be empty or solid.</td></tr>
 <tr><td><code><font color=#463e11>-gap</font></code></td><td>Gap between columns in clustered style,-style argument is required.</td></tr>
@@ -116,7 +157,9 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <tr><td><code><font color=#463e11>-names</font></code></td><td>Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums.</td></tr>
 <tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
 <tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
+<tr><td><code><font color=#463e11>-path</font></code></td><td>Location of temporary file, default is current location.</td></tr>
 <tr><td><code><font color=#463e11>-style</font></code></td><td>Set style of diagram, must be clustered, rowstacked or columnstacked.</td></tr>
+<tr><td><code><font color=#463e11>-terminal</font></code></td><td>Select terminal, default x11.</td></tr>
 <tr><td><code><font color=#463e11>-transparent</font></code></td><td>Add transparent modificator to filling of columns, -fill argument is required.</td></tr>
 <tr><td><code><font color=#463e11>-xlabel</font></code></td><td>Argument to set x-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#463e11>-ylabel</font></code></td><td>Argument to set y-axis label to display, string must be provided after it.</td></tr>
@@ -126,12 +169,12 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <b><font color=#923B23>set</font></b> x1 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
-gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
+gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style</font> clustered <font color=#463e11>-fill</font> solid <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font>  #         <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>]
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_2' href="javascript:toggleSource('2')">Show source</a></p>
-<div id='2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotHist {x args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_gnuplotutil_plotHist' href="javascript:toggleSource('gnuplotutil_plotHist')">Show source</a></p>
+<div id='gnuplotutil_plotHist' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotHist {x args} {
 
     <i><font color=#4b5d50># Plots 2D histograms in Gnuplot with the common x-values.</font></i>
     <i><font color=#4b5d50>#  x - List of strings that contains x-point for 2D histogram</font></i>
@@ -143,21 +186,25 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <i><font color=#4b5d50>#  -boxwidth - width of columns, must be in range (0,1]</font></i>
     <i><font color=#4b5d50>#  -fill - set fill of columns, must be empty or solid</font></i>
     <i><font color=#4b5d50>#  -grid - set grid of histogram</font></i>
+    <i><font color=#4b5d50>#  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off</font></i>
+    <i><font color=#4b5d50>#  -terminal - select terminal, default x11</font></i>
+    <i><font color=#4b5d50>#  -path - location of temporary file, default is current location</font></i>
+    <i><font color=#4b5d50>#  -darkmode - boolean switch that enables dark mode for graph, default off</font></i>
     <i><font color=#4b5d50>#  -transparent - add transparent modificator to filling of columns, -fill argument is required</font></i>
     <i><font color=#4b5d50>#  -density - set density of solid filling, -fill argument is required</font></i>
     <i><font color=#4b5d50>#  -border - set border of columns with particular style, -fill argument is required</font></i>
     <i><font color=#4b5d50>#  -optcmd - argument with optional string that may contain additional commands to gnuplot</font></i>
     <i><font color=#4b5d50>#  -names - argument that enable setting the column names of provided data, value must be provided as list</font></i>
     <i><font color=#4b5d50>#    in the same order as data columns provided, must have the length 1+number of y data colums</font></i>
-    <i><font color=#4b5d50>#  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided</font></i>
-    <i><font color=#4b5d50>#    at the end of command after all switches</font></i>
+    <i><font color=#4b5d50>#  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be</font></i>
+    <i><font color=#4b5d50>#    provided at the end of command after all switches</font></i>
     <i><font color=#4b5d50># Returns: gnuplot window with plotted data</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <i><font color=#4b5d50># Example:</font></i>
     <i><font color=#4b5d50># set x1 [list 0 1 2 3 4 5 6]</font></i>
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -names [list  y1 y2] -columns $y1 $y2</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel &quot;x label&quot;  #         -ylabel &quot;y label&quot; -names [list y1 y2] -columns $y1 $y2]</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
@@ -167,6 +214,10 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
         {<font color=#463e11>-gap</font> <font color=#463e11>-argument</font> <font color=#463e11>-require</font> {style}}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-background</font> <font color=#463e11>-boolean</font> <font color=#463e11>-require</font> {nodelete}}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
+        {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
+        {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-boxwidth</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-fill</font> <font color=#463e11>-argument</font> <font color=#463e11>-enum</font> {empty solid}}
@@ -183,11 +234,27 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> boxwidthStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> backgroundStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> names]} {
         <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> optcmd]} {
         <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set border lc rgb 'white'</font>
+<font color=#035103>            set xlabel tc rgb 'white'</font>
+<font color=#035103>            set key textcolor rgb 'white'</font>
+<font color=#035103>            set grid ytics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>            set grid xtics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>        &quot;</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> grid]==1} {
         <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;set grid&quot;</font>
@@ -253,10 +320,11 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists gnuplotTemp<font color=#4A181B>${counter}</font>.csv]} {
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
-            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> gnuplotTemp<font color=#4A181B>${counter}</font>.csv w+]
+            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> <font color=#4A181B>$filePath</font> w+]
             <b><font color=#ca14ca>break</font></b>
         }
     }
@@ -267,8 +335,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font>&quot;</font>
     }
-
-    <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
 <font color=#035103>        set style data histogram</font>
 <font color=#035103>        <font color=#4A181B>$</font>styleStr</font>
@@ -281,10 +348,23 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
 <font color=#035103>        <font color=#4A181B>$</font>boxwidthStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>        pause mouse close</font>
-<font color=#035103>    &quot;</font>} errorStr
-    <b><font color=#923B23>puts</font></b> <font color=#4A181B>$errorStr</font>
+<font color=#035103>    &quot;</font>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font> & } errorStr]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font>} errorStr]
+    }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
-        <b><font color=#923B23>file</font></b> delete gnuplotTemp<font color=#4A181B>${counter}</font>.csv
+        <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$filePath</font>
+    }
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {
+        <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$errorStr</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#ca14ca>return</font></b>
     }
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -292,11 +372,15 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
 <p class='ruff'>Plots 2D graphs in Gnuplot with individual x-values. Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>plotXNYN</span> <span class='ruff_arg'>?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code><font color=#463e11>-background</font></code></td><td>Boolean switch to run gnuplot in background, requires -nodelete switch, default off.</td></tr>
 <tr><td><code><font color=#463e11>-columns</font></code></td><td>Argument that provides the x and y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches.</td></tr>
+<tr><td><code><font color=#463e11>-darkmode</font></code></td><td>Boolean switch that enables dark mode for graph, default off.</td></tr>
 <tr><td><code><font color=#463e11>-grid</font></code></td><td>Boolean switch that enables display of grid, default off.</td></tr>
 <tr><td><code><font color=#463e11>-names</font></code></td><td>Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums.</td></tr>
 <tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
 <tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
+<tr><td><code><font color=#463e11>-path</font></code></td><td>Location of temporary file, default is current location.</td></tr>
+<tr><td><code><font color=#463e11>-terminal</font></code></td><td>Select terminal, default x11.</td></tr>
 <tr><td><code><font color=#463e11>-xlabel</font></code></td><td>Argument to set x-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#463e11>-xlog</font></code></td><td>Arg xlog boolean switch of log scale of x axis, default off.</td></tr>
 <tr><td><code><font color=#463e11>-ylabel</font></code></td><td>Argument to set y-axis label to display, string must be provided after it.</td></tr>
@@ -308,30 +392,30 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-xlabel
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> x2 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6 7]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216 350]
-<b><font color=#923B23>set</font></b> x3 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6 7]
-<b><font color=#923B23>set</font></b> y3 [<b><font color=#923B23>list</font></b> 0 -1 -8 -27 -64 -125 -216 -350]
-<b><font color=#923B23>set</font></b> x4 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6 7]
-<b><font color=#923B23>set</font></b> y4 [<b><font color=#923B23>list</font></b> 0 -1 -8 -27 -64 -125 -216 -350]
-gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2 y3 y4] <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font> <font color=#4A181B>$x3</font> <font color=#4A181B>$y3</font> <font color=#4A181B>$x4</font> <font color=#4A181B>$y4</font>
+gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-darkmode</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] #         <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font>
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_3' href="javascript:toggleSource('3')">Show source</a></p>
-<div id='3' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYN {args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_gnuplotutil_plotXNYN' href="javascript:toggleSource('gnuplotutil_plotXNYN')">Show source</a></p>
+<div id='gnuplotutil_plotXNYN' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYN {args} {
 
     <i><font color=#4b5d50># Plots 2D graphs in Gnuplot with individual x-values.</font></i>
     <i><font color=#4b5d50># Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.</font></i>
     <i><font color=#4b5d50>#  -xlog - arg xlog boolean switch of log scale of x axis, default off</font></i>
     <i><font color=#4b5d50>#  -ylog - boolean switch of log scale of y axis, default off</font></i>
+    <i><font color=#4b5d50>#  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off</font></i>
     <i><font color=#4b5d50>#  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off</font></i>
     <i><font color=#4b5d50>#  -xlabel - argument to set x-axis label to display, string must be provided after it</font></i>
     <i><font color=#4b5d50>#  -ylabel - argument to set y-axis label to display, string must be provided after it</font></i>
     <i><font color=#4b5d50>#  -optcmd - argument with optional string that may contain additional commands to gnuplot</font></i>
+    <i><font color=#4b5d50>#  -terminal - select terminal, default x11</font></i>
     <i><font color=#4b5d50>#  -grid - boolean switch that enables display of grid, default off</font></i>
+    <i><font color=#4b5d50>#  -darkmode - boolean switch that enables dark mode for graph, default off</font></i>
+    <i><font color=#4b5d50>#  -path - location of temporary file, default is current location</font></i>
     <i><font color=#4b5d50>#  -names - argument that enable setting the column names of provided data, value must be provided as list</font></i>
     <i><font color=#4b5d50>#    in the same order as data columns provided, must have the length 1+number of y data colums</font></i>
-    <i><font color=#4b5d50>#  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must be provided</font></i>
-    <i><font color=#4b5d50>#    at the end of command after all switches</font></i>
+    <i><font color=#4b5d50>#  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must</font></i>
+    <i><font color=#4b5d50>#    be provided at the end of command after all switches</font></i>
     <i><font color=#4b5d50># Returns: gnuplot window with plotted data</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <i><font color=#4b5d50># Example:</font></i>
@@ -339,20 +423,20 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set x2 [list 0 1 2 3 4 5 6 7]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216 350]</font></i>
-    <i><font color=#4b5d50># set x3 [list 0 1 2 3 4 5 6 7]</font></i>
-    <i><font color=#4b5d50># set y3 [list 0 -1 -8 -27 -64 -125 -216 -350]</font></i>
-    <i><font color=#4b5d50># set x4 [list 0 1 2 3 4 5 6 7]</font></i>
-    <i><font color=#4b5d50># set y4 [list 0 -1 -8 -27 -64 -125 -216 -350]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotXNYN -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list y1 y2 y3 y4] -columns $x1 $y1 $x2 $y2 $x3 $y3 $x4 $y4</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotXNYN -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -darkmode -grid -names [list y1 y2] #         -columns $x1 $y1 $x2 $y2</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-ylog</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-background</font> <font color=#463e11>-boolean</font> <font color=#463e11>-require</font> {nodelete}}
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-xlabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;&quot;</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-columns</font> <font color=#463e11>-catchall</font>}
     }]
@@ -363,6 +447,8 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
     <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> backgroundStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> xlog]==1} {
         <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;set logscale x&quot;</font>
     }
@@ -383,6 +469,20 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> optcmd]==1} {
         <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set border lc rgb 'white'</font>
+<font color=#035103>            set xlabel tc rgb 'white'</font>
+<font color=#035103>            set key textcolor rgb 'white'</font>
+<font color=#035103>            set grid ytics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>            set grid xtics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>        &quot;</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>set</font></b> columnsNum [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]]
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$columnsNum</font> % 2 != 0} {
@@ -431,22 +531,24 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists gnuplotTemp<font color=#4A181B>${counter}</font>.csv]} {
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
-            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> gnuplotTemp<font color=#4A181B>${counter}</font>.csv w+]
+            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> <font color=#4A181B>$filePath</font> w+]
             <b><font color=#ca14ca>break</font></b>
         }
     }
     <b><font color=#923B23>puts</font></b> <font color=#4A181B>$resFile</font> [::csv::joinlist <font color=#4A181B>$outList</font> <font color=#035103>&quot; &quot;</font>]
     <b><font color=#923B23>close</font></b> <font color=#4A181B>$resFile</font>
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
-    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 1:2 with lines &quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot '<font color=#4A181B>[</font>file join <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments path<font color=#4A181B>]</font> gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv<font color=#4A181B>]</font>' using 1:2 with lines &quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i*2+1<font color=#4A181B>}]</font>:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i*2+2<font color=#4A181B>}]</font> with lines &quot;</font>
     }
-    <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
+<font color=#035103>        <font color=#4A181B>$</font>darkmodeStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>optcmdStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>autoTitleStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>xlabelStr</font>
@@ -456,10 +558,24 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <font color=#035103>        <font color=#4A181B>$</font>gridStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>        pause mouse close</font>
-<font color=#035103>    &quot;</font>} errorStr
-    <b><font color=#923B23>puts</font></b> <font color=#4A181B>$errorStr</font>
+<font color=#035103>    &quot;</font>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font> & } errorStr]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font>} errorStr]
+    }
+
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
-        <b><font color=#923B23>file</font></b> delete gnuplotTemp<font color=#4A181B>${counter}</font>.csv
+        <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$filePath</font>
+    }
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {
+        <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$errorStr</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#ca14ca>return</font></b>
     }
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotXNYNMp'>plotXNYNMp</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -470,14 +586,15 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <tr><td><code><font color=#463e11>-columns</font></code></td><td>Argument that provides the x and y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches.</td></tr>
 <tr><td><code><font color=#463e11>-grid</font></code></td><td>Boolean switch that enables display of grid, default off.</td></tr>
 <tr><td><code><font color=#463e11>-names</font></code></td><td>Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums.</td></tr>
+<tr><td><code><font color=#463e11>-path</font></code></td><td>Location of temporary file, default is current location.</td></tr>
 <tr><td><code><font color=#463e11>-xlabel</font></code></td><td>Argument to set x-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#463e11>-xlog</font></code></td><td>Arg xlog boolean switch of log scale of x axis, default off.</td></tr>
 <tr><td><code><font color=#463e11>-ylabel</font></code></td><td>Argument to set y-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#463e11>-ylog</font></code></td><td>Boolean switch of log scale of y axis, default off.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list that contains command script and name of data file</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_4' href="javascript:toggleSource('4')">Show source</a></p>
-<div id='4' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYNMp {args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_gnuplotutil_plotXNYNMp' href="javascript:toggleSource('gnuplotutil_plotXNYNMp')">Show source</a></p>
+<div id='gnuplotutil_plotXNYNMp' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXNYNMp {args} {
 
     <i><font color=#4b5d50># Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files</font></i>
     <i><font color=#4b5d50>#  for individual plots</font></i>
@@ -486,10 +603,11 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
     <i><font color=#4b5d50>#  -xlabel - argument to set x-axis label to display, string must be provided after it</font></i>
     <i><font color=#4b5d50>#  -ylabel - argument to set y-axis label to display, string must be provided after it</font></i>
     <i><font color=#4b5d50>#  -grid - boolean switch that enables display of grid, default off</font></i>
+    <i><font color=#4b5d50>#  -path - location of temporary file, default is current location</font></i>
     <i><font color=#4b5d50>#  -names - argument that enable setting the column names of provided data, value must be provided as list</font></i>
     <i><font color=#4b5d50>#    in the same order as data columns provided, must have the length 1+number of y data colums</font></i>
-    <i><font color=#4b5d50>#  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must be provided</font></i>
-    <i><font color=#4b5d50>#    at the end of command after all switches</font></i>
+    <i><font color=#4b5d50>#  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must</font></i>
+    <i><font color=#4b5d50>#    be provided at the end of command after all switches</font></i>
     <i><font color=#4b5d50># Returns: list that contains command script and name of data file</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}
@@ -497,6 +615,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
         {<font color=#463e11>-xlabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-columns</font> <font color=#463e11>-catchall</font>}
     }]
@@ -582,10 +701,11 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists gnuplotTemp<font color=#4A181B>${counter}</font>.csv]} {
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
-            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> gnuplotTemp<font color=#4A181B>${counter}</font>.csv w+]
+            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> <font color=#4A181B>$filePath</font> w+]
             <b><font color=#ca14ca>break</font></b>
         }
     }
@@ -610,7 +730,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <font color=#035103>        <font color=#4A181B>$</font>yscaleStrUnset</font>
 <font color=#035103>        <font color=#4A181B>$</font>gridStrUnset</font>
 <font color=#035103>    &quot;</font>
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create cmdString <font color=#4A181B>$gnuplotCmdString</font> file <font color=#035103>&quot;gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv&quot;</font>]
+    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create cmdString <font color=#4A181B>$gnuplotCmdString</font> file <font color=#4A181B>$filePath</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::gnuplotutil::plotXYN'>plotXYN</a><span class='ns_scope'> [<a href="index-gnuplotutil.html#::gnuplotutil" title="::gnuplotutil" class='ruff_cmd'>::gnuplotutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -618,13 +738,17 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <div class='ruff_synopsis'><span class='ruff_cmd'>plotXYN</span> <span class='ruff_arg'>x ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>x</code></td><td>List that contains x-point for 2D graph.</td></tr>
+<tr><td><code><font color=#463e11>-background</font></code></td><td>Boolean switch to run gnuplot in background, requires -nodelete switch, default off.</td></tr>
 <tr><td><code><font color=#463e11>-columns</font></code></td><td>Argument that provides the y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches.</td></tr>
+<tr><td><code><font color=#463e11>-darkmode</font></code></td><td>Boolean switch that enables dark mode for graph, default off.</td></tr>
 <tr><td><code><font color=#463e11>-grid</font></code></td><td>Boolean switch that enables display of grid, default off.</td></tr>
 <tr><td><code><font color=#463e11>-names</font></code></td><td>Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums.</td></tr>
 <tr><td><code><font color=#463e11>-nodelete</font></code></td><td>Boolean switch that disables deleting of temporary file after end of plotting, default off.</td></tr>
 <tr><td><code><font color=#463e11>-optcmd</font></code></td><td>Argument with optional string that may contain additional commands to gnuplot.</td></tr>
+<tr><td><code><font color=#463e11>-path</font></code></td><td>Location of temporary file, default is current location.</td></tr>
+<tr><td><code><font color=#463e11>-terminal</font></code></td><td>Select terminal, default x11.</td></tr>
 <tr><td><code><font color=#463e11>-xlabel</font></code></td><td>Argument to set x-axis label to display, string must be provided after it.</td></tr>
-<tr><td><code><font color=#463e11>-xlog</font></code></td><td>Arg xlog boolean switch of log scale of x axis, default off.</td></tr>
+<tr><td><code><font color=#463e11>-xlog</font></code></td><td>Boolean switch of log scale of x axis, default off.</td></tr>
 <tr><td><code><font color=#463e11>-ylabel</font></code></td><td>Argument to set y-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#463e11>-ylog</font></code></td><td>Boolean switch of log scale of y axis, default off.</td></tr>
 </table>
@@ -633,42 +757,50 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlabel</font> <font color=#035103>&qu
 <b><font color=#923B23>set</font></b> x [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
-gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-delete</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
+gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2] #           <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_5' href="javascript:toggleSource('5')">Show source</a></p>
-<div id='5' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXYN {x args} {
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_gnuplotutil_plotXYN' href="javascript:toggleSource('gnuplotutil_plotXYN')">Show source</a></p>
+<div id='gnuplotutil_plotXYN' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::gnuplotutil::plotXYN {x args} {
 
     <i><font color=#4b5d50># Plots 2D graphs in Gnuplot with the common x-values.</font></i>
     <i><font color=#4b5d50>#  x - List that contains x-point for 2D graph</font></i>
-    <i><font color=#4b5d50>#  -xlog - arg xlog boolean switch of log scale of x axis, default off</font></i>
+    <i><font color=#4b5d50>#  -xlog - boolean switch of log scale of x axis, default off</font></i>
     <i><font color=#4b5d50>#  -ylog - boolean switch of log scale of y axis, default off</font></i>
+    <i><font color=#4b5d50>#  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off</font></i>
     <i><font color=#4b5d50>#  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off</font></i>
     <i><font color=#4b5d50>#  -xlabel - argument to set x-axis label to display, string must be provided after it</font></i>
     <i><font color=#4b5d50>#  -ylabel - argument to set y-axis label to display, string must be provided after it</font></i>
     <i><font color=#4b5d50>#  -optcmd - argument with optional string that may contain additional commands to gnuplot</font></i>
+    <i><font color=#4b5d50>#  -terminal - select terminal, default x11</font></i>
     <i><font color=#4b5d50>#  -grid - boolean switch that enables display of grid, default off</font></i>
+    <i><font color=#4b5d50>#  -darkmode - boolean switch that enables dark mode for graph, default off</font></i>
+    <i><font color=#4b5d50>#  -path - location of temporary file, default is current location</font></i>
     <i><font color=#4b5d50>#  -names - argument that enable setting the column names of provided data, value must be provided as list</font></i>
     <i><font color=#4b5d50>#    in the same order as data columns provided, must have the length 1+number of y data colums</font></i>
-    <i><font color=#4b5d50>#  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be provided</font></i>
-    <i><font color=#4b5d50>#    at the end of command after all switches</font></i>
+    <i><font color=#4b5d50>#  -columns - argument that provides the y data to plot, the number of columns is not restricted and must</font></i>
+    <i><font color=#4b5d50>#    be provided at the end of command after all switches</font></i>
     <i><font color=#4b5d50># Returns: gnuplot window with plotted data</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <i><font color=#4b5d50># Example:</font></i>
     <i><font color=#4b5d50># set x [list 0 1 2 3 4 5 6]</font></i>
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotXYN $x -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -delete -grid -names [list y1 y2] -columns $y1 $y2</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotXYN $x -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list  y1 y2] #           -columns $y1 $y2</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-ylog</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-background</font> <font color=#463e11>-boolean</font> <font color=#463e11>-require</font> {nodelete}}
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-xlabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
+        {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-columns</font> <font color=#463e11>-catchall</font>}
     }]
@@ -679,6 +811,8 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> backgroundStr <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> xlog]==1} {
         <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;set logscale x&quot;</font>
     }
@@ -699,6 +833,20 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> optcmd]==1} {
         <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set border lc rgb 'white'</font>
+<font color=#035103>            set xlabel tc rgb 'white'</font>
+<font color=#035103>            set key textcolor rgb 'white'</font>
+<font color=#035103>            set grid ytics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>            set grid xtics lt 0 lw 1 lc rgb 'white'</font>
+<font color=#035103>        &quot;</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>set</font></b> yColumnCount 0
     <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
@@ -729,22 +877,24 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists gnuplotTemp<font color=#4A181B>${counter}</font>.csv]} {
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
-            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> gnuplotTemp<font color=#4A181B>${counter}</font>.csv w+]
+            <b><font color=#923B23>set</font></b> resFile [<b><font color=#923B23>open</font></b> <font color=#4A181B>$filePath</font> w+]
             <b><font color=#ca14ca>break</font></b>
         }
     }
     <b><font color=#923B23>puts</font></b> <font color=#4A181B>$resFile</font> [::csv::joinlist <font color=#4A181B>$outList</font> <font color=#035103>&quot; &quot;</font>]
     <b><font color=#923B23>close</font></b> <font color=#4A181B>$resFile</font>
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
-    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 1:2 with lines &quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot '<font color=#4A181B>[</font>file join <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments path<font color=#4A181B>]</font> gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv<font color=#4A181B>]</font>' using 1:2 with lines &quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using 1:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font> with lines &quot;</font>
     }
-    <b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
+<font color=#035103>        <font color=#4A181B>$</font>darkmodeStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>optcmdStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>autoTitleStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>xlabelStr</font>
@@ -754,10 +904,24 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <font color=#035103>        <font color=#4A181B>$</font>gridStr</font>
 <font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>        pause mouse close</font>
-<font color=#035103>    &quot;</font>} errorStr
-    <b><font color=#923B23>puts</font></b> <font color=#4A181B>$errorStr</font>
+<font color=#035103>    &quot;</font>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font> & } errorStr]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
+<font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
+<font color=#035103>            &quot;</font>} errorStr]
+    }
+
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
-        <b><font color=#923B23>file</font></b> delete gnuplotTemp<font color=#4A181B>${counter}</font>.csv
+            <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$filePath</font>
+    }
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {
+        <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$errorStr</font>
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#ca14ca>return</font></b>
     }
 }</pre></div>
 </div></main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a style='padding-top:2px;' href='index.html'>Start page</a></li>
@@ -769,8 +933,8 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
 <hr><li class='ruff-toc2'><a href='#::gnuplotutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::multiplotXNYN'>multiplotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;multiplotXNYN&lt;/span&gt; &lt;span class='ruff_arg'&gt;layout ?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with individual x-values and by using multiplot.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotHist'>plotHist</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotHist&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Plots 2D histograms in Gnuplot with the common x-values.
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXNYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with individual x-values. Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYN'>plotXNYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotXNYN&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with individual x-values. Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXNYNMp'>plotXNYNMp</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotXNYNMp&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files for individual plots
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXYN'>plotXYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#923B23>plotXYN</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with the common x-values.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-gnuplotutil.html#::gnuplotutil::plotXYN'>plotXYN</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;plotXYN&lt;/span&gt; &lt;span class='ruff_arg'&gt;x ?args?&lt;/span&gt;</pre>Plots 2D graphs in Gnuplot with the common x-values.
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>
