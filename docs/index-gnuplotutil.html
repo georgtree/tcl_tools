@@ -169,7 +169,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <b><font color=#923B23>set</font></b> x1 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
-gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style</font> clustered <font color=#463e11>-fill</font> solid <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font>  #         <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>]
+gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style</font> clustered <font color=#463e11>-fill</font> solid <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>]
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
@@ -204,7 +204,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
     <i><font color=#4b5d50># set x1 [list 0 1 2 3 4 5 6]</font></i>
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel &quot;x label&quot;  #         -ylabel &quot;y label&quot; -names [list y1 y2] -columns $y1 $y2]</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -names [list y1 y2] -columns $y1 $y2]</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
@@ -392,7 +392,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> x2 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6 7]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216 350]
-gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-darkmode</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] #         <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font>
+gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-darkmode</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font>
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
@@ -423,7 +423,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set x2 [list 0 1 2 3 4 5 6 7]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216 350]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotXNYN -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -darkmode -grid -names [list y1 y2] #         -columns $x1 $y1 $x2 $y2</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotXNYN -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -darkmode -grid -names [list y1 y2] -columns $x1 $y1 $x2 $y2</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}
@@ -757,7 +757,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
 <b><font color=#923B23>set</font></b> x [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
-gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2] #           <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
+gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
@@ -787,7 +787,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <i><font color=#4b5d50># set x [list 0 1 2 3 4 5 6]</font></i>
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotXYN $x -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list  y1 y2] #           -columns $y1 $y2</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotXYN $x -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list  y1 y2] -columns $y1 $y2</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}

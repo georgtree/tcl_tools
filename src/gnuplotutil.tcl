@@ -32,8 +32,7 @@ proc gnuplotutil::plotXYN {x args} {
     # set x [list 0 1 2 3 4 5 6]
     # set y1 [list 0 1 4 9 16 25 36]
     # set y2 [list 0 1 8 27 64 125 216]
-    # gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2]\
-    #           -columns $y1 $y2
+    # gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2] -columns $y1 $y2
     # ```
     set arguments [argparse -inline {
         {-xlog -boolean}
@@ -351,8 +350,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     # set y1 [list 0 1 4 9 16 25 36]
     # set x2 [list 0 1 2 3 4 5 6 7]
     # set y2 [list 0 1 8 27 64 125 216 350]
-    # gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -names [list y1 y2]\
-    #         -columns $x1 $y1 $x2 $y2
+    # gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -names [list y1 y2] -columns $x1 $y1 $x2 $y2
     # ```
     set arguments [argparse -inline {
         {-xlog -boolean}
@@ -771,8 +769,7 @@ proc gnuplotutil::plotHist {x args} {
     # set x1 [list 0 1 2 3 4 5 6]
     # set y1 [list 0 1 4 9 16 25 36]
     # set y2 [list 0 1 8 27 64 125 216]
-    # gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" \
-    #         -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+    # gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     # ```
     set arguments [argparse -inline {
         {-nodelete -boolean}
