@@ -21,7 +21,7 @@ proc matchList {expected actual} {
     }
     return $match
 }
- 
+
 customMatch mtchLst matchList
 
 test trapzProcTest {test procedure of trapezoidal integration} -setup {
@@ -29,14 +29,109 @@ test trapzProcTest {test procedure of trapezoidal integration} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
     mathutil::trapz $x $y
-} -result 335.0
+} -result 335.0 -cleanup {
+    unset x y
+}
 
 test cumtrapzProcTest {test procedure of cumulative trapezoidal integration} -setup {
     set x [list 0 1 2 3 4 5 6 7 8 9 10]
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
     mathutil::cumtrapz $x $y
-} -result [list 0.5 3.0 9.5 22.0 42.5 73.0 115.5 172.0 244.5 335.0]
+} -result [list 0.5 3.0 9.5 22.0 42.5 73.0 115.5 172.0 244.5 335.0] -cleanup {
+    unset x y
+}
+
+test movAvgTest-1 {test procedure of moving average filter} -setup {
+    set x [list 0 1 2 3 4 5 6 7 8 9 10 11 12]
+    set y [list -3 -4 -1 1 5 7 -2 8 2 -6 -5 7 11]
+} -body {
+    ::mathutil::movAvg $y 3 -x $x
+} -result {{1 2 3 4 5 6 7 8 9 10 11} {-3 -2 1 4 3 4 2 1 -3 -2 4}} -cleanup {
+    unset x y
+}
+
+
+test movAvgTest-2 {test procedure of moving average filter} -setup {
+    for {set i 0} {$i<=100} {incr i} {
+        set xi [expr {$i*0.05}]
+        lappend x $xi
+        lappend y [expr {sin($xi)+sin($xi*10)+sin($xi*100)+sin($xi*1000)}]
+    }
+} -body {
+    ::mathutil::movAvg $y 11
+} -result {-0.34835908108374186 -0.4758220217572019 -0.41068627421921716 -0.22332530834105332 -0.08362340277086916\
+                   -0.008231099084842592 0.161205173467671 0.5162112533606057 0.9236881849663073 1.181886479998971\
+                   1.2721508943077022 1.3518958139050505 1.5043804697441743 1.6074998276161798 1.5107644159427458\
+                   1.2654026359374524 1.0741459279574606 1.0275338212978988 0.9993048282945005 0.8465861790259634\
+                   0.6258601378464324 0.5153897068962355 0.5574189826774228 0.5930079754772669 0.4866520187561607\
+                   0.3218270602186291 0.28853835024673835 0.42307945967624666 0.5699736545815366 0.616482557098364\
+                   0.6593593474454178 0.8615556099248398 1.2027241551459809 1.4819906738537485 1.5724753315157984\
+                   1.5681631518617516 1.6186645612664423 1.6939960825185671 1.620032773754223 1.334969531490256\
+                   0.9977391875531911 0.7890715124899039 0.6847778429373474 0.5204116670017586 0.2500134913352419\
+                   0.02554639889571364 -0.017067391595298072 0.04321722803197403 0.017295769195291612\
+                   -0.13173480705719634 -0.2409784542614921 -0.1811626394024797 -0.0368122902377844\
+                   0.022781208331054327 -0.006661582872972562 0.044244382729253635 0.27037839650218937\
+                   0.5410879011437747 0.6634123543155889 0.6287900742130446 0.5946665532931944 0.6329921757777062\
+                   0.6110915988067628 0.37908640697681 -0.0036196178434584132 -0.3290025687353981 -0.5054581070628271\
+                   -0.6531645781893214 -0.8991095089000062 -1.1704415905647894 -1.2852314264662157 -1.211125383675823\
+                   -1.1194006382424744 -1.1532511558525245 -1.2377857150971776 -1.199873283381554 -1.0234957291068776\
+                   -0.8741792579825688 -0.8590193297948396 -0.8692255622835122 -0.7345559247586021 -0.4717151813417358\
+                   -0.27268864390712094 -0.2494272670395317 -0.29810827253507133 -0.27308729425216866\
+                   -0.21612257153646305 -0.30762170909419173 -0.6064422248784376 -0.9500938479846538\
+                   -1.160092909058356} -cleanup {
+    unset xi x y
+}
+
+test movAvgTest-3 {test procedure of moving average filter} -setup {
+    set x [list 0 1 2 3 4 5 6 7 8 9 10]
+    set y [list 11 12 13 14 15 16 17]
+} -body {
+    catch {::mathutil::movAvg $y 3 -x $x} errorStr
+    return $errorStr
+} -result {Length of x '11' is not equal to length of y '7'} -cleanup {
+    unset x y
+}
+
+test movAvgTest-4 {test procedure of moving average filter} -setup {
+    set y [list 11 12 13 14 15 16 17]
+    set winSize 11
+} -body {
+    catch {::mathutil::movAvg $y $winSize} errorStr
+    return $errorStr
+} -result {Length of y '7' must be not less than size of window + 1  '11 + 1 = 12'} -cleanup {
+    unset winSize y
+}
+
+test movAvgTest-5 {test procedure of moving average filter} -setup {
+    set y [list 11 12 13 14 15 16 17]
+    set winSize 0.5
+} -body {
+    catch {::mathutil::movAvg $y $winSize} errorStr
+    return $errorStr
+} -result {Window size must be an integer} -cleanup {
+    unset winSize y
+}
+
+test movAvgTest-6 {test procedure of moving average filter} -setup {
+    set y [list 11 12 13 14 15 16 17]
+    set winSize 1
+} -body {
+    catch {::mathutil::movAvg $y $winSize} errorStr
+    return $errorStr
+} -result {Window size must be larger than one} -cleanup {
+    unset winSize y
+}
+
+test movAvgTest-7 {test procedure of moving average filter} -setup {
+    set y [list 11 12 13 14 15 16 17]
+    set winSize 2
+} -body {
+    catch {::mathutil::movAvg $y $winSize} errorStr
+    return $errorStr
+} -result {Size of window must be odd} -cleanup {
+    unset winSize y
+}
 
 
 cleanupTests

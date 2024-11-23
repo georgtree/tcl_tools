@@ -6,13 +6,19 @@ package require argparse
 set script_path [file dirname [file normalize [info script]]]
 lappend auto_path "$script_path/../"
 package require gnuplotutil
+package require mathutil
 
+for {set i 0} {$i<=1000} {incr i} {
+    set xi [expr {$i*0.05}]
+    lappend x $xi
+    lappend sinData [expr {sin($xi)+sin($xi*10)+sin($xi*100)+sin($xi*1000)}]
+}
 
-test testPlotXYN-2 {test with no switches} -setup {
-    set x [list 0 1 2 3 4 5 6]
-    set y1 [list 0 1 4 9 16 25 36]
-    set y2 [list 0 1 8 27 64 125 216]
-} -body {
-    set result [gnuplotutil::plotXYN $x -names [list y1 y2] -columns $y1 $y2]
-    return $result
-} -result ""
+set sinDataFiltered_central [::mathutil::movAvg $sinData 15 -x $x -type central]
+set sinDataFiltered_forward [::mathutil::movAvg $sinData 15 -x $x -type forward]
+set sinDataFiltered_backward [::mathutil::movAvg $sinData 15 -x $x -type backward]
+gnuplotutil::plotXNYN -xlabel "x label" -ylabel "y label" -grid -names {sindat 1 2 3}\
+        -columns $x $sinData [lindex $sinDataFiltered_central 0] [lindex $sinDataFiltered_central 1]\
+        [lindex $sinDataFiltered_forward 0] [lindex $sinDataFiltered_forward 1]\
+        [lindex $sinDataFiltered_backward 0] [lindex $sinDataFiltered_backward 1]
+#puts $sinDataFiltered

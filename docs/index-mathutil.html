@@ -37,7 +37,9 @@
     <i><font color=#4b5d50># Returns: list each value of which is the value of integral across all previous xy values</font></i>
     <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$xList</font>]
     <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$yList</font>]
-    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {<b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of xList <font color=#4A181B>$</font>xLen is not equal to length of yList <font color=#4A181B>$</font>yLen&quot;</font>}
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of xList <font color=#4A181B>$</font>xLen is not equal to length of yList <font color=#4A181B>$</font>yLen&quot;</font>
+    }
     <b><font color=#923B23>set</font></b> result <font color=#4A181B>$init</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$xLen</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> xI [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$xList</font> <font color=#4A181B>$i</font>]
@@ -48,6 +50,88 @@
         <b><font color=#923B23>lappend</font></b> resultList <font color=#4A181B>$result</font>
     }
     <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$resultList</font>
+}</pre></div>
+</div><h3 class='ruffproc'><a name='::mathutil::findApprox'>findApprox</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
+<div style='clear:both;'></div>
+<p class='ruff'>Finds index of firts matched value in list with epsilon tolerance</p>
+<div class='ruff_synopsis'><span class='ruff_cmd'>findApprox</span> <span class='ruff_arg'>list value ?epsilon?</span></div>
+<h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code><b><font color=#923B23>list</font></b></code></td><td>List of values.</td></tr>
+<tr><td><code>value</code></td><td>Value to match.</td></tr>
+<tr><td><code>epsilon</code></td><td>Tolerance, default is 1. Optional, default <code>1</code>.</td></tr>
+</table>
+<h5 class='ruff'>Return value</h5><p class='ruff'>value from the list</p>
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_findApprox' href="javascript:toggleSource('mathutil_findApprox')">Show source</a></p>
+<div id='mathutil_findApprox' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::findApprox {<b><font color=#923B23>list</font></b> value {epsilon 1}} {
+
+    <i><font color=#4b5d50># Finds index of firts matched value in list with epsilon tolerance</font></i>
+    <i><font color=#4b5d50>#  list - list of values</font></i>
+    <i><font color=#4b5d50>#  value - value to match</font></i>
+    <i><font color=#4b5d50>#  epsilon - tolerance, default is 1</font></i>
+    <i><font color=#4b5d50># Returns: value from the list</font></i>
+    <b><font color=#923B23>set</font></b> idx 0
+    <b><font color=#923B23>foreach</font></b> x <font color=#4A181B>$list</font> {
+        <b><font color=#923B23>if</font></b> {abs(<font color=#4A181B>$value</font> - <font color=#4A181B>$x</font>) &lt; <font color=#4A181B>$epsilon</font>} {
+            <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$idx</font>
+        }
+        <b><font color=#923B23>incr</font></b> idx
+    }
+    <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Value '<font color=#4A181B>$</font>value' was not found&quot;</font>
+}</pre></div>
+</div><h3 class='ruffproc'><a name='::mathutil::movAvg'>movAvg</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
+<div style='clear:both;'></div>
+<p class='ruff'>Finds moving average of y with given window size.</p>
+<div class='ruff_synopsis'><span class='ruff_cmd'>movAvg</span> <span class='ruff_arg'>y winSize ?args?</span></div>
+<h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code>y</code></td><td>List of values, must be larger than window size.</td></tr>
+<tr><td><code>winSize</code></td><td>Size of the window, must be an integer larger than 1.</td></tr>
+<tr><td><code><font color=#463e11>-x</font></code></td><td>Optional argument with x values.</td></tr>
+</table>
+<h5 class='ruff'>Return value</h5><p class='ruff'>list of y, and x if -x argument is specified</p>
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_movAvg' href="javascript:toggleSource('mathutil_movAvg')">Show source</a></p>
+<div id='mathutil_movAvg' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::movAvg {y winSize args} {
+
+    <i><font color=#4b5d50># Finds moving average of y with given window size.</font></i>
+    <i><font color=#4b5d50>#  y - list of values, must be larger than window size</font></i>
+    <i><font color=#4b5d50>#  winSize - size of the window, must be an integer larger than 1</font></i>
+    <i><font color=#4b5d50>#  -x - optional argument with x values</font></i>
+    <i><font color=#4b5d50># Returns: list of y, and x if -x argument is specified</font></i>
+    <b><font color=#923B23>set</font></b> arguments [argparse {
+        <font color=#463e11>-x</font>=
+    }]
+    <i><font color=#4b5d50># input verification</font></i>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is integer <font color=#4A181B>$winSize</font>]!=1} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Window size must be an integer&quot;</font>
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$winSize</font>&lt;2} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Window size must be larger than one&quot;</font>
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$winSize</font>%2==0} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Size of window must be odd&quot;</font>
+    }
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$yLen</font> &lt; [+ <font color=#4A181B>$winSize</font> 1]} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of y '<font color=#4A181B>$</font>yLen' must be not less than size of window + 1  '<font color=#4A181B>$</font>winSize + 1 = <font color=#4A181B>[</font>+ <font color=#4A181B>$</font>winSize 1<font color=#4A181B>]</font>'&quot;</font>
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>info</font></b> exists x]} {
+        <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+        <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x '<font color=#4A181B>$</font>xLen' is not equal to length of y '<font color=#4A181B>$</font>yLen'&quot;</font>
+        }
+    }
+    <i><font color=#4b5d50># actual calculations</font></i>
+    <b><font color=#923B23>set</font></b> winSizeM1 [- <font color=#4A181B>$winSize</font> 1]
+    <b><font color=#923B23>set</font></b> halfWinSize [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$winSizeM1</font>/2)}]
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i <font color=#4A181B>$halfWinSize</font>} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$yLen</font> <font color=#4A181B>$halfWinSize</font>]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> value 0
+        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> j [- <font color=#4A181B>$i</font> <font color=#4A181B>$halfWinSize</font>]} {<font color=#4A181B>$j</font>&lt;=[+ <font color=#4A181B>$i</font> <font color=#4A181B>$halfWinSize</font>]} {<b><font color=#923B23>incr</font></b> j} {
+            <b><font color=#923B23>set</font></b> value [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$value</font>+[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> <font color=#4A181B>$j</font>]}]
+        }
+        <b><font color=#923B23>lappend</font></b> yAvg [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$value</font>/<font color=#4A181B>$winSize</font>}]
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>info</font></b> exists x]} {
+        <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>list</font></b> [<b><font color=#923B23>lrange</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$halfWinSize</font> end-<font color=#4A181B>$halfWinSize</font>] <font color=#4A181B>$yAvg</font>]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$yAvg</font>
+    }
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::trapz'>trapz</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -67,7 +151,9 @@
     <i><font color=#4b5d50># Returns: value of integral</font></i>
     <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$xList</font>]
     <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$yList</font>]
-    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {<b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of xList <font color=#4A181B>$</font>xLen is not equal to length of yList <font color=#4A181B>$</font>yLen&quot;</font>}
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of xList <font color=#4A181B>$</font>xLen is not equal to length of yList <font color=#4A181B>$</font>yLen&quot;</font>
+    }
     <b><font color=#923B23>set</font></b> result 0.0
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$xLen</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> xI [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$xList</font> <font color=#4A181B>$i</font>]
@@ -86,6 +172,8 @@
 <li class='ruff-toc1'><a href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
 <hr><li class='ruff-toc2'><a href='#::mathutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::cumtrapz'>cumtrapz</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cumtrapz&lt;/span&gt; &lt;span class='ruff_arg'&gt;xList yList ?init?&lt;/span&gt;</pre>Does trapezoidal integration with storing cumulative data at each point
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::findApprox'>findApprox</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;findApprox&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#923B23>list</font></b> value ?epsilon?&lt;/span&gt;</pre>Finds index of firts matched value in list with epsilon tolerance
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::movAvg'>movAvg</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;movAvg&lt;/span&gt; &lt;span class='ruff_arg'&gt;y winSize ?args?&lt;/span&gt;</pre>Finds moving average of y with given window size.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::trapz'>trapz</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;trapz&lt;/span&gt; &lt;span class='ruff_arg'&gt;xList yList&lt;/span&gt;</pre>Does trapezoidal integration of x-y lists
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>
