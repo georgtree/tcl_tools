@@ -69,6 +69,14 @@
     <i><font color=#4b5d50>#  value - value to match</font></i>
     <i><font color=#4b5d50>#  epsilon - tolerance, default is 1</font></i>
     <i><font color=#4b5d50># Returns: value from the list</font></i>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is double <font color=#4A181B>$epsilon</font>]!=1} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Epsilon must be a number&quot;</font>
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$epsilon</font>&lt;=0} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Epsilon must be larger than zero&quot;</font>
+    }
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is double <font color=#4A181B>$value</font>]!=1} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Value must be a number&quot;</font>
+    }
     <b><font color=#923B23>set</font></b> idx 0
     <b><font color=#923B23>foreach</font></b> x <font color=#4A181B>$list</font> {
         <b><font color=#923B23>if</font></b> {abs(<font color=#4A181B>$value</font> - <font color=#4A181B>$x</font>) &lt; <font color=#4A181B>$epsilon</font>} {

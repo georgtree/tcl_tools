@@ -42,6 +42,50 @@ test cumtrapzProcTest {test procedure of cumulative trapezoidal integration} -se
     unset x y
 }
 
+test findApproxProcTest-1 {test procedure of approximate search} -setup {
+    set list [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    mathutil::findApprox $list 37 2
+} -result 6 -cleanup {
+    unset list
+}
+
+test findApproxProcTest-2 {test procedure of approximate search} -setup {
+    set list [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    catch {mathutil::findApprox $list 37 -2} errorStr
+    return $errorStr
+} -result {Epsilon must be larger than zero} -cleanup {
+    unset list
+}
+
+test findApproxProcTest-3 {test procedure of approximate search} -setup {
+    set list [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    catch {mathutil::findApprox $list 37 a} errorStr
+    return $errorStr
+} -result {Epsilon must be a number} -cleanup {
+    unset list
+}
+
+test findApproxProcTest-4 {test procedure of approximate search} -setup {
+    set list [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    catch {mathutil::findApprox $list 37! 2} errorStr
+    return $errorStr
+} -result {Value must be a number} -cleanup {
+    unset list
+}
+
+test findApproxProcTest-5 {test procedure of approximate search} -setup {
+    set list [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    catch {mathutil::findApprox $list 37 0.5} errorStr
+    return $errorStr
+} -result {Value '37' was not found} -cleanup {
+    unset list
+}
+
 test movAvgTest-1 {test procedure of moving average filter} -setup {
     set x [list 0 1 2 3 4 5 6 7 8 9 10 11 12]
     set y [list -3 -4 -1 1 5 7 -2 8 2 -6 -5 7 11]

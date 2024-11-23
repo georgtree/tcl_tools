@@ -5,7 +5,7 @@ package provide mathutil 0.1
 namespace eval ::mathutil {
 
     namespace import ::tcl::mathop::*
-    namespace export trapz cumtrapz
+    namespace export trapz cumtrapz findApprox movAvg
 }
 
 proc mathutil::trapz {xList yList} {
@@ -58,6 +58,14 @@ proc ::mathutil::findApprox {list value {epsilon 1}} {
     #  value - value to match
     #  epsilon - tolerance, default is 1
     # Returns: value from the list
+    if {[string is double $epsilon]!=1} {
+        error "Epsilon must be a number"
+    } elseif {$epsilon<=0} {
+        error "Epsilon must be larger than zero"
+    }
+    if {[string is double $value]!=1} {
+        error "Value must be a number"
+    }
     set idx 0
     foreach x $list {
         if {abs($value - $x) < $epsilon} {
