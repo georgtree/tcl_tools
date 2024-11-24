@@ -20,7 +20,9 @@ variable startPage {
     
     # Supported platforms
     
-    Any OS that has tcl8.6 (Linux, Windows, FreeBSD).
+    Any OS that has Tcl8.6 or Tcl9.0 (Linux, Windows, FreeBSD).
+
+    Tested on Kubuntu 24.04 and Windows 11 (Magicsplat Tcl distribution).
     
     # Documentation
     

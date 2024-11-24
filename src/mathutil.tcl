@@ -33,7 +33,7 @@ proc mathutil::cumtrapz {xList yList {init 0}} {
     # Does trapezoidal integration with storing cumulative data at each point
     #  xList - list of x values
     #  yList - list of y values
-    #  init - start value, default is 0
+    #  init - start value
     # Returns: list each value of which is the value of integral across all previous xy values
     set xLen [llength $xList]
     set yLen [llength $yList]
@@ -52,7 +52,7 @@ proc ::mathutil::findApprox {list value {epsilon 1}} {
     # Finds index of firts matched value in list with epsilon tolerance
     #  list - list of values
     #  value - value to match
-    #  epsilon - tolerance, default is 1
+    #  epsilon - tolerance
     # Returns: value from the list
     if {[string is double $epsilon]!=1} {
         error "Epsilon must be a number"

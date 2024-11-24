@@ -24,7 +24,7 @@
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>xList</code></td><td>List of x values.</td></tr>
 <tr><td><code>yList</code></td><td>List of y values.</td></tr>
-<tr><td><code>init</code></td><td>Start value, default is 0. Optional, default <code>0</code>.</td></tr>
+<tr><td><code>init</code></td><td>Start value. Optional, default <code>0</code>.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list each value of which is the value of integral across all previous xy values</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_cumtrapz' href="javascript:toggleSource('mathutil_cumtrapz')">Show source</a></p>
@@ -33,7 +33,7 @@
     <i><font color=#4b5d50># Does trapezoidal integration with storing cumulative data at each point</font></i>
     <i><font color=#4b5d50>#  xList - list of x values</font></i>
     <i><font color=#4b5d50>#  yList - list of y values</font></i>
-    <i><font color=#4b5d50>#  init - start value, default is 0</font></i>
+    <i><font color=#4b5d50>#  init - start value</font></i>
     <i><font color=#4b5d50># Returns: list each value of which is the value of integral across all previous xy values</font></i>
     <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$xList</font>]
     <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$yList</font>]
@@ -140,7 +140,7 @@
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><b><font color=#923B23>list</font></b></code></td><td>List of values.</td></tr>
 <tr><td><code>value</code></td><td>Value to match.</td></tr>
-<tr><td><code>epsilon</code></td><td>Tolerance, default is 1. Optional, default <code>1</code>.</td></tr>
+<tr><td><code>epsilon</code></td><td>Tolerance. Optional, default <code>1</code>.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>value from the list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_findApprox' href="javascript:toggleSource('mathutil_findApprox')">Show source</a></p>
@@ -149,7 +149,7 @@
     <i><font color=#4b5d50># Finds index of firts matched value in list with epsilon tolerance</font></i>
     <i><font color=#4b5d50>#  list - list of values</font></i>
     <i><font color=#4b5d50>#  value - value to match</font></i>
-    <i><font color=#4b5d50>#  epsilon - tolerance, default is 1</font></i>
+    <i><font color=#4b5d50>#  epsilon - tolerance</font></i>
     <i><font color=#4b5d50># Returns: value from the list</font></i>
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is double <font color=#4A181B>$epsilon</font>]!=1} {
         <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Epsilon must be a number&quot;</font>

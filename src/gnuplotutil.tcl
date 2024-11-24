@@ -22,7 +22,7 @@ proc gnuplotutil::plotXYN {x args} {
     #  -xlabel - argument to set x-axis label to display, string must be provided after it
     #  -ylabel - argument to set y-axis label to display, string must be provided after it
     #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -terminal - select terminal, default x11
+    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
     #  -grid - boolean switch that enables display of grid, default off
     #  -darkmode - boolean switch that enables dark mode for graph, default off
     #  -path - location of temporary file, default is current location
@@ -198,7 +198,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     #  -xlabel - argument to set x-axis label to display, string must be provided after it
     #  -ylabel - argument to set y-axis label to display, string must be provided after it
     #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -terminal - select terminal, default x11
+    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
     #  -grid - boolean switch that enables display of grid, default off
     #  -darkmode - boolean switch that enables dark mode for graph, default off
     #  -path - location of temporary file, default is current location
@@ -531,7 +531,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
     #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
     #  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off
     #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -terminal - select terminal, default x11
+    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
     #  -darkmode - boolean switch that enables dark mode for graph, default off
     #  -path - location of temporary file, default is current location
     #  -plots - argument that provides the list of individual plots, the number of plots is not restricted and must 
@@ -642,7 +642,7 @@ proc gnuplotutil::plotHist {x args} {
     #  -fill - set fill of columns, must be empty or solid
     #  -grid - set grid of histogram
     #  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off
-    #  -terminal - select terminal, default x11
+    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
     #  -path - location of temporary file, default is current location
     #  -darkmode - boolean switch that enables dark mode for graph, default off
     #  -transparent - add transparent modificator to filling of columns, -fill argument is required
