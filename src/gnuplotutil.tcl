@@ -90,7 +90,7 @@ proc gnuplotutil::plotXYN {x args} {
         global tcl_platform
         if {[string match -nocase *linux* $tcl_platform(os)]} {
             set terminalStr x11
-        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
             set terminalStr windows
         } else {
             set terminalStr qt
@@ -267,7 +267,7 @@ proc ::gnuplotutil::plotXNYN {args} {
         global tcl_platform
         if {[string match -nocase *linux* $tcl_platform(os)]} {
             set terminalStr x11
-        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
             set terminalStr windows
         } else {
             set terminalStr qt
@@ -576,7 +576,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
         global tcl_platform
         if {[string match -nocase *linux* $tcl_platform(os)]} {
             set terminalStr x11
-        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
             set terminalStr windows
         } else {
             set terminalStr qt
@@ -704,7 +704,7 @@ proc gnuplotutil::plotHist {x args} {
         global tcl_platform
         if {[string match -nocase *linux* $tcl_platform(os)]} {
             set terminalStr x11
-        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
             set terminalStr windows
         } else {
             set terminalStr qt
