@@ -125,6 +125,7 @@ proc ::mathutil::deriv1 {x y} {
     #  x - list of x values
     #  y - list of y values
     # Returns: value of first derivative
+    #
     # For calculating derivative we use 3-point method with unequal steps, equations
     # were taken from "Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula",
     # January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
@@ -162,6 +163,7 @@ proc ::mathutil::deriv2 {x y} {
     #  x - list of x values
     #  y - list of y values
     # Returns: value of second derivative
+    #
     # For calculating derivative we use 3-point method with unequal steps, equations
     # were taken from "Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula",
     # January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
