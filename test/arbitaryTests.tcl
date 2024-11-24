@@ -1,5 +1,6 @@
 package require tcltest
 namespace import ::tcltest::*
+namespace import ::tcl::mathop::*
 package require csv
 package require argparse
 
@@ -7,18 +8,17 @@ set script_path [file dirname [file normalize [info script]]]
 lappend auto_path "$script_path/../"
 package require gnuplotutil
 package require mathutil
-
-for {set i 0} {$i<=1000} {incr i} {
-    set xi [expr {$i*0.05}]
+set xi 0
+for {set i 0} {$i<=100} {incr i} {
+    set xi [expr {($xi+0.05*$i/50)}]
     lappend x $xi
-    lappend sinData [expr {sin($xi)+sin($xi*10)+sin($xi*100)+sin($xi*1000)}]
+    lappend y [expr {sin($xi)}]
 }
 
-set sinDataFiltered_central [::mathutil::movAvg $sinData 15 -x $x -type central]
-set sinDataFiltered_forward [::mathutil::movAvg $sinData 15 -x $x -type forward]
-set sinDataFiltered_backward [::mathutil::movAvg $sinData 15 -x $x -type backward]
-gnuplotutil::plotXNYN -xlabel "x label" -ylabel "y label" -grid -names {sindat 1 2 3}\
-        -columns $x $sinData [lindex $sinDataFiltered_central 0] [lindex $sinDataFiltered_central 1]\
-        [lindex $sinDataFiltered_forward 0] [lindex $sinDataFiltered_forward 1]\
-        [lindex $sinDataFiltered_backward 0] [lindex $sinDataFiltered_backward 1]
+set deriv2Data1 [::mathutil::deriv1 $x [::mathutil::deriv1 $x $y] ]
+set deriv2Data [::mathutil::deriv2 $x $y]
+gnuplotutil::plotXNYN -xlabel "x label" -ylabel "y label" -grid -names {sindat 1 2}\
+        -columns $x $y $x $deriv2Data $x $deriv2Data1
+# puts $x
 #puts $sinDataFiltered
+

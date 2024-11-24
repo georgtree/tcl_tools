@@ -51,6 +51,88 @@
     }
     <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$resultList</font>
 }</pre></div>
+</div><h3 class='ruffproc'><a name='::mathutil::deriv1'>deriv1</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
+<div style='clear:both;'></div>
+<p class='ruff'>Calculates first derivative of x-y lists</p>
+<div class='ruff_synopsis'><span class='ruff_cmd'>deriv1</span> <span class='ruff_arg'>x y</span></div>
+<h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code>x</code></td><td>List of x values.</td></tr>
+<tr><td><code>y</code></td><td>List of y values.</td></tr>
+</table>
+<h5 class='ruff'>Return value</h5><p class='ruff'>value of first derivative For calculating derivative we use 3-point method with unequal steps, equations were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;, January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</p>
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_deriv1' href="javascript:toggleSource('mathutil_deriv1')">Show source</a></p>
+<div id='mathutil_deriv1' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::deriv1 {x y} {
+
+    <i><font color=#4b5d50># Calculates first derivative of x-y lists</font></i>
+    <i><font color=#4b5d50>#  x - list of x values</font></i>
+    <i><font color=#4b5d50>#  y - list of y values</font></i>
+    <i><font color=#4b5d50># Returns: value of first derivative</font></i>
+    <i><font color=#4b5d50># For calculating derivative we use 3-point method with unequal steps, equations</font></i>
+    <i><font color=#4b5d50># were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;,</font></i>
+    <i><font color=#4b5d50># January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</font></i>
+    <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x <font color=#4A181B>$</font>xLen is not equal to length of y <font color=#4A181B>$</font>yLen&quot;</font>
+    }
+    <b><font color=#923B23>set</font></b> numPoints [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <i><font color=#4b5d50># calculate first point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 1] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 0]]
+    <b><font color=#923B23>set</font></b> h2 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 2] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [<b><font color=#923B23>expr</font></b> {-(2*<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> 0]+ (<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>)*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> 1]- <font color=#4A181B>$h1</font>/(<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> 2]}]
+    <i><font color=#4b5d50># calculate inner points</font></i>
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$numPoints</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> h1 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> [- <font color=#4A181B>$i</font> 1]]]
+        <b><font color=#923B23>set</font></b> h2 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> [+ <font color=#4A181B>$i</font> 1]] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]]
+        <b><font color=#923B23>lappend</font></b> yDeriv [<b><font color=#923B23>expr</font></b> {-<font color=#4A181B>$h2</font>/(<font color=#4A181B>$h1</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> [- <font color=#4A181B>$i</font> 1]]- (<font color=#4A181B>$h1</font>-<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>)*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> <font color=#4A181B>$i</font>]+ <font color=#4A181B>$h1</font>/(<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> [+ <font color=#4A181B>$i</font> 1]]}]
+    }
+    <i><font color=#4b5d50># calculate last point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end-1] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end-2]]
+    <b><font color=#923B23>set</font></b> h2 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end-1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$h2</font>/(<font color=#4A181B>$h1</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> end-2]- (<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>)*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> end-1]+ (<font color=#4A181B>$h1</font>+2*<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> end]}]
+    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$yDeriv</font>
+}</pre></div>
+</div><h3 class='ruffproc'><a name='::mathutil::deriv2'>deriv2</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
+<div style='clear:both;'></div>
+<p class='ruff'>Calculates second derivative of x-y lists</p>
+<div class='ruff_synopsis'><span class='ruff_cmd'>deriv2</span> <span class='ruff_arg'>x y</span></div>
+<h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code>x</code></td><td>List of x values.</td></tr>
+<tr><td><code>y</code></td><td>List of y values.</td></tr>
+</table>
+<h5 class='ruff'>Return value</h5><p class='ruff'>value of second derivative For calculating derivative we use 3-point method with unequal steps, equations were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;, January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</p>
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_deriv2' href="javascript:toggleSource('mathutil_deriv2')">Show source</a></p>
+<div id='mathutil_deriv2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::deriv2 {x y} {
+
+    <i><font color=#4b5d50># Calculates second derivative of x-y lists</font></i>
+    <i><font color=#4b5d50>#  x - list of x values</font></i>
+    <i><font color=#4b5d50>#  y - list of y values</font></i>
+    <i><font color=#4b5d50># Returns: value of second derivative</font></i>
+    <i><font color=#4b5d50># For calculating derivative we use 3-point method with unequal steps, equations</font></i>
+    <i><font color=#4b5d50># were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;,</font></i>
+    <i><font color=#4b5d50># January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</font></i>
+    <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x <font color=#4A181B>$</font>xLen is not equal to length of y <font color=#4A181B>$</font>yLen&quot;</font>
+    }
+    <b><font color=#923B23>set</font></b> numPoints [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <i><font color=#4b5d50># calculate first point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 1] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 0]]
+    <b><font color=#923B23>set</font></b> h2 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 2] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> 1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [<b><font color=#923B23>expr</font></b> {2*(<font color=#4A181B>$h2</font>*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> 0]- (<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> 1]+ <font color=#4A181B>$h1</font>*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> 2])/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))}]
+    <i><font color=#4b5d50># calculate inner points</font></i>
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$numPoints</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> h1 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> [- <font color=#4A181B>$i</font> 1]]]
+        <b><font color=#923B23>set</font></b> h2 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> [+ <font color=#4A181B>$i</font> 1]] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]]
+        <b><font color=#923B23>lappend</font></b> yDeriv [<b><font color=#923B23>expr</font></b> {2*(<font color=#4A181B>$h2</font>*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> [- <font color=#4A181B>$i</font> 1]]- (<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> <font color=#4A181B>$i</font>]+ <font color=#4A181B>$h1</font>*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> [+ <font color=#4A181B>$i</font> 1]])/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))}]
+    }
+    <i><font color=#4b5d50># calculate last point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end-1] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end-2]]
+    <b><font color=#923B23>set</font></b> h2 [- [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end] [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> end-1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [<b><font color=#923B23>expr</font></b> {2*(<font color=#4A181B>$h2</font>*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> end-2]- (<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> end-1]+ <font color=#4A181B>$h1</font>*[<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$y</font> end])/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))}]
+    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$yDeriv</font>
+}</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::findApprox'>findApprox</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Finds index of firts matched value in list with epsilon tolerance</p>
@@ -180,6 +262,8 @@
 <li class='ruff-toc1'><a href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
 <hr><li class='ruff-toc2'><a href='#::mathutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::cumtrapz'>cumtrapz</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cumtrapz&lt;/span&gt; &lt;span class='ruff_arg'&gt;xList yList ?init?&lt;/span&gt;</pre>Does trapezoidal integration with storing cumulative data at each point
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::deriv1'>deriv1</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;deriv1&lt;/span&gt; &lt;span class='ruff_arg'&gt;x y&lt;/span&gt;</pre>Calculates first derivative of x-y lists
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::deriv2'>deriv2</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;deriv2&lt;/span&gt; &lt;span class='ruff_arg'&gt;x y&lt;/span&gt;</pre>Calculates second derivative of x-y lists
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::findApprox'>findApprox</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;findApprox&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#923B23>list</font></b> value ?epsilon?&lt;/span&gt;</pre>Finds index of firts matched value in list with epsilon tolerance
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::movAvg'>movAvg</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;movAvg&lt;/span&gt; &lt;span class='ruff_arg'&gt;y winSize ?args?&lt;/span&gt;</pre>Finds moving average of y with given window size.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::trapz'>trapz</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;trapz&lt;/span&gt; &lt;span class='ruff_arg'&gt;xList yList&lt;/span&gt;</pre>Does trapezoidal integration of x-y lists

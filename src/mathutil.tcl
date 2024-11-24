@@ -1,11 +1,11 @@
 package require argparse
-
+package require math::interpolate
 package provide mathutil 0.1
 
 namespace eval ::mathutil {
 
     namespace import ::tcl::mathop::*
-    namespace export trapz cumtrapz findApprox movAvg
+    namespace export trapz cumtrapz findApprox movAvg deriv1 deriv1
 }
 
 proc mathutil::trapz {xList yList} {
@@ -118,4 +118,78 @@ proc ::mathutil::movAvg {y winSize args} {
     } else {
         return $yAvg
     }  
+}
+
+proc ::mathutil::deriv1 {x y} {
+    # Calculates first derivative of x-y lists
+    #  x - list of x values
+    #  y - list of y values
+    # Returns: value of first derivative
+    # For calculating derivative we use 3-point method with unequal steps, equations
+    # were taken from "Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula",
+    # January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
+    set xLen [llength $x]
+    set yLen [llength $y]
+    if {$xLen != $yLen} {
+        error "Length of x $xLen is not equal to length of y $yLen"
+    }
+    set numPoints [llength $x]
+    # calculate first point
+    set h1 [- [lindex $x 1] [lindex $x 0]]
+    set h2 [- [lindex $x 2] [lindex $x 1]]
+    lappend yDeriv [expr {-(2*$h1+$h2)/($h1*($h1+$h2))*[lindex $y 0]+\
+                                  ($h1+$h2)/($h1*$h2)*[lindex $y 1]-\
+                                  $h1/($h2*($h1+$h2))*[lindex $y 2]}]
+    # calculate inner points
+    for {set i 1} {$i<[- $numPoints 1]} {incr i} {
+        set h1 [- [lindex $x $i] [lindex $x [- $i 1]]]
+        set h2 [- [lindex $x [+ $i 1]] [lindex $x $i]]
+        lappend yDeriv [expr {-$h2/($h1*($h1+$h2))*[lindex $y [- $i 1]]-\
+                                      ($h1-$h2)/($h1*$h2)*[lindex $y $i]+\
+                                      $h1/($h2*($h1+$h2))*[lindex $y [+ $i 1]]}]
+    }
+    # calculate last point
+    set h1 [- [lindex $x end-1] [lindex $x end-2]]
+    set h2 [- [lindex $x end] [lindex $x end-1]]
+    lappend yDeriv [expr {$h2/($h1*($h1+$h2))*[lindex $y end-2]-\
+                                  ($h1+$h2)/($h1*$h2)*[lindex $y end-1]+\
+                                  ($h1+2*$h2)/($h2*($h1+$h2))*[lindex $y end]}]
+    return $yDeriv
+}
+
+proc ::mathutil::deriv2 {x y} {
+    # Calculates second derivative of x-y lists
+    #  x - list of x values
+    #  y - list of y values
+    # Returns: value of second derivative
+    # For calculating derivative we use 3-point method with unequal steps, equations
+    # were taken from "Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula",
+    # January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
+    set xLen [llength $x]
+    set yLen [llength $y]
+    if {$xLen != $yLen} {
+        error "Length of x $xLen is not equal to length of y $yLen"
+    }
+    set numPoints [llength $x]
+    # calculate first point
+    set h1 [- [lindex $x 1] [lindex $x 0]]
+    set h2 [- [lindex $x 2] [lindex $x 1]]
+    lappend yDeriv [expr {2*($h2*[lindex $y 0]-\
+                                         ($h1+$h2)*[lindex $y 1]+\
+                                         $h1*[lindex $y 2])/($h1*$h2*($h1+$h2))}]
+    # calculate inner points
+    for {set i 1} {$i<[- $numPoints 1]} {incr i} {
+        set h1 [- [lindex $x $i] [lindex $x [- $i 1]]]
+        set h2 [- [lindex $x [+ $i 1]] [lindex $x $i]]
+        lappend yDeriv [expr {2*($h2*[lindex $y [- $i 1]]-\
+                                         ($h1+$h2)*[lindex $y $i]+\
+                                         $h1*[lindex $y [+ $i 1]])/($h1*$h2*($h1+$h2))}]
+    }
+    # calculate last point
+    set h1 [- [lindex $x end-1] [lindex $x end-2]]
+    set h2 [- [lindex $x end] [lindex $x end-1]]
+    lappend yDeriv [expr {2*($h2*[lindex $y end-2]-\
+                                     ($h1+$h2)*[lindex $y end-1]+\
+                                         $h1*[lindex $y end])/($h1*$h2*($h1+$h2))}]
+    return $yDeriv
 }
