@@ -10,7 +10,7 @@ package require gnuplotutil
 package require mathutil
 set xi 0
 for {set i 0} {$i<=100} {incr i} {
-    set xi [expr {($xi+0.05*$i/50)}]
+    set xi [= {($xi+0.05*$i/50)}]
     lappend x $xi
     lappend y [expr {sin($xi)}]
 }

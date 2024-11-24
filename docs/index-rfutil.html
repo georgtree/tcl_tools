@@ -40,13 +40,13 @@
         {<font color=#463e11>-deg</font> <font color=#463e11>-boolean</font>} }]
     <b><font color=#923B23>variable</font></b> radtodeg
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$data</font>]
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> deg]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> deg]==1} {
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$radtodeg</font>*[arg [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]}]
+            <b><font color=#923B23>lappend</font></b> result [= {<font color=#4A181B>$radtodeg</font>*[arg [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]}]
         }
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [arg [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]
+            <b><font color=#923B23>lappend</font></b> result [arg [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]
         }
     }
     <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$result</font>
@@ -82,7 +82,8 @@
     <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
     <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements admittance</font></i>
+    <i><font color=#4b5d50># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements</font></i>
+    <i><font color=#4b5d50># admittance</font></i>
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50>#                     C3</font></i>
     <i><font color=#4b5d50>#                      | |</font></i>
@@ -99,13 +100,13 @@
     <b><font color=#923B23>set</font></b> yEq [::rfutil::yPEq <font color=#4A181B>$yxx</font>]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yEq</font> y1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yEq</font> y2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y3 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yEq</font> y3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> c1 [<b><font color=#923B23>expr</font></b> {[imag <font color=#4A181B>$y1</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> c2 [<b><font color=#923B23>expr</font></b> {[imag <font color=#4A181B>$y2</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> c3 [<b><font color=#923B23>expr</font></b> {[imag <font color=#4A181B>$y3</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> y1 [@ [dget <font color=#4A181B>$yEq</font> y1] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> y2 [@ [dget <font color=#4A181B>$yEq</font> y2] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> y3 [@ [dget <font color=#4A181B>$yEq</font> y3] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>lappend</font></b> c1 [= {[imag <font color=#4A181B>$y1</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+        <b><font color=#923B23>lappend</font></b> c2 [= {[imag <font color=#4A181B>$y2</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+        <b><font color=#923B23>lappend</font></b> c3 [= {[imag <font color=#4A181B>$y3</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
     }
     <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create c1 <font color=#4A181B>$c1</font> c2 <font color=#4A181B>$c2</font> c3 <font color=#4A181B>$c3</font>]
 }</pre></div>
@@ -140,7 +141,8 @@
     <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
     <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements impedance</font></i>
+    <i><font color=#4b5d50># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements</font></i>
+    <i><font color=#4b5d50># impedance</font></i>
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50>#             C1           C2</font></i>
     <i><font color=#4b5d50>#              | |           | |</font></i>
@@ -158,13 +160,13 @@
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zEq</font> z1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zEq</font> z2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z3 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zEq</font> z3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> c1 [<b><font color=#923B23>expr</font></b> {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z1</font>])}]
-        <b><font color=#923B23>lappend</font></b> c2 [<b><font color=#923B23>expr</font></b> {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z2</font>])}]
-        <b><font color=#923B23>lappend</font></b> c3 [<b><font color=#923B23>expr</font></b> {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z3</font>])}]
+        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> z1 [@ [dget <font color=#4A181B>$zEq</font> z1] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> z2 [@ [dget <font color=#4A181B>$zEq</font> z2] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> z3 [@ [dget <font color=#4A181B>$zEq</font> z3] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>lappend</font></b> c1 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z1</font>])}]
+        <b><font color=#923B23>lappend</font></b> c2 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z2</font>])}]
+        <b><font color=#923B23>lappend</font></b> c3 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z3</font>])}]
     }
     <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create c1 <font color=#4A181B>$c1</font> c2 <font color=#4A181B>$c2</font> c3 <font color=#4A181B>$c3</font>]
 }</pre></div>
@@ -226,14 +228,14 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with resulted matrix</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$mat</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> a [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> b [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> c [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> d [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> a [@ [dget <font color=#4A181B>$mat</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> b [@ [dget <font color=#4A181B>$mat</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> c [@ [dget <font color=#4A181B>$mat</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> d [@ [dget <font color=#4A181B>$mat</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>set</font></b> det [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$a</font> <font color=#4A181B>$d</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$b</font> <font color=#4A181B>$c</font>]]
         <b><font color=#923B23>if</font></b> {([real <font color=#4A181B>$det</font>]==0.0) && ([imag <font color=#4A181B>$det</font>]==0.0)} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Matrix can't be inverted&quot;</font>
@@ -277,7 +279,8 @@
     <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
     <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements impedance</font></i>
+    <i><font color=#4b5d50># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements</font></i>
+    <i><font color=#4b5d50># impedance</font></i>
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50>#                       L3</font></i>
     <i><font color=#4b5d50>#                       ___</font></i>
@@ -294,13 +297,13 @@
     <b><font color=#923B23>set</font></b> yEq [::rfutil::yPEq <font color=#4A181B>$yxx</font>]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yEq</font> y1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yEq</font> y2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y3 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yEq</font> y3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> l1 [<b><font color=#923B23>expr</font></b> {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y1</font>])}]
-        <b><font color=#923B23>lappend</font></b> l2 [<b><font color=#923B23>expr</font></b> {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y2</font>])}]
-        <b><font color=#923B23>lappend</font></b> l3 [<b><font color=#923B23>expr</font></b> {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y3</font>])}]
+        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> y1 [@ [dget <font color=#4A181B>$yEq</font> y1] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> y2 [@ [dget <font color=#4A181B>$yEq</font> y2] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> y3 [@ [dget <font color=#4A181B>$yEq</font> y3] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>lappend</font></b> l1 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y1</font>])}]
+        <b><font color=#923B23>lappend</font></b> l2 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y2</font>])}]
+        <b><font color=#923B23>lappend</font></b> l3 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y3</font>])}]
     }
     <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create l1 <font color=#4A181B>$l1</font> l2 <font color=#4A181B>$l2</font> l3 <font color=#4A181B>$l3</font>]
 }</pre></div>
@@ -335,7 +338,8 @@
     <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
     <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements impedance</font></i>
+    <i><font color=#4b5d50># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements</font></i>
+    <i><font color=#4b5d50># impedance</font></i>
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50>#             L1            L2</font></i>
     <i><font color=#4b5d50>#              ___           ___</font></i>
@@ -352,13 +356,13 @@
     <b><font color=#923B23>set</font></b> zEq [::rfutil::zTEq <font color=#4A181B>$zxx</font>]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zEq</font> z1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zEq</font> z2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z3 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zEq</font> z3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> l1 [<b><font color=#923B23>expr</font></b> {[imag <font color=#4A181B>$z1</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> l2 [<b><font color=#923B23>expr</font></b> {[imag <font color=#4A181B>$z2</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> l3 [<b><font color=#923B23>expr</font></b> {[imag <font color=#4A181B>$z3</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> z1 [@ [dget <font color=#4A181B>$zEq</font> z1] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> z2 [@ [dget <font color=#4A181B>$zEq</font> z2] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> z3 [@ [dget <font color=#4A181B>$zEq</font> z3] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>lappend</font></b> l1 [= {[imag <font color=#4A181B>$z1</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+        <b><font color=#923B23>lappend</font></b> l2 [= {[imag <font color=#4A181B>$z2</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+        <b><font color=#923B23>lappend</font></b> l3 [= {[imag <font color=#4A181B>$z3</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
     }
     <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create l1 <font color=#4A181B>$l1</font> l2 <font color=#4A181B>$l2</font> l3 <font color=#4A181B>$l3</font>]
 }</pre></div>
@@ -384,13 +388,13 @@
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-db</font> <font color=#463e11>-boolean</font>} }]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$data</font>]
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> db]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> db]==1} {
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [<b><font color=#923B23>expr</font></b> {20*log10([mod [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]])} ]
+            <b><font color=#923B23>lappend</font></b> result [= {20*log10([mod [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]])} ]
         }
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [mod [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]
+            <b><font color=#923B23>lappend</font></b> result [mod [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]
         }
     }
     <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$result</font>
@@ -414,20 +418,20 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionaries with resulted matrix</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len1 [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat1</font> 11]]
-    <b><font color=#923B23>set</font></b> len2 [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat2</font> 11]]
+    <b><font color=#923B23>set</font></b> len1 [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$mat1</font> 11]]
+    <b><font color=#923B23>set</font></b> len2 [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$mat2</font> 11]]
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$len1</font>!=<font color=#4A181B>$len2</font>} {
         <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Lengths of matrix elements lists are different&quot;</font>
     }
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len1</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> a1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat1</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> b1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat1</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> c1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat1</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> d1 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat1</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> a2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat2</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> b2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat2</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> c2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat2</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> d2 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$mat2</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> a1 [@ [dget <font color=#4A181B>$mat1</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> b1 [@ [dget <font color=#4A181B>$mat1</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> c1 [@ [dget <font color=#4A181B>$mat1</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> d1 [@ [dget <font color=#4A181B>$mat1</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> a2 [@ [dget <font color=#4A181B>$mat2</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> b2 [@ [dget <font color=#4A181B>$mat2</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> c2 [@ [dget <font color=#4A181B>$mat2</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> d2 [@ [dget <font color=#4A181B>$mat2</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> 11 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$a1</font> <font color=#4A181B>$a2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$b1</font> <font color=#4A181B>$c2</font>]]
         <b><font color=#923B23>lappend</font></b> 12 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$a1</font> <font color=#4A181B>$b2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$b1</font> <font color=#4A181B>$d2</font>]]
         <b><font color=#923B23>lappend</font></b> 21 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$c1</font> <font color=#4A181B>$a2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$d1</font> <font color=#4A181B>$c2</font>]]
@@ -455,14 +459,14 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with transfer parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$sxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> t11 [- <font color=#4A181B>$12</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] <font color=#4A181B>$21</font>]]
         <b><font color=#923B23>lappend</font></b> t12 [/ <font color=#4A181B>$11</font> <font color=#4A181B>$21</font>]
         <b><font color=#923B23>lappend</font></b> t21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> [/ <font color=#4A181B>$22</font> <font color=#4A181B>$21</font>]]
@@ -492,20 +496,20 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$sxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
     <b><font color=#923B23>set</font></b> m2c [complex -2 0]
     <b><font color=#923B23>set</font></b> y0 [pow <font color=#4A181B>$z0</font> [complex -1 0]]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> y11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>lappend</font></b> y11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
         <b><font color=#923B23>lappend</font></b> y12 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$12</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
         <b><font color=#923B23>lappend</font></b> y21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$21</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
-        <b><font color=#923B23>lappend</font></b> y22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
+        <b><font color=#923B23>lappend</font></b> y22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
     }
     <b><font color=#ca14ca>return</font></b>  [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$y11</font> 21 <font color=#4A181B>$y21</font> 12 <font color=#4A181B>$y12</font> 22 <font color=#4A181B>$y22</font>]
 }</pre></div>
@@ -531,18 +535,18 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$sxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> z11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>lappend</font></b> z11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
         <b><font color=#923B23>lappend</font></b> z12 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$12</font>] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
         <b><font color=#923B23>lappend</font></b> z21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$21</font>] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
-        <b><font color=#923B23>lappend</font></b> z22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
+        <b><font color=#923B23>lappend</font></b> z22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
     }
     <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$z11</font> 21 <font color=#4A181B>$z21</font> 12 <font color=#4A181B>$z12</font> 22 <font color=#4A181B>$z22</font>]
 }</pre></div>
@@ -565,14 +569,14 @@
     <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$txx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$txx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$txx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$txx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$txx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$txx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$txx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$txx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$txx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$txx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> s11 [/ <font color=#4A181B>$12</font> <font color=#4A181B>$22</font>]
         <b><font color=#923B23>lappend</font></b> s12 [- <font color=#4A181B>$11</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] <font color=#4A181B>$22</font>]]
         <b><font color=#923B23>lappend</font></b> s21 [/ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]
@@ -602,16 +606,16 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$yxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
     <b><font color=#923B23>set</font></b> m2c [complex -2 0]
     <b><font color=#923B23>set</font></b> y0 [pow <font color=#4A181B>$z0</font> [complex -1 0]]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$yxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> s11 [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font> ] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> s12 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$12</font>] <font color=#4A181B>$y0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> s21 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$21</font>] <font color=#4A181B>$y0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
@@ -639,14 +643,14 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$yxx</font> 11]]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$yxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> z11 [/ <font color=#4A181B>$22</font> [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> z12 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> z21 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$21</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
@@ -696,12 +700,12 @@
     <i><font color=#4b5d50>#         \./    |             |    \./</font></i>
     <i><font color=#4b5d50>#          o-----o-------------o-----o</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$yxx</font> 11]]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> y1 [+ <font color=#4A181B>$11</font> <font color=#4A181B>$21</font>]
         <b><font color=#923B23>lappend</font></b> y2 [+ <font color=#4A181B>$22</font> <font color=#4A181B>$21</font>]
         <b><font color=#923B23>lappend</font></b> y3 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> <font color=#4A181B>$21</font>]
@@ -730,14 +734,14 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$zxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$zxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> s11 [/ [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> s12 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$12</font>] <font color=#4A181B>$z0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> s21 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$21</font>] <font color=#4A181B>$z0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
@@ -765,14 +769,14 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$zxx</font> 11]]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 12 [@ [dget <font color=#4A181B>$zxx</font> 12] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> y11 [/ <font color=#4A181B>$22</font> [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> y12 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
         <b><font color=#923B23>lappend</font></b> y21 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$21</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
@@ -822,11 +826,11 @@
     <i><font color=#4b5d50>#        \./           |           \./</font></i>
     <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
     <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 11]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$zxx</font> 11]]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 21 [@ [dget <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> 22 [@ [dget <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>lappend</font></b> z1 [- <font color=#4A181B>$11</font> <font color=#4A181B>$21</font>]
         <b><font color=#923B23>lappend</font></b> z2 [- <font color=#4A181B>$22</font> <font color=#4A181B>$21</font>]
         <b><font color=#923B23>lappend</font></b> z3 <font color=#4A181B>$21</font>

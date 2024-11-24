@@ -39,7 +39,8 @@
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 36 25 16 9 4 1]
 <b><font color=#923B23>set</font></b> x3 [<b><font color=#923B23>list</font></b> 7 8 9 10]
 <b><font color=#923B23>set</font></b> y3 [<b><font color=#923B23>list</font></b> 49 64 81 100]
-<b><font color=#923B23>set</font></b> plot1 [<b><font color=#923B23>list</font></b> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> name1 name2 name3] <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font> <font color=#4A181B>$x3</font> <font color=#4A181B>$y3</font>]
+<b><font color=#923B23>set</font></b> plot1 [<b><font color=#923B23>list</font></b> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> name1 name2 name3]
+<font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font> <font color=#4A181B>$x3</font> <font color=#4A181B>$y3</font>]
 <b><font color=#923B23>set</font></b> plot2 [<b><font color=#923B23>list</font></b> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> name1 name2] <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font> ]
 <b><font color=#923B23>set</font></b> plot3 [<b><font color=#923B23>list</font></b> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> name3] <font color=#463e11>-columns</font> <font color=#4A181B>$x3</font> <font color=#4A181B>$y3</font> ]
 <b><font color=#923B23>set</font></b> plot4 [<b><font color=#923B23>list</font></b> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> name2] <font color=#463e11>-columns</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font> ]
@@ -59,7 +60,8 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
     <i><font color=#4b5d50>#  -darkmode - boolean switch that enables dark mode for graph, default off</font></i>
     <i><font color=#4b5d50>#  -path - location of temporary file, default is current location</font></i>
     <i><font color=#4b5d50>#  -plots - argument that provides the list of individual plots, the number of plots is not restricted and must</font></i>
-    <i><font color=#4b5d50>#    be provided at the end of command after all switches, the inputs syntax is the same as [::gnuplotutil::plotXNYN]</font></i>
+    <i><font color=#4b5d50>#    be provided at the end of command after all switches, the inputs syntax is the same as</font></i>
+    <i><font color=#4b5d50>#    [::gnuplotutil::plotXNYN]</font></i>
     <i><font color=#4b5d50># Returns: gnuplot window with plotted data as multiplot</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <i><font color=#4b5d50># Example:</font></i>
@@ -69,7 +71,8 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
     <i><font color=#4b5d50># set y2 [list 36 25 16 9 4 1]</font></i>
     <i><font color=#4b5d50># set x3 [list 7 8 9 10]</font></i>
     <i><font color=#4b5d50># set y3 [list 49 64 81 100]</font></i>
-    <i><font color=#4b5d50># set plot1 [list -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list name1 name2 name3] -columns $x1 $y1 $x2 $y2 $x3 $y3]</font></i>
+    <i><font color=#4b5d50># set plot1 [list -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list name1 name2 name3]</font></i>
+    <i><font color=#4b5d50># -columns $x1 $y1 $x2 $y2 $x3 $y3]</font></i>
     <i><font color=#4b5d50># set plot2 [list -ylabel &quot;y label&quot; -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2 ]</font></i>
     <i><font color=#4b5d50># set plot3 [list -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -names [list name3] -columns $x3 $y3 ]</font></i>
     <i><font color=#4b5d50># set plot4 [list -grid -names [list name2] -columns $x2 $y2 ]</font></i>
@@ -84,17 +87,17 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
         {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
         {<font color=#463e11>-plots</font> <font color=#463e11>-catchall</font>}
     }]
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> optcmd]==0} {
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]==0} {
         <b><font color=#923B23>set</font></b> optcmd <font color=#035103>&quot;&quot;</font>
     }
     <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$layout</font>]&gt;2} {
         <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of layout arguments is more than 2&quot;</font>
     } <b><font color=#923B23>else</font></b> {
-        <b><font color=#923B23>set</font></b> layoutStr <font color=#035103>&quot;set multiplot layout <font color=#4A181B>[</font>lindex <font color=#4A181B>$</font>layout 0<font color=#4A181B>]</font>,<font color=#4A181B>[</font>lindex <font color=#4A181B>$</font>layout 1<font color=#4A181B>]</font>&quot;</font>
+        <b><font color=#923B23>set</font></b> layoutStr <font color=#035103>&quot;set multiplot layout <font color=#4A181B>[</font>@ <font color=#4A181B>$</font>layout 0<font color=#4A181B>]</font>,<font color=#4A181B>[</font>@ <font color=#4A181B>$</font>layout 1<font color=#4A181B>]</font>&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -103,13 +106,13 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
-    <b><font color=#923B23>foreach</font></b> plot [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> plots] {
+    <b><font color=#923B23>foreach</font></b> plot [dget <font color=#4A181B>$arguments</font> plots] {
         <b><font color=#923B23>set</font></b> plotResults [gnuplotutil::plotXNYNMp {<b><font color=#923B23>*</font></b>}<font color=#4A181B>$plot</font>]
-        <b><font color=#923B23>lappend</font></b> cmdStrings [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$plotResults</font> cmdString]
-        <b><font color=#923B23>lappend</font></b> fileNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$plotResults</font> file]
+        <b><font color=#923B23>lappend</font></b> cmdStrings [dget <font color=#4A181B>$plotResults</font> cmdString]
+        <b><font color=#923B23>lappend</font></b> fileNames [dget <font color=#4A181B>$plotResults</font> file]
     }
     <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        <font color=#4A181B>$</font>optcmd</font>
@@ -119,7 +122,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <font color=#035103>        unset multiplot</font>
 <font color=#035103>        pause mouse close</font>
 <font color=#035103>    &quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> background]==1} {
         <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
 <font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>            &quot;</font> & } errorStr]
@@ -128,7 +131,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>            &quot;</font>} errorStr]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> nodelete]==0} {
         <b><font color=#923B23>foreach</font></b> fileName <font color=#4A181B>$fileNames</font> {
             <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$fileName</font>
         }
@@ -169,7 +172,8 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <b><font color=#923B23>set</font></b> x1 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
-gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style</font> clustered <font color=#463e11>-fill</font> solid <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>]
+gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style</font> clustered <font color=#463e11>-fill</font> solid <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2]
+<font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>]
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
@@ -204,7 +208,8 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
     <i><font color=#4b5d50># set x1 [list 0 1 2 3 4 5 6]</font></i>
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -names [list y1 y2] -columns $y1 $y2]</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -names [list y1 y2]</font></i>
+    <i><font color=#4b5d50># -columns $y1 $y2]</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
@@ -236,15 +241,15 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
     <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> backgroundStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;&quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> names]} {
-        <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> names]} {
+        <b><font color=#923B23>set</font></b> columnNames [dget <font color=#4A181B>$arguments</font> names]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> optcmd]} {
-        <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]} {
+        <b><font color=#923B23>set</font></b> optcmdStr [dget <font color=#4A181B>$arguments</font> optcmd]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -253,55 +258,55 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> grid]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> grid]==1} {
         <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;set grid&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> xlabel]} {
-        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> xlabel]} {
+        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> ylabel]} {
-        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> ylabel]} {
+        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> ylabel]} {
-        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> ylabel]} {
+        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> boxwidth]} {
-        <b><font color=#923B23>set</font></b> boxwidthStr <font color=#035103>&quot;set boxwidth '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments boxwidth<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> boxwidth]} {
+        <b><font color=#923B23>set</font></b> boxwidthStr <font color=#035103>&quot;set boxwidth '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments boxwidth<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> fill]} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> transparent]==1} {
-            <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;set style fill transparent <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments fill<font color=#4A181B>]</font>&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> fill]} {
+        <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> transparent]==1} {
+            <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;set style fill transparent <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments fill<font color=#4A181B>]</font>&quot;</font>
         } <b><font color=#923B23>else</font></b> {
-            <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;set style fill <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments fill<font color=#4A181B>]</font>&quot;</font>
+            <b><font color=#923B23>set</font></b> fillStr <font color=#035103>&quot;set style fill <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments fill<font color=#4A181B>]</font>&quot;</font>
         }
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> density]} {
-            <b><font color=#923B23>append</font></b> fillStr <font color=#035103>&quot; <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments density<font color=#4A181B>]</font>&quot;</font>
+        <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> density]} {
+            <b><font color=#923B23>append</font></b> fillStr <font color=#035103>&quot; <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments density<font color=#4A181B>]</font>&quot;</font>
         }
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> border]} {
-            <b><font color=#923B23>append</font></b> fillStr <font color=#035103>&quot; border lt <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments border<font color=#4A181B>]</font>&quot;</font>
+        <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> border]} {
+            <b><font color=#923B23>append</font></b> fillStr <font color=#035103>&quot; border lt <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments border<font color=#4A181B>]</font>&quot;</font>
         }
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> style]} {
-        <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exists <font color=#4A181B>$arguments</font> gap]) && ([<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> style] in {clustered})} {
-             <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font> gap <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments gap<font color=#4A181B>]</font>&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> style]} {
+        <b><font color=#923B23>if</font></b> {([dexist <font color=#4A181B>$arguments</font> gap]) && ([dget <font color=#4A181B>$arguments</font> style] in {clustered})} {
+             <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font> gap <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments gap<font color=#4A181B>]</font>&quot;</font>
         } <b><font color=#923B23>else</font></b> {
-            <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font>&quot;</font>
+            <b><font color=#923B23>set</font></b> styleStr <font color=#035103>&quot;set style histogram <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments style<font color=#4A181B>]</font>&quot;</font>
         }
     }
     <b><font color=#923B23>set</font></b> yColumnCount 0
-    <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
+    <b><font color=#923B23>foreach</font></b> val [dget <font color=#4A181B>$arguments</font> columns] {
         <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$val</font>] != [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>$</font>yColumnCount) doesn't match the number of points of x-axis data&quot;</font>
             <b><font color=#923B23>incr</font></b> yColumnCount
         }
     }
     <i><font color=#4b5d50># fill output structure with values</font></i>
-    <b><font color=#923B23>set</font></b> numCol [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]]
-    <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1)} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$numCol</font>}]} {
+    <b><font color=#923B23>set</font></b> numCol [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$arguments</font> columns]]
+    <b><font color=#923B23>if</font></b> {([dexist <font color=#4A181B>$arguments</font> names]==1)} {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [= {<font color=#4A181B>$numCol</font>}]} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Column names count is not the same as count of data columns&quot;</font>
             <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
         } <b><font color=#923B23>else</font></b> {
@@ -311,16 +316,16 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
     }
     <b><font color=#923B23>set</font></b> numRow [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numRow</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> row [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
-            <b><font color=#923B23>lappend</font></b> row [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$val</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> row [@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>foreach</font></b> val [dget <font color=#4A181B>$arguments</font> columns] {
+            <b><font color=#923B23>lappend</font></b> row [@ <font color=#4A181B>$val</font> <font color=#4A181B>$i</font>]
         }
         <b><font color=#923B23>lappend</font></b> outList <font color=#4A181B>$row</font>
     }
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [dget <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
         <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
@@ -333,7 +338,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
     <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 2:xtic(1)&quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font>&quot;</font>
+        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>= <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font>&quot;</font>
     }
     <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
@@ -349,7 +354,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
 <font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>        pause mouse close</font>
 <font color=#035103>    &quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> background]==1} {
         <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
 <font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>            &quot;</font> & } errorStr]
@@ -358,7 +363,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
 <font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>            &quot;</font>} errorStr]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> nodelete]==0} {
         <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$filePath</font>
     }
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {
@@ -392,7 +397,8 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> x2 [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6 7]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216 350]
-gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-darkmode</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font>
+gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-darkmode</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b> y1 y2]
+<font color=#463e11>-columns</font> <font color=#4A181B>$x1</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$x2</font> <font color=#4A181B>$y2</font>
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
@@ -423,7 +429,8 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set x2 [list 0 1 2 3 4 5 6 7]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216 350]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotXNYN -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -darkmode -grid -names [list y1 y2] -columns $x1 $y1 $x2 $y2</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotXNYN -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -darkmode -grid -names [list y1 y2]</font></i>
+    <i><font color=#4b5d50># -columns $x1 $y1 $x2 $y2</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}
@@ -449,30 +456,30 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> backgroundStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;&quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> xlog]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> xlog]==1} {
         <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;set logscale x&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> ylog]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> ylog]==1} {
         <b><font color=#923B23>set</font></b> yscaleStr <font color=#035103>&quot;set logscale y&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> grid]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> grid]==1} {
         <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;set grid&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1} {
-        <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> names]==1} {
+        <b><font color=#923B23>set</font></b> columnNames [dget <font color=#4A181B>$arguments</font> names]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> xlabel]==1} {
-        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> xlabel]==1} {
+        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> ylabel]==1} {
-        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> ylabel]==1} {
+        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> optcmd]==1} {
-        <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]==1} {
+        <b><font color=#923B23>set</font></b> optcmdStr [dget <font color=#4A181B>$arguments</font> optcmd]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -481,33 +488,33 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
-    <b><font color=#923B23>set</font></b> columnsNum [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]]
+    <b><font color=#923B23>set</font></b> columnsNum [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$arguments</font> columns]]
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$columnsNum</font> % 2 != 0} {
         <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of data columns <font color=#4A181B>$</font>columnsNum is odd&quot;</font>
     }
-    <b><font color=#923B23>set</font></b> dataNum [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$columnsNum</font>/2)}]
+    <b><font color=#923B23>set</font></b> dataNum [= {int(<font color=#4A181B>$columnsNum</font>/2)}]
     <b><font color=#923B23>set</font></b> yColumnCount 0
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$i</font>*2)}]]]
-        <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$i</font>*2+1)}]]]
+        <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> [@ [dget <font color=#4A181B>$arguments</font> columns] [= {int(<font color=#4A181B>$i</font>*2)}]]]
+        <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> [@ [dget <font color=#4A181B>$arguments</font> columns] [= {int(<font color=#4A181B>$i</font>*2+1)}]]]
         <b><font color=#923B23>lappend</font></b> xLengths <font color=#4A181B>$xLen</font>
         <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
-            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>[</font>expr <font color=#4A181B>{</font>1+<font color=#4A181B>$</font>yColumnCount<font color=#4A181B>}]</font>) doesn't match the number of points of x-axis data (column <font color=#4A181B>$</font>yColumnCount)&quot;</font>
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>[</font>= <font color=#4A181B>{</font>1+<font color=#4A181B>$</font>yColumnCount<font color=#4A181B>}]</font>) doesn't match the number of points of x-axis data (column <font color=#4A181B>$</font>yColumnCount)&quot;</font>
         }
         <b><font color=#923B23>incr</font></b> yColumnCount
     }
     <i><font color=#4b5d50># fill output structure with values</font></i>
-    <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1)} {
+    <b><font color=#923B23>if</font></b> {([dexist <font color=#4A181B>$arguments</font> names]==1)} {
             <b><font color=#923B23>set</font></b> headerString {}
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$dataNum</font>}]} {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [= {<font color=#4A181B>$dataNum</font>}]} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Column names count is not the same as count of data columns&quot;</font>
             <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
         } <b><font color=#923B23>else</font></b> {
             <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;=<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
-                <b><font color=#923B23>set</font></b> headerString <font color=#035103>&quot;<font color=#4A181B>${</font>headerString<font color=#4A181B>}</font> <font color=#4A181B>{</font> <font color=#4A181B>}</font> <font color=#4A181B>[</font>lindex <font color=#4A181B>$</font>columnNames <font color=#4A181B>$</font>i<font color=#4A181B>]</font>&quot;</font>
+                <b><font color=#923B23>set</font></b> headerString <font color=#035103>&quot;<font color=#4A181B>${</font>headerString<font color=#4A181B>}</font> <font color=#4A181B>{</font> <font color=#4A181B>}</font> <font color=#4A181B>[</font>@ <font color=#4A181B>$</font>columnNames <font color=#4A181B>$</font>i<font color=#4A181B>]</font>&quot;</font>
             }
             <b><font color=#923B23>lappend</font></b> outList <font color=#4A181B>$headerString</font>
             <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;set key autotitle columnheader&quot;</font>
@@ -517,9 +524,9 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numRow</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> row {}
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> j 0} {<font color=#4A181B>$j</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> j} {
-            <b><font color=#923B23>set</font></b> columns [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]
-            <b><font color=#923B23>set</font></b> xVal [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$columns</font> [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$j</font>*2)}]] <font color=#4A181B>$i</font>]
-            <b><font color=#923B23>set</font></b> yVal [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$columns</font> [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$j</font>*2+1)}]] <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> columns [dget <font color=#4A181B>$arguments</font> columns]
+            <b><font color=#923B23>set</font></b> xVal [@ [@ <font color=#4A181B>$columns</font> [= {int(<font color=#4A181B>$j</font>*2)}]] <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> yVal [@ [@ <font color=#4A181B>$columns</font> [= {int(<font color=#4A181B>$j</font>*2+1)}]] <font color=#4A181B>$i</font>]
             <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xVal</font>=={}} {
                 <b><font color=#923B23>lappend</font></b> row { } { }
             } <b><font color=#923B23>else</font></b> {
@@ -531,7 +538,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [dget <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
         <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
@@ -542,9 +549,9 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <b><font color=#923B23>puts</font></b> <font color=#4A181B>$resFile</font> [::csv::joinlist <font color=#4A181B>$outList</font> <font color=#035103>&quot; &quot;</font>]
     <b><font color=#923B23>close</font></b> <font color=#4A181B>$resFile</font>
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
-    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot '<font color=#4A181B>[</font>file join <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments path<font color=#4A181B>]</font> gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv<font color=#4A181B>]</font>' using 1:2 with lines &quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot '<font color=#4A181B>[</font>file join <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments path<font color=#4A181B>]</font> gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv<font color=#4A181B>]</font>' using 1:2 with lines &quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i*2+1<font color=#4A181B>}]</font>:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i*2+2<font color=#4A181B>}]</font> with lines &quot;</font>
+        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>= <font color=#4A181B>{$</font>i*2+1<font color=#4A181B>}]</font>:<font color=#4A181B>[</font>= <font color=#4A181B>{$</font>i*2+2<font color=#4A181B>}]</font> with lines &quot;</font>
     }
     <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
@@ -559,7 +566,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
 <font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>        pause mouse close</font>
 <font color=#035103>    &quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> background]==1} {
         <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
 <font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>            &quot;</font> & } errorStr]
@@ -569,7 +576,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
 <font color=#035103>            &quot;</font>} errorStr]
     }
 
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> nodelete]==0} {
         <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$filePath</font>
     }
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {
@@ -631,53 +638,53 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <b><font color=#923B23>set</font></b> gridStrUnset <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> xlog]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> xlog]==1} {
         <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;set logscale x&quot;</font>
         <b><font color=#923B23>set</font></b> xscaleStrUnset <font color=#035103>&quot;unset logscale x&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> ylog]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> ylog]==1} {
         <b><font color=#923B23>set</font></b> yscaleStr <font color=#035103>&quot;set logscale y&quot;</font>
         <b><font color=#923B23>set</font></b> yscaleStrUnset <font color=#035103>&quot;unset logscale y&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> grid]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> grid]==1} {
         <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;set grid&quot;</font>
         <b><font color=#923B23>set</font></b> gridStrUnset <font color=#035103>&quot;unset grid&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1} {
-        <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> names]==1} {
+        <b><font color=#923B23>set</font></b> columnNames [dget <font color=#4A181B>$arguments</font> names]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> xlabel]==1} {
-        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> xlabel]==1} {
+        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
         <b><font color=#923B23>set</font></b> xlabelStrUnset <font color=#035103>&quot;unset xlabel&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> ylabel]==1} {
-        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> ylabel]==1} {
+        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
         <b><font color=#923B23>set</font></b> ylabelStrUnset <font color=#035103>&quot;unset ylabel&quot;</font>
     }
-    <b><font color=#923B23>set</font></b> columnsNum [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]]
+    <b><font color=#923B23>set</font></b> columnsNum [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$arguments</font> columns]]
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$columnsNum</font> % 2 != 0} {
         <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of data columns <font color=#4A181B>$</font>columnsNum is odd&quot;</font>
     }
-    <b><font color=#923B23>set</font></b> dataNum [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$columnsNum</font>/2)}]
+    <b><font color=#923B23>set</font></b> dataNum [= {int(<font color=#4A181B>$columnsNum</font>/2)}]
     <b><font color=#923B23>set</font></b> yColumnCount 0
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$i</font>*2)}]]]
-        <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$i</font>*2+1)}]]]
+        <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> [@ [dget <font color=#4A181B>$arguments</font> columns] [= {int(<font color=#4A181B>$i</font>*2)}]]]
+        <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> [@ [dget <font color=#4A181B>$arguments</font> columns] [= {int(<font color=#4A181B>$i</font>*2+1)}]]]
         <b><font color=#923B23>lappend</font></b> xLengths <font color=#4A181B>$xLen</font>
         <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
-            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>[</font>expr <font color=#4A181B>{</font>1+<font color=#4A181B>$</font>yColumnCount<font color=#4A181B>}]</font>) doesn't match the number of points of x-axis data (column <font color=#4A181B>$</font>yColumnCount)&quot;</font>
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>[</font>= <font color=#4A181B>{</font>1+<font color=#4A181B>$</font>yColumnCount<font color=#4A181B>}]</font>) doesn't match the number of points of x-axis data (column <font color=#4A181B>$</font>yColumnCount)&quot;</font>
         }
         <b><font color=#923B23>incr</font></b> yColumnCount
     }
     <i><font color=#4b5d50># fill output structure with values</font></i>
-    <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1)} {
+    <b><font color=#923B23>if</font></b> {([dexist <font color=#4A181B>$arguments</font> names]==1)} {
             <b><font color=#923B23>set</font></b> headerString {}
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$dataNum</font>}]} {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [= {<font color=#4A181B>$dataNum</font>}]} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Column names count is not the same as count of data columns&quot;</font>
             <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
         } <b><font color=#923B23>else</font></b> {
             <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;=<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
-                <b><font color=#923B23>set</font></b> headerString <font color=#035103>&quot;<font color=#4A181B>${</font>headerString<font color=#4A181B>}</font> <font color=#4A181B>{</font> <font color=#4A181B>}</font> <font color=#4A181B>[</font>lindex <font color=#4A181B>$</font>columnNames <font color=#4A181B>$</font>i<font color=#4A181B>]</font>&quot;</font>
+                <b><font color=#923B23>set</font></b> headerString <font color=#035103>&quot;<font color=#4A181B>${</font>headerString<font color=#4A181B>}</font> <font color=#4A181B>{</font> <font color=#4A181B>}</font> <font color=#4A181B>[</font>@ <font color=#4A181B>$</font>columnNames <font color=#4A181B>$</font>i<font color=#4A181B>]</font>&quot;</font>
             }
             <b><font color=#923B23>lappend</font></b> outList <font color=#4A181B>$headerString</font>
             <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;set key autotitle columnheader&quot;</font>
@@ -687,9 +694,9 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numRow</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> row {}
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> j 0} {<font color=#4A181B>$j</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> j} {
-            <b><font color=#923B23>set</font></b> columns [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]
-            <b><font color=#923B23>set</font></b> xVal [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$columns</font> [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$j</font>*2)}]] <font color=#4A181B>$i</font>]
-            <b><font color=#923B23>set</font></b> yVal [<b><font color=#923B23>lindex</font></b> [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$columns</font> [<b><font color=#923B23>expr</font></b> {int(<font color=#4A181B>$j</font>*2+1)}]] <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> columns [dget <font color=#4A181B>$arguments</font> columns]
+            <b><font color=#923B23>set</font></b> xVal [@ [@ <font color=#4A181B>$columns</font> [= {int(<font color=#4A181B>$j</font>*2)}]] <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> yVal [@ [@ <font color=#4A181B>$columns</font> [= {int(<font color=#4A181B>$j</font>*2+1)}]] <font color=#4A181B>$i</font>]
             <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xVal</font>=={}} {
                 <b><font color=#923B23>lappend</font></b> row { } { }
             } <b><font color=#923B23>else</font></b> {
@@ -701,7 +708,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [dget <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
         <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
@@ -714,7 +721,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
     <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot 'gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv' using 1:2 with lines &quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$dataNum</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i*2+1<font color=#4A181B>}]</font>:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i*2+2<font color=#4A181B>}]</font> with lines &quot;</font>
+        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using <font color=#4A181B>[</font>= <font color=#4A181B>{$</font>i*2+1<font color=#4A181B>}]</font>:<font color=#4A181B>[</font>= <font color=#4A181B>{$</font>i*2+2<font color=#4A181B>}]</font> with lines &quot;</font>
     }
     <b><font color=#923B23>set</font></b> gnuplotCmdString <font color=#035103>&quot;</font>
 <font color=#035103>        <font color=#4A181B>$</font>autoTitleStr</font>
@@ -757,7 +764,8 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
 <b><font color=#923B23>set</font></b> x [<b><font color=#923B23>list</font></b> 0 1 2 3 4 5 6]
 <b><font color=#923B23>set</font></b> y1 [<b><font color=#923B23>list</font></b> 0 1 4 9 16 25 36]
 <b><font color=#923B23>set</font></b> y2 [<b><font color=#923B23>list</font></b> 0 1 8 27 64 125 216]
-gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2] <font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
+gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</font> <font color=#463e11>-ylog</font> <font color=#463e11>-xlabel</font> <font color=#035103>&quot;x label&quot;</font> <font color=#463e11>-ylabel</font> <font color=#035103>&quot;y label&quot;</font> <font color=#463e11>-grid</font> <font color=#463e11>-names</font> [<b><font color=#923B23>list</font></b>  y1 y2]
+<font color=#463e11>-columns</font> <font color=#4A181B>$y1</font> <font color=#4A181B>$y2</font>
 </pre>
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>gnuplot window with plotted data</p>
@@ -787,7 +795,8 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <i><font color=#4b5d50># set x [list 0 1 2 3 4 5 6]</font></i>
     <i><font color=#4b5d50># set y1 [list 0 1 4 9 16 25 36]</font></i>
     <i><font color=#4b5d50># set y2 [list 0 1 8 27 64 125 216]</font></i>
-    <i><font color=#4b5d50># gnuplotutil::plotXYN $x -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list  y1 y2] -columns $y1 $y2</font></i>
+    <i><font color=#4b5d50># gnuplotutil::plotXYN $x -xlog -ylog -xlabel &quot;x label&quot; -ylabel &quot;y label&quot; -grid -names [list  y1 y2]</font></i>
+    <i><font color=#4b5d50># -columns $y1 $y2</font></i>
     <i><font color=#4b5d50># ```</font></i>
     <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
         {<font color=#463e11>-xlog</font> <font color=#463e11>-boolean</font>}
@@ -813,30 +822,30 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <b><font color=#923B23>set</font></b> optcmdStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> backgroundStr <font color=#035103>&quot;&quot;</font>
     <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;&quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> xlog]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> xlog]==1} {
         <b><font color=#923B23>set</font></b> xscaleStr <font color=#035103>&quot;set logscale x&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> ylog]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> ylog]==1} {
         <b><font color=#923B23>set</font></b> yscaleStr <font color=#035103>&quot;set logscale y&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> grid]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> grid]==1} {
         <b><font color=#923B23>set</font></b> gridStr <font color=#035103>&quot;set grid&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1} {
-        <b><font color=#923B23>set</font></b> columnNames [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> names]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> names]==1} {
+        <b><font color=#923B23>set</font></b> columnNames [dget <font color=#4A181B>$arguments</font> names]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> xlabel]==1} {
-        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> xlabel]==1} {
+        <b><font color=#923B23>set</font></b> xlabelStr <font color=#035103>&quot;set xlabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments xlabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> ylabel]==1} {
-        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> ylabel]==1} {
+        <b><font color=#923B23>set</font></b> ylabelStr <font color=#035103>&quot;set ylabel '<font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments ylabel<font color=#4A181B>]</font>'&quot;</font>
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> optcmd]==1} {
-        <b><font color=#923B23>set</font></b> optcmdStr [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> optcmd]
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]==1} {
+        <b><font color=#923B23>set</font></b> optcmdStr [dget <font color=#4A181B>$arguments</font> optcmd]
     }
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> darkmode]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -845,20 +854,20 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>set</font></b> yColumnCount 0
-    <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
+    <b><font color=#923B23>foreach</font></b> val [dget <font color=#4A181B>$arguments</font> columns] {
         <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$val</font>] != [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Number of points of y-axis data (column <font color=#4A181B>$</font>yColumnCount) doesn't match the number of points of x-axis data&quot;</font>
             <b><font color=#923B23>incr</font></b> yColumnCount
         }
     }
     <i><font color=#4b5d50># fill output structure with values</font></i>
-    <b><font color=#923B23>set</font></b> numCol [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns]]
-    <b><font color=#923B23>if</font></b> {([<b><font color=#923B23>dict</font></b> exist <font color=#4A181B>$arguments</font> names]==1)} {
-        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [<b><font color=#923B23>expr</font></b> {<font color=#4A181B>$numCol</font>}]} {
+    <b><font color=#923B23>set</font></b> numCol [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$arguments</font> columns]]
+    <b><font color=#923B23>if</font></b> {([dexist <font color=#4A181B>$arguments</font> names]==1)} {
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>llength</font></b> <font color=#4A181B>$columnNames</font>] != [= {<font color=#4A181B>$numCol</font>}]} {
             <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Column names count is not the same as count of data columns&quot;</font>
             <b><font color=#923B23>set</font></b> autoTitleStr <font color=#035103>&quot;&quot;</font>
         } <b><font color=#923B23>else</font></b> {
@@ -868,16 +877,16 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     }
     <b><font color=#923B23>set</font></b> numRow [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numRow</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> row [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>foreach</font></b> val [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> columns] {
-            <b><font color=#923B23>lappend</font></b> row [<b><font color=#923B23>lindex</font></b> <font color=#4A181B>$val</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> row [@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>foreach</font></b> val [dget <font color=#4A181B>$arguments</font> columns] {
+            <b><font color=#923B23>lappend</font></b> row [@ <font color=#4A181B>$val</font> <font color=#4A181B>$i</font>]
         }
         <b><font color=#923B23>lappend</font></b> outList <font color=#4A181B>$row</font>
     }
     <i><font color=#4b5d50># save data to temporary file</font></i>
     <b><font color=#923B23>set</font></b> counter 0
     <b><font color=#923B23>while</font></b> {true} {
-        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
+        <b><font color=#923B23>set</font></b> filePath [<b><font color=#923B23>file</font></b> join [dget <font color=#4A181B>$arguments</font> path] gnuplotTemp<font color=#4A181B>${counter}</font>.csv]
         <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>file</font></b> exists <font color=#4A181B>$filePath</font>]} {
            <b><font color=#923B23>incr</font></b> counter
         } <b><font color=#923B23>else</font></b> {
@@ -888,9 +897,9 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <b><font color=#923B23>puts</font></b> <font color=#4A181B>$resFile</font> [::csv::joinlist <font color=#4A181B>$outList</font> <font color=#035103>&quot; &quot;</font>]
     <b><font color=#923B23>close</font></b> <font color=#4A181B>$resFile</font>
     <i><font color=#4b5d50># create command strings for gnuplot</font></i>
-    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot '<font color=#4A181B>[</font>file join <font color=#4A181B>[</font>dict get <font color=#4A181B>$</font>arguments path<font color=#4A181B>]</font> gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv<font color=#4A181B>]</font>' using 1:2 with lines &quot;</font>
+    <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;plot '<font color=#4A181B>[</font>file join <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments path<font color=#4A181B>]</font> gnuplotTemp<font color=#4A181B>${</font>counter<font color=#4A181B>}</font>.csv<font color=#4A181B>]</font>' using 1:2 with lines &quot;</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$numCol</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using 1:<font color=#4A181B>[</font>expr <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font> with lines &quot;</font>
+        <b><font color=#923B23>set</font></b> commandStr  <font color=#035103>&quot;<font color=#4A181B>${</font>commandStr<font color=#4A181B>}</font>, '' using 1:<font color=#4A181B>[</font>= <font color=#4A181B>{$</font>i+2<font color=#4A181B>}]</font> with lines &quot;</font>
     }
     <b><font color=#923B23>set</font></b> commandStr <font color=#035103>&quot;</font>
 <font color=#035103>        set mouse</font>
@@ -905,7 +914,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <font color=#035103>        <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>        pause mouse close</font>
 <font color=#035103>    &quot;</font>
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> background]==1} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> background]==1} {
         <b><font color=#923B23>set</font></b> status [<b><font color=#923B23>catch</font></b> {<b><font color=#923B23>exec</font></b> gnuplot &lt;&lt; <font color=#035103>&quot;</font>
 <font color=#035103>            <font color=#4A181B>$</font>commandStr</font>
 <font color=#035103>            &quot;</font> & } errorStr]
@@ -915,7 +924,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <font color=#035103>            &quot;</font>} errorStr]
     }
 
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dict</font></b> get <font color=#4A181B>$arguments</font> nodelete]==0} {
+    <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> nodelete]==0} {
             <b><font color=#923B23>file</font></b> delete <font color=#4A181B>$filePath</font>
     }
     <b><font color=#923B23>if</font></b> {<font color=#4A181B>$status</font>&gt;0} {

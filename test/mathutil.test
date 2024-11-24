@@ -98,9 +98,9 @@ test movAvgTest-1 {test procedure of moving average filter} -setup {
 
 test movAvgTest-2 {test procedure of moving average filter} -setup {
     for {set i 0} {$i<=100} {incr i} {
-        set xi [expr {$i*0.05}]
+        set xi [= {$i*0.05}]
         lappend x $xi
-        lappend y [expr {sin($xi)+sin($xi*10)+sin($xi*100)+sin($xi*1000)}]
+        lappend y [= {sin($xi)+sin($xi*10)+sin($xi*100)+sin($xi*1000)}]
     }
 } -body {
     ::mathutil::movAvg $y 11
@@ -179,9 +179,9 @@ test movAvgTest-7 {test procedure of moving average filter} -setup {
 
 test deriv1Test-1 {test procedure of first derivative calculation} -match mtchLst -setup {
     for {set i 0} {$i<=100} {incr i} {
-        set xi [expr {$i*0.05}]
+        set xi [= {$i*0.05}]
         lappend x $xi
-        lappend y [expr {sin($xi)}]
+        lappend y [= {sin($xi)}]
     }
 } -body {
     ::mathutil::deriv1 $x $y
@@ -213,9 +213,9 @@ test deriv1Test-1 {test procedure of first derivative calculation} -match mtchLs
 test deriv1Test-2 {test procedure of first derivative calculation} -match mtchLst -setup {
     set xi 0
     for {set i 0} {$i<=100} {incr i} {
-        set xi [expr {($xi+0.05*$i/50)}]
+        set xi [= {($xi+0.05*$i/50)}]
         lappend x $xi
-        lappend y [expr {sin($xi)}]
+        lappend y [= {sin($xi)}]
     }
 } -body {
     ::mathutil::deriv1 $x $y
@@ -245,9 +245,9 @@ test deriv1Test-2 {test procedure of first derivative calculation} -match mtchLs
 
 test deriv2Test-1 {test procedure of second derivative calculation} -match mtchLst -setup {
     for {set i 0} {$i<=100} {incr i} {
-        set xi [expr {$i*0.05}]
+        set xi [= {$i*0.05}]
         lappend x $xi
-        lappend y [expr {sin($xi)}]
+        lappend y [= {sin($xi)}]
     }
 } -body {
     ::mathutil::deriv2 $x $y
@@ -279,9 +279,9 @@ test deriv2Test-1 {test procedure of second derivative calculation} -match mtchL
 test deriv2Test-2 {test procedure of second derivative calculation} -match mtchLst -setup {
     set xi 0
     for {set i 0} {$i<=100} {incr i} {
-        set xi [expr {($xi+0.05*$i/50)}]
+        set xi [= {($xi+0.05*$i/50)}]
         lappend x $xi
-        lappend y [expr {sin($xi)}]
+        lappend y [= {sin($xi)}]
     }
 } -body {
     ::mathutil::deriv2 $x $y

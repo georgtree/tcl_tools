@@ -6,6 +6,10 @@ namespace eval ::mathutil {
 
     namespace import ::tcl::mathop::*
     namespace export trapz cumtrapz findApprox movAvg deriv1 deriv1
+    interp alias {} dget {} dict get
+    interp alias {} @ {} lindex
+    interp alias {} = {} expr
+    interp alias {} dexist {} dict exists
 }
 
 proc mathutil::trapz {xList yList} {
@@ -20,11 +24,7 @@ proc mathutil::trapz {xList yList} {
     }
     set result 0.0
     for {set i 0} {$i<[- $xLen 1]} {incr i} {
-        set xI [lindex $xList $i]
-        set xIp1 [lindex $xList [+ $i 1]]
-        set yI [lindex $yList $i]
-        set yIp1 [lindex $yList [+ $i 1]]
-        set result [expr {$result+($yIp1+$yI)/2.0*($xIp1-$xI)}]
+        set result [= {$result+([@ $yList [+ $i 1]]+[@ $yList $i])/2.0*([@ $xList [+ $i 1]]-[@ $xList $i])}]
     }
     return $result
 }
@@ -42,11 +42,7 @@ proc mathutil::cumtrapz {xList yList {init 0}} {
     }
     set result $init
     for {set i 0} {$i<[- $xLen 1]} {incr i} {
-        set xI [lindex $xList $i]
-        set xIp1 [lindex $xList [+ $i 1]]
-        set yI [lindex $yList $i]
-        set yIp1 [lindex $yList [+ $i 1]]
-        set result [expr {$result+($yIp1+$yI)/2.0*($xIp1-$xI)}]
+        set result [= {$result+([@ $yList [+ $i 1]]+[@ $yList $i])/2.0*([@ $xList [+ $i 1]]-[@ $xList $i])}]
         lappend resultList $result
     }
     return $resultList
@@ -105,13 +101,13 @@ proc ::mathutil::movAvg {y winSize args} {
     }
     # actual calculations
     set winSizeM1 [- $winSize 1]
-    set halfWinSize [expr {int($winSizeM1/2)}]
+    set halfWinSize [= {int($winSizeM1/2)}]
     for {set i $halfWinSize} {$i<[- $yLen $halfWinSize]} {incr i} {
         set value 0
         for {set j [- $i $halfWinSize]} {$j<=[+ $i $halfWinSize]} {incr j} {
-            set value [expr {$value+[lindex $y $j]}]
+            set value [= {$value+[@ $y $j]}]
         }
-        lappend yAvg [expr {$value/$winSize}]
+        lappend yAvg [= {$value/$winSize}]
     }
     if {[info exists x]} {
         return [list [lrange $x $halfWinSize end-$halfWinSize] $yAvg]
@@ -136,25 +132,22 @@ proc ::mathutil::deriv1 {x y} {
     }
     set numPoints [llength $x]
     # calculate first point
-    set h1 [- [lindex $x 1] [lindex $x 0]]
-    set h2 [- [lindex $x 2] [lindex $x 1]]
-    lappend yDeriv [expr {-(2*$h1+$h2)/($h1*($h1+$h2))*[lindex $y 0]+\
-                                  ($h1+$h2)/($h1*$h2)*[lindex $y 1]-\
-                                  $h1/($h2*($h1+$h2))*[lindex $y 2]}]
+    set h1 [- [@ $x 1] [@ $x 0]]
+    set h2 [- [@ $x 2] [@ $x 1]]
+    lappend yDeriv [= {-(2*$h1+$h2)/($h1*($h1+$h2))*[@ $y 0]+($h1+$h2)/($h1*$h2)*[@ $y 1]-\
+                                  $h1/($h2*($h1+$h2))*[@ $y 2]}]
     # calculate inner points
     for {set i 1} {$i<[- $numPoints 1]} {incr i} {
-        set h1 [- [lindex $x $i] [lindex $x [- $i 1]]]
-        set h2 [- [lindex $x [+ $i 1]] [lindex $x $i]]
-        lappend yDeriv [expr {-$h2/($h1*($h1+$h2))*[lindex $y [- $i 1]]-\
-                                      ($h1-$h2)/($h1*$h2)*[lindex $y $i]+\
-                                      $h1/($h2*($h1+$h2))*[lindex $y [+ $i 1]]}]
+        set h1 [- [@ $x $i] [@ $x [- $i 1]]]
+        set h2 [- [@ $x [+ $i 1]] [@ $x $i]]
+        lappend yDeriv [= {-$h2/($h1*($h1+$h2))*[@ $y [- $i 1]]-($h1-$h2)/($h1*$h2)*[@ $y $i]+\
+                                      $h1/($h2*($h1+$h2))*[@ $y [+ $i 1]]}]
     }
     # calculate last point
-    set h1 [- [lindex $x end-1] [lindex $x end-2]]
-    set h2 [- [lindex $x end] [lindex $x end-1]]
-    lappend yDeriv [expr {$h2/($h1*($h1+$h2))*[lindex $y end-2]-\
-                                  ($h1+$h2)/($h1*$h2)*[lindex $y end-1]+\
-                                  ($h1+2*$h2)/($h2*($h1+$h2))*[lindex $y end]}]
+    set h1 [- [@ $x end-1] [@ $x end-2]]
+    set h2 [- [@ $x end] [@ $x end-1]]
+    lappend yDeriv [= {$h2/($h1*($h1+$h2))*[@ $y end-2]-($h1+$h2)/($h1*$h2)*[@ $y end-1]+\
+                                  ($h1+2*$h2)/($h2*($h1+$h2))*[@ $y end]}]
     return $yDeriv
 }
 
@@ -174,24 +167,18 @@ proc ::mathutil::deriv2 {x y} {
     }
     set numPoints [llength $x]
     # calculate first point
-    set h1 [- [lindex $x 1] [lindex $x 0]]
-    set h2 [- [lindex $x 2] [lindex $x 1]]
-    lappend yDeriv [expr {2*($h2*[lindex $y 0]-\
-                                         ($h1+$h2)*[lindex $y 1]+\
-                                         $h1*[lindex $y 2])/($h1*$h2*($h1+$h2))}]
+    set h1 [- [@ $x 1] [@ $x 0]]
+    set h2 [- [@ $x 2] [@ $x 1]]
+    lappend yDeriv [= {2*($h2*[@ $y 0]-($h1+$h2)*[@ $y 1]+$h1*[@ $y 2])/($h1*$h2*($h1+$h2))}]
     # calculate inner points
     for {set i 1} {$i<[- $numPoints 1]} {incr i} {
-        set h1 [- [lindex $x $i] [lindex $x [- $i 1]]]
-        set h2 [- [lindex $x [+ $i 1]] [lindex $x $i]]
-        lappend yDeriv [expr {2*($h2*[lindex $y [- $i 1]]-\
-                                         ($h1+$h2)*[lindex $y $i]+\
-                                         $h1*[lindex $y [+ $i 1]])/($h1*$h2*($h1+$h2))}]
+        set h1 [- [@ $x $i] [@ $x [- $i 1]]]
+        set h2 [- [@ $x [+ $i 1]] [@ $x $i]]
+        lappend yDeriv [= {2*($h2*[@ $y [- $i 1]]-($h1+$h2)*[@ $y $i]+$h1*[@ $y [+ $i 1]])/($h1*$h2*($h1+$h2))}]
     }
     # calculate last point
-    set h1 [- [lindex $x end-1] [lindex $x end-2]]
-    set h2 [- [lindex $x end] [lindex $x end-1]]
-    lappend yDeriv [expr {2*($h2*[lindex $y end-2]-\
-                                     ($h1+$h2)*[lindex $y end-1]+\
-                                         $h1*[lindex $y end])/($h1*$h2*($h1+$h2))}]
+    set h1 [- [@ $x end-1] [@ $x end-2]]
+    set h2 [- [@ $x end] [@ $x end-1]]
+    lappend yDeriv [= {2*($h2*[@ $y end-2]-($h1+$h2)*[@ $y end-1]+$h1*[@ $y end])/($h1*$h2*($h1+$h2))}]
     return $yDeriv
 }

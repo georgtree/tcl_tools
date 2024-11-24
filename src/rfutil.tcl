@@ -11,8 +11,13 @@ package provide rfutil 0.1
 namespace eval ::rfutil {
 
     namespace import ::math::complexnumbers::*
-    namespace export s2z s2t t2s s2y z2s y2s z2y y2z zTEq cxxTEq lxxTEq yPEq cxxPEq lxxPEq inv2x2 matMul2x2 deemb mag angle 
+    namespace export s2z s2t t2s s2y z2s y2s z2y y2z zTEq cxxTEq lxxTEq yPEq cxxPEq lxxPEq inv2x2 matMul2x2 deemb mag\
+            angle 
     ::math::constants::constants radtodeg degtorad pi
+    interp alias {} dget {} dict get
+    interp alias {} @ {} lindex
+    interp alias {} = {} expr
+    interp alias {} dexist {} dict exists
 }
 
 
@@ -27,18 +32,18 @@ proc ::rfutil::s2z {sxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with z-parameters
     #
-    set len [llength [dict get $sxx 11]]
+    set len [llength [dget $sxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $sxx 11] $i]
-        set 21 [lindex [dict get $sxx 21] $i]
-        set 12 [lindex [dict get $sxx 12] $i]
-        set 22 [lindex [dict get $sxx 22] $i]
-        lappend z11 [* $z0 [/ [+ [* [+ $1c $11] [- $1c $22]] [* $12 $21] ] [- [* [- $1c $11] [- $1c $22]] [* $12 $21] ]]]
+        set 11 [@ [dget $sxx 11] $i]
+        set 21 [@ [dget $sxx 21] $i]
+        set 12 [@ [dget $sxx 12] $i]
+        set 22 [@ [dget $sxx 22] $i]
+        lappend z11 [* $z0 [/ [+ [* [+ $1c $11] [- $1c $22]] [* $12 $21]] [- [* [- $1c $11] [- $1c $22]] [* $12 $21]]]]
         lappend z12 [* $z0 [/ [* $2c $12] [- [* [- $1c $11] [- $1c $22]] [* $12 $21] ]]]
         lappend z21 [* $z0 [/ [* $2c $21] [- [* [- $1c $11] [- $1c $22]] [* $12 $21] ]]]
-        lappend z22 [* $z0 [/ [+ [* [- $1c $11] [+ $1c $22]] [* $12 $21] ] [- [* [- $1c $11] [- $1c $22]] [* $12 $21] ]]]
+        lappend z22 [* $z0 [/ [+ [* [- $1c $11] [+ $1c $22]] [* $12 $21]] [- [* [- $1c $11] [- $1c $22]] [* $12 $21]]]]
     }
     return [dict create 11 $z11 21 $z21 12 $z12 22 $z22]
 }
@@ -53,14 +58,14 @@ proc ::rfutil::s2t {sxx} {
     # 
     # Returns dictionary of the same form as input dictionary with transfer parameters
     #
-    set len [llength [dict get $sxx 11]]
+    set len [llength [dget $sxx 11]]
     set 1c [complex 1 0]
     set m1c [complex -1 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $sxx 11] $i]
-        set 21 [lindex [dict get $sxx 21] $i]
-        set 12 [lindex [dict get $sxx 12] $i]
-        set 22 [lindex [dict get $sxx 22] $i]
+        set 11 [@ [dget $sxx 11] $i]
+        set 21 [@ [dget $sxx 21] $i]
+        set 12 [@ [dget $sxx 12] $i]
+        set 22 [@ [dget $sxx 22] $i]
         lappend t11 [- $12 [/ [* $11 $22] $21]]
         lappend t12 [/ $11 $21]
         lappend t21 [* $m1c [/ $22 $21]]
@@ -78,14 +83,14 @@ proc ::rfutil::t2s {txx} {
     #   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
     # Returns dictionary of the same form as input dictionary with s-parameters
     #
-    set len [llength [dict get $txx 11]]
+    set len [llength [dget $txx 11]]
     set 1c [complex 1 0]
     set m1c [complex -1 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $txx 11] $i]
-        set 21 [lindex [dict get $txx 21] $i]
-        set 12 [lindex [dict get $txx 12] $i]
-        set 22 [lindex [dict get $txx 22] $i]
+        set 11 [@ [dget $txx 11] $i]
+        set 21 [@ [dget $txx 21] $i]
+        set 12 [@ [dget $txx 12] $i]
+        set 22 [@ [dget $txx 22] $i]
         lappend s11 [/ $12 $22]
         lappend s12 [- $11 [/ [* $12 $21] $22]]
         lappend s21 [/ $1c $22]
@@ -105,20 +110,20 @@ proc ::rfutil::s2y {sxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with y-parameters
     #
-    set len [llength [dict get $sxx 11]]
+    set len [llength [dget $sxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
     set m2c [complex -2 0]
     set y0 [pow $z0 [complex -1 0]]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $sxx 11] $i]
-        set 21 [lindex [dict get $sxx 21] $i]
-        set 12 [lindex [dict get $sxx 12] $i]
-        set 22 [lindex [dict get $sxx 22] $i]
-        lappend y11 [* $y0 [/ [+ [* [- $1c $11] [+ $1c $22]] [* $12 $21] ] [- [* [+ $1c $11] [+ $1c $22]] [* $12 $21] ]]]
+        set 11 [@ [dget $sxx 11] $i]
+        set 21 [@ [dget $sxx 21] $i]
+        set 12 [@ [dget $sxx 12] $i]
+        set 22 [@ [dget $sxx 22] $i]
+        lappend y11 [* $y0 [/ [+ [* [- $1c $11] [+ $1c $22]] [* $12 $21]] [- [* [+ $1c $11] [+ $1c $22]] [* $12 $21]]]]
         lappend y12 [* $y0 [/ [* $m2c $12] [- [* [+ $1c $11] [+ $1c $22]] [* $12 $21] ]]]
         lappend y21 [* $y0 [/ [* $m2c $21] [- [* [+ $1c $11] [+ $1c $22]] [* $12 $21] ]]]
-        lappend y22 [* $y0 [/ [+ [* [+ $1c $11] [- $1c $22]] [* $12 $21] ] [- [* [+ $1c $11] [+ $1c $22]] [* $12 $21] ]]]
+        lappend y22 [* $y0 [/ [+ [* [+ $1c $11] [- $1c $22]] [* $12 $21]] [- [* [+ $1c $11] [+ $1c $22]] [* $12 $21]]]]
     }
     return  [dict create 11 $y11 21 $y21 12 $y12 22 $y22]
 }
@@ -134,14 +139,14 @@ proc ::rfutil::z2s {zxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with s-parameters
     #
-    set len [llength [dict get $zxx 11]]
+    set len [llength [dget $zxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $zxx 11] $i]
-        set 21 [lindex [dict get $zxx 21] $i]
-        set 12 [lindex [dict get $zxx 12] $i]
-        set 22 [lindex [dict get $zxx 22] $i]
+        set 11 [@ [dget $zxx 11] $i]
+        set 21 [@ [dget $zxx 21] $i]
+        set 12 [@ [dget $zxx 12] $i]
+        set 22 [@ [dget $zxx 22] $i]
         lappend s11 [/ [- [* [- $11 $z0] [+ $22 $z0]] [* $12 $21]] [- [* [+ $11 $z0] [+ $22 $z0]] [* $12 $21]]]
         lappend s12 [/ [* [* $2c $12] $z0] [- [* [+ $11 $z0] [+ $22 $z0]] [* $12 $21]]]
         lappend s21 [/ [* [* $2c $21] $z0] [- [* [+ $11 $z0] [+ $22 $z0]] [* $12 $21]]]
@@ -161,16 +166,16 @@ proc ::rfutil::y2s {yxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with s-parameters
     #
-    set len [llength [dict get $yxx 11]]
+    set len [llength [dget $yxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
     set m2c [complex -2 0]
     set y0 [pow $z0 [complex -1 0]]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $yxx 11] $i]
-        set 21 [lindex [dict get $yxx 21] $i]
-        set 12 [lindex [dict get $yxx 12] $i]
-        set 22 [lindex [dict get $yxx 22] $i]
+        set 11 [@ [dget $yxx 11] $i]
+        set 21 [@ [dget $yxx 21] $i]
+        set 12 [@ [dget $yxx 12] $i]
+        set 22 [@ [dget $yxx 22] $i]
         lappend s11 [/ [+ [* [- $y0 $11 ] [+ $y0 $22]] [* $12 $21]] [- [* [+ $y0 $11] [+ $y0 $22]] [* $12 $21]]]
         lappend s12 [/ [* [* $m2c $12] $y0] [- [* [+ $y0 $11] [+ $y0 $22]] [* $12 $21]]]
         lappend s21 [/ [* [* $m2c $21] $y0] [- [* [+ $y0 $11] [+ $y0 $22]] [* $12 $21]]]
@@ -189,14 +194,14 @@ proc ::rfutil::z2y {zxx} {
     # 
     # Returns dictionary of the same form as input dictionary with y-parameters
     #
-    set len [llength [dict get $zxx 11]]
+    set len [llength [dget $zxx 11]]
     set m1c [complex -1 0]
     set 2c [complex 2 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $zxx 11] $i]
-        set 21 [lindex [dict get $zxx 21] $i]
-        set 12 [lindex [dict get $zxx 12] $i]
-        set 22 [lindex [dict get $zxx 22] $i]
+        set 11 [@ [dget $zxx 11] $i]
+        set 21 [@ [dget $zxx 21] $i]
+        set 12 [@ [dget $zxx 12] $i]
+        set 22 [@ [dget $zxx 22] $i]
         lappend y11 [/ $22 [- [* $11 $22] [* $12 $21]]]
         lappend y12 [/ [* $12 $m1c] [- [* $11 $22] [* $12 $21]]]
         lappend y21 [/ [* $21 $m1c] [- [* $11 $22] [* $12 $21]]]
@@ -215,14 +220,14 @@ proc ::rfutil::y2z {yxx} {
     # 
     # Returns dictionary of the same form as input dictionary with z-parameters
     #
-    set len [llength [dict get $yxx 11]]
+    set len [llength [dget $yxx 11]]
     set m1c [complex -1 0]
     set 2c [complex 2 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $yxx 11] $i]
-        set 21 [lindex [dict get $yxx 21] $i]
-        set 12 [lindex [dict get $yxx 12] $i]
-        set 22 [lindex [dict get $yxx 22] $i]
+        set 11 [@ [dget $yxx 11] $i]
+        set 21 [@ [dget $yxx 21] $i]
+        set 12 [@ [dget $yxx 12] $i]
+        set 22 [@ [dget $yxx 22] $i]
         lappend z11 [/ $22 [- [* $11 $22] [* $12 $21]]]
         lappend z12 [/ [* $12 $m1c] [- [* $11 $22] [* $12 $21]]]
         lappend z21 [/ [* $21 $m1c] [- [* $11 $22] [* $12 $21]]]
@@ -252,11 +257,11 @@ proc ::rfutil::zTEq {zxx} {
     #        \./           |           \./                                  
     #         o----------- o -----------o   
     #
-    set len [llength [dict get $zxx 11]]
+    set len [llength [dget $zxx 11]]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $zxx 11] $i]
-        set 21 [lindex [dict get $zxx 21] $i]
-        set 22 [lindex [dict get $zxx 22] $i]
+        set 11 [@ [dget $zxx 11] $i]
+        set 21 [@ [dget $zxx 21] $i]
+        set 22 [@ [dget $zxx 22] $i]
         lappend z1 [- $11 $21]
         lappend z2 [- $22 $21]
         lappend z3 $21
@@ -273,7 +278,8 @@ proc ::rfutil::cxxTEq {freq zxx} {
     #   frequencies (or other parameter) in form of {real imag}.
     #   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
     # 
-    # Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements impedance
+    # Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements
+    # impedance
     #
     #             C1           C2            
     #              | |           | |         
@@ -291,13 +297,13 @@ proc ::rfutil::cxxTEq {freq zxx} {
     set 1c [complex 1 0]
     set len [llength $freq]
     for {set i 0} {$i<$len} {incr i} {
-        set freqVal [lindex $freq $i]
-        set z1 [lindex [dict get $zEq z1] $i]
-        set z2 [lindex [dict get $zEq z2] $i]
-        set z3 [lindex [dict get $zEq z3] $i]
-        lappend c1 [expr {-1/(2*$pi*$freqVal*[imag $z1])}]
-        lappend c2 [expr {-1/(2*$pi*$freqVal*[imag $z2])}]
-        lappend c3 [expr {-1/(2*$pi*$freqVal*[imag $z3])}]
+        set freqVal [@ $freq $i]
+        set z1 [@ [dget $zEq z1] $i]
+        set z2 [@ [dget $zEq z2] $i]
+        set z3 [@ [dget $zEq z3] $i]
+        lappend c1 [= {-1/(2*$pi*$freqVal*[imag $z1])}]
+        lappend c2 [= {-1/(2*$pi*$freqVal*[imag $z2])}]
+        lappend c3 [= {-1/(2*$pi*$freqVal*[imag $z3])}]
     }
     return [dict create c1 $c1 c2 $c2 c3 $c3]
 }
@@ -311,7 +317,8 @@ proc ::rfutil::lxxTEq {freq zxx} {
     #   frequencies (or other parameter) in form of {real imag}.
     #   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
     # 
-    # Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements impedance
+    # Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements
+    # impedance
     #
     #             L1            L2          
     #              ___           ___        
@@ -328,13 +335,13 @@ proc ::rfutil::lxxTEq {freq zxx} {
     set zEq [::rfutil::zTEq $zxx]
     set len [llength $freq]
     for {set i 0} {$i<$len} {incr i} {
-        set freqVal [lindex $freq $i]
-        set z1 [lindex [dict get $zEq z1] $i]
-        set z2 [lindex [dict get $zEq z2] $i]
-        set z3 [lindex [dict get $zEq z3] $i]
-        lappend l1 [expr {[imag $z1]/(2*$pi*$freqVal)}]
-        lappend l2 [expr {[imag $z2]/(2*$pi*$freqVal)}]
-        lappend l3 [expr {[imag $z3]/(2*$pi*$freqVal)}]
+        set freqVal [@ $freq $i]
+        set z1 [@ [dget $zEq z1] $i]
+        set z2 [@ [dget $zEq z2] $i]
+        set z3 [@ [dget $zEq z3] $i]
+        lappend l1 [= {[imag $z1]/(2*$pi*$freqVal)}]
+        lappend l2 [= {[imag $z2]/(2*$pi*$freqVal)}]
+        lappend l3 [= {[imag $z3]/(2*$pi*$freqVal)}]
     }
     return [dict create l1 $l1 l2 $l2 l3 $l3]
 }
@@ -360,12 +367,12 @@ proc ::rfutil::yPEq {yxx} {
     #         \./    |             |    \./                                   
     #          o-----o-------------o-----o       
     #
-    set len [llength [dict get $yxx 11]]
+    set len [llength [dget $yxx 11]]
     set m1c [complex -1 0]
     for {set i 0} {$i<$len} {incr i} {
-        set 11 [lindex [dict get $yxx 11] $i]
-        set 21 [lindex [dict get $yxx 21] $i]
-        set 22 [lindex [dict get $yxx 22] $i]
+        set 11 [@ [dget $yxx 11] $i]
+        set 21 [@ [dget $yxx 21] $i]
+        set 22 [@ [dget $yxx 22] $i]
         lappend y1 [+ $11 $21]
         lappend y2 [+ $22 $21]
         lappend y3 [* $m1c $21]
@@ -382,7 +389,8 @@ proc ::rfutil::cxxPEq {freq yxx} {
     #   frequencies (or other parameter) in form of {real imag}.
     #   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
     # 
-    # Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements admittance
+    # Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements
+    # admittance
     #
     #                     C3                  
     #                      | |                
@@ -399,13 +407,13 @@ proc ::rfutil::cxxPEq {freq yxx} {
     set yEq [::rfutil::yPEq $yxx]
     set len [llength $freq]
     for {set i 0} {$i<$len} {incr i} {
-        set freqVal [lindex $freq $i]
-        set y1 [lindex [dict get $yEq y1] $i]
-        set y2 [lindex [dict get $yEq y2] $i]
-        set y3 [lindex [dict get $yEq y3] $i]
-        lappend c1 [expr {[imag $y1]/(2*$pi*$freqVal)}]
-        lappend c2 [expr {[imag $y2]/(2*$pi*$freqVal)}]
-        lappend c3 [expr {[imag $y3]/(2*$pi*$freqVal)}]
+        set freqVal [@ $freq $i]
+        set y1 [@ [dget $yEq y1] $i]
+        set y2 [@ [dget $yEq y2] $i]
+        set y3 [@ [dget $yEq y3] $i]
+        lappend c1 [= {[imag $y1]/(2*$pi*$freqVal)}]
+        lappend c2 [= {[imag $y2]/(2*$pi*$freqVal)}]
+        lappend c3 [= {[imag $y3]/(2*$pi*$freqVal)}]
     }
     return [dict create c1 $c1 c2 $c2 c3 $c3]
 }
@@ -419,7 +427,8 @@ proc ::rfutil::lxxPEq {freq yxx} {
     #   frequencies (or other parameter) in form of {real imag}.
     #   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
     # 
-    # Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements impedance
+    # Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements
+    # impedance
     #
     #                       L3                 
     #                       ___                
@@ -436,13 +445,13 @@ proc ::rfutil::lxxPEq {freq yxx} {
     set yEq [::rfutil::yPEq $yxx]
     set len [llength $freq]
     for {set i 0} {$i<$len} {incr i} {
-        set freqVal [lindex $freq $i]
-        set y1 [lindex [dict get $yEq y1] $i]
-        set y2 [lindex [dict get $yEq y2] $i]
-        set y3 [lindex [dict get $yEq y3] $i]
-        lappend l1 [expr {-1/(2*$pi*$freqVal*[imag $y1])}]
-        lappend l2 [expr {-1/(2*$pi*$freqVal*[imag $y2])}]
-        lappend l3 [expr {-1/(2*$pi*$freqVal*[imag $y3])}]
+        set freqVal [@ $freq $i]
+        set y1 [@ [dget $yEq y1] $i]
+        set y2 [@ [dget $yEq y2] $i]
+        set y3 [@ [dget $yEq y3] $i]
+        lappend l1 [= {-1/(2*$pi*$freqVal*[imag $y1])}]
+        lappend l2 [= {-1/(2*$pi*$freqVal*[imag $y2])}]
+        lappend l3 [= {-1/(2*$pi*$freqVal*[imag $y3])}]
     }
     return [dict create l1 $l1 l2 $l2 l3 $l3]
 }
@@ -457,14 +466,14 @@ proc ::rfutil::inv2x2 {mat} {
     # 
     # Returns dictionary of the same form as input dictionary with resulted matrix
     #
-    set len [llength [dict get $mat 11]]
+    set len [llength [dget $mat 11]]
     set 1c [complex 1 0]
     set m1c [complex -1 0]
     for {set i 0} {$i<$len} {incr i} {
-        set a [lindex [dict get $mat 11] $i]
-        set b [lindex [dict get $mat 12] $i]
-        set c [lindex [dict get $mat 21] $i]
-        set d [lindex [dict get $mat 22] $i]
+        set a [@ [dget $mat 11] $i]
+        set b [@ [dget $mat 12] $i]
+        set c [@ [dget $mat 21] $i]
+        set d [@ [dget $mat 22] $i]
         set det [- [* $a $d] [* $b $c]]
         if {([real $det]==0.0) && ([imag $det]==0.0)} {
             error "Matrix can't be inverted"
@@ -486,20 +495,20 @@ proc ::rfutil::matMul2x2 {mat1 mat2} {
     #                
     # Returns dictionary of the same form as input dictionaries with resulted matrix
     #
-    set len1 [llength [dict get $mat1 11]]
-    set len2 [llength [dict get $mat2 11]]
+    set len1 [llength [dget $mat1 11]]
+    set len2 [llength [dget $mat2 11]]
     if {$len1!=$len2} {
         error "Lengths of matrix elements lists are different"
     }
     for {set i 0} {$i<$len1} {incr i} {
-        set a1 [lindex [dict get $mat1 11] $i]
-        set b1 [lindex [dict get $mat1 12] $i]
-        set c1 [lindex [dict get $mat1 21] $i]
-        set d1 [lindex [dict get $mat1 22] $i]
-        set a2 [lindex [dict get $mat2 11] $i]
-        set b2 [lindex [dict get $mat2 12] $i]
-        set c2 [lindex [dict get $mat2 21] $i]
-        set d2 [lindex [dict get $mat2 22] $i]
+        set a1 [@ [dget $mat1 11] $i]
+        set b1 [@ [dget $mat1 12] $i]
+        set c1 [@ [dget $mat1 21] $i]
+        set d1 [@ [dget $mat1 22] $i]
+        set a2 [@ [dget $mat2 11] $i]
+        set b2 [@ [dget $mat2 12] $i]
+        set c2 [@ [dget $mat2 21] $i]
+        set d2 [@ [dget $mat2 22] $i]
         lappend 11 [+ [* $a1 $a2] [* $b1 $c2]]
         lappend 12 [+ [* $a1 $b2] [* $b1 $d2]]
         lappend 21 [+ [* $c1 $a2] [* $d1 $c2]]
@@ -540,13 +549,13 @@ proc ::rfutil::mag {data args} {
     set arguments [argparse -inline {
         {-db -boolean} }]
     set len [llength $data]
-    if {[dict get $arguments db]==1} {
+    if {[dget $arguments db]==1} {
         for {set i 0} {$i<$len} {incr i} {
-            lappend result [expr {20*log10([mod [lindex $data $i]])} ]
+            lappend result [= {20*log10([mod [@ $data $i]])} ]
         }
     } else {
         for {set i 0} {$i<$len} {incr i} {
-            lappend result [mod [lindex $data $i]]
+            lappend result [mod [@ $data $i]]
         }
     }
     return $result
@@ -564,13 +573,13 @@ proc ::rfutil::angle {data args} {
         {-deg -boolean} }]
     variable radtodeg
     set len [llength $data]
-    if {[dict get $arguments deg]==1} {
+    if {[dget $arguments deg]==1} {
         for {set i 0} {$i<$len} {incr i} {
-            lappend result [expr {$radtodeg*[arg [lindex $data $i]]}]
+            lappend result [= {$radtodeg*[arg [@ $data $i]]}]
         }
     } else {
         for {set i 0} {$i<$len} {incr i} {
-            lappend result [arg [lindex $data $i]]
+            lappend result [arg [@ $data $i]]
         }
     }
     return $result

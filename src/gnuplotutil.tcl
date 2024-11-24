@@ -6,6 +6,10 @@ package provide gnuplotutil 0.1
 namespace eval ::gnuplotutil {
 
     namespace export plotXYN plotXNYN multiplotXNYN plotHist
+    interp alias {} dget {} dict get
+    interp alias {} @ {} lindex
+    interp alias {} = {} expr
+    interp alias {} dexist {} dict exists
 }
 
 proc gnuplotutil::plotXYN {x args} {
@@ -32,7 +36,8 @@ proc gnuplotutil::plotXYN {x args} {
     # set x [list 0 1 2 3 4 5 6]
     # set y1 [list 0 1 4 9 16 25 36]
     # set y2 [list 0 1 8 27 64 125 216]
-    # gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2] -columns $y1 $y2
+    # gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2]
+    # -columns $y1 $y2
     # ```
     set arguments [argparse -inline {
         {-xlog -boolean}
@@ -58,30 +63,30 @@ proc gnuplotutil::plotXYN {x args} {
     set optcmdStr ""
     set backgroundStr ""
     set darkmodeStr ""
-    if {[dict get $arguments xlog]==1} {
+    if {[dget $arguments xlog]==1} {
         set xscaleStr "set logscale x"
     }
-    if {[dict get $arguments ylog]==1} {
+    if {[dget $arguments ylog]==1} {
         set yscaleStr "set logscale y"
     }
-    if {[dict get $arguments grid]==1} {
+    if {[dget $arguments grid]==1} {
         set gridStr "set grid"
     }
-    if {[dict exist $arguments names]==1} {
-        set columnNames [dict get $arguments names]
+    if {[dexist $arguments names]==1} {
+        set columnNames [dget $arguments names]
     }
-    if {[dict exist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
+    if {[dexist $arguments xlabel]==1} {
+        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
     }
-    if {[dict exist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    if {[dexist $arguments ylabel]==1} {
+        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
     }
-    if {[dict exist $arguments optcmd]==1} {
-        set optcmdStr [dict get $arguments optcmd]
+    if {[dexist $arguments optcmd]==1} {
+        set optcmdStr [dget $arguments optcmd]
     }
-    if {[dict get $arguments darkmode]==1} {
+    if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced background rgb 'black'
+            set term [dget $arguments terminal] noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -90,11 +95,11 @@ proc gnuplotutil::plotXYN {x args} {
         "
     } else {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced
+            set term [dget $arguments terminal] noenhanced
         "
     }
     set yColumnCount 0
-    foreach val [dict get $arguments columns] {
+    foreach val [dget $arguments columns] {
         if {[llength $val] != [llength $x]} {
             error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of points of x-axis\
                     data"
@@ -102,9 +107,9 @@ proc gnuplotutil::plotXYN {x args} {
         }
     }
     # fill output structure with values
-    set numCol [llength [dict get $arguments columns]]
-    if {([dict exist $arguments names]==1)} {
-        if {[llength $columnNames] != [expr {$numCol}]} {
+    set numCol [llength [dget $arguments columns]]
+    if {([dexist $arguments names]==1)} {
+        if {[llength $columnNames] != [= {$numCol}]} {
             error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
@@ -114,16 +119,16 @@ proc gnuplotutil::plotXYN {x args} {
     }
     set numRow [llength $x]
     for {set i 0} {$i<$numRow} {incr i} {
-        set row [lindex $x $i]
-        foreach val [dict get $arguments columns] {
-            lappend row [lindex $val $i]
+        set row [@ $x $i]
+        foreach val [dget $arguments columns] {
+            lappend row [@ $val $i]
         }
         lappend outList $row
     }
     # save data to temporary file
     set counter 0
     while {true} {
-        set filePath [file join [dict get $arguments path] gnuplotTemp${counter}.csv]
+        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
         if {[file exists $filePath]} {
            incr counter
         } else {
@@ -134,9 +139,9 @@ proc gnuplotutil::plotXYN {x args} {
     puts $resFile [::csv::joinlist $outList " "]
     close $resFile
     # create command strings for gnuplot
-    set commandStr "plot '[file join [dict get $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
+    set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
     for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using 1:[expr {$i+2}] with lines "
+        set commandStr  "${commandStr}, '' using 1:[= {$i+2}] with lines "
     }
     set commandStr "
         set mouse
@@ -151,7 +156,7 @@ proc gnuplotutil::plotXYN {x args} {
         $commandStr
         pause mouse close
     "
-    if {[dict get $arguments background]==1} {
+    if {[dget $arguments background]==1} {
         set status [catch {exec gnuplot << "
             $commandStr
             " & } errorStr]
@@ -161,7 +166,7 @@ proc gnuplotutil::plotXYN {x args} {
             "} errorStr]
     }
     
-    if {[dict get $arguments nodelete]==0} {
+    if {[dget $arguments nodelete]==0} {
             file delete $filePath
     }   
     if {$status>0} {
@@ -207,54 +212,54 @@ proc gnuplotutil::plotXNYNMp {args} {
     set gridStrUnset ""
     set autoTitleStr ""
     set optcmdStr ""
-    if {[dict get $arguments xlog]==1} {
+    if {[dget $arguments xlog]==1} {
         set xscaleStr "set logscale x"
         set xscaleStrUnset "unset logscale x"
     }
-    if {[dict get $arguments ylog]==1} {
+    if {[dget $arguments ylog]==1} {
         set yscaleStr "set logscale y"
         set yscaleStrUnset "unset logscale y"
     }
-    if {[dict get $arguments grid]==1} {
+    if {[dget $arguments grid]==1} {
         set gridStr "set grid"
         set gridStrUnset "unset grid"
     }
-    if {[dict exist $arguments names]==1} {
-        set columnNames [dict get $arguments names]
+    if {[dexist $arguments names]==1} {
+        set columnNames [dget $arguments names]
     }
-    if {[dict exist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
+    if {[dexist $arguments xlabel]==1} {
+        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
         set xlabelStrUnset "unset xlabel"
     }
-    if {[dict exist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    if {[dexist $arguments ylabel]==1} {
+        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
         set ylabelStrUnset "unset ylabel"
     }
-    set columnsNum [llength [dict get $arguments columns]]
+    set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
         error "Number of data columns $columnsNum is odd"
     }
-    set dataNum [expr {int($columnsNum/2)}]
+    set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
     for {set i 0} {$i<$dataNum} {incr i} {
-        set xLen [llength [lindex [dict get $arguments columns] [expr {int($i*2)}]]]
-        set yLen [llength [lindex [dict get $arguments columns] [expr {int($i*2+1)}]]]
+        set xLen [llength [@ [dget $arguments columns] [= {int($i*2)}]]]
+        set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            error "Number of points of y-axis data (column [expr {1+$yColumnCount}]) doesn't match the number of points\
+            error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number of points\
                     of x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
-    if {([dict exist $arguments names]==1)} {
+    if {([dexist $arguments names]==1)} {
             set headerString {}
-        if {[llength $columnNames] != [expr {$dataNum}]} {
+        if {[llength $columnNames] != [= {$dataNum}]} {
             error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
-                set headerString "${headerString} { } [lindex $columnNames $i]"
+                set headerString "${headerString} { } [@ $columnNames $i]"
             }
             lappend outList $headerString
             set autoTitleStr "set key autotitle columnheader"
@@ -264,9 +269,9 @@ proc gnuplotutil::plotXNYNMp {args} {
     for {set i 0} {$i<$numRow} {incr i} {
         set row {}
         for {set j 0} {$j<$dataNum} {incr j} {
-            set columns [dict get $arguments columns]
-            set xVal [lindex [lindex $columns [expr {int($j*2)}]] $i]
-            set yVal [lindex [lindex $columns [expr {int($j*2+1)}]] $i]
+            set columns [dget $arguments columns]
+            set xVal [@ [@ $columns [= {int($j*2)}]] $i]
+            set yVal [@ [@ $columns [= {int($j*2+1)}]] $i]
             if {$xVal=={}} {
                 lappend row { } { }
             } else {
@@ -278,7 +283,7 @@ proc gnuplotutil::plotXNYNMp {args} {
     # save data to temporary file
     set counter 0
     while {true} {
-        set filePath [file join [dict get $arguments path] gnuplotTemp${counter}.csv]
+        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
         if {[file exists $filePath]} {
            incr counter
         } else {
@@ -289,9 +294,9 @@ proc gnuplotutil::plotXNYNMp {args} {
     puts $resFile [::csv::joinlist $outList " "]
     close $resFile
     # create command strings for gnuplot
-    set commandStr "plot '[file join [dict get $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
+    set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
     for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using 1:[expr {$i+2}] with lines "
+        set commandStr  "${commandStr}, '' using 1:[= {$i+2}] with lines "
     }
     set commandStr "
         set mouse
@@ -306,7 +311,7 @@ proc gnuplotutil::plotXNYNMp {args} {
         $commandStr
         pause mouse close
     "
-    if {[dict get $arguments background]==1} {
+    if {[dget $arguments background]==1} {
         set status [catch {exec gnuplot << "
             $commandStr
             " & } errorStr]
@@ -315,7 +320,7 @@ proc gnuplotutil::plotXNYNMp {args} {
             $commandStr
             "} errorStr]
     }
-    if {[dict get $arguments nodelete]==0} {
+    if {[dget $arguments nodelete]==0} {
             file delete $filePath
     }   
     if {$status>0} {
@@ -350,7 +355,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     # set y1 [list 0 1 4 9 16 25 36]
     # set x2 [list 0 1 2 3 4 5 6 7]
     # set y2 [list 0 1 8 27 64 125 216 350]
-    # gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -names [list y1 y2] -columns $x1 $y1 $x2 $y2
+    # gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -names [list y1 y2]
+    # -columns $x1 $y1 $x2 $y2
     # ```
     set arguments [argparse -inline {
         {-xlog -boolean}
@@ -376,30 +382,30 @@ proc ::gnuplotutil::plotXNYN {args} {
     set optcmdStr ""
     set backgroundStr ""
     set darkmodeStr ""
-    if {[dict get $arguments xlog]==1} {
+    if {[dget $arguments xlog]==1} {
         set xscaleStr "set logscale x"
     }
-    if {[dict get $arguments ylog]==1} {
+    if {[dget $arguments ylog]==1} {
         set yscaleStr "set logscale y"
     }
-    if {[dict get $arguments grid]==1} {
+    if {[dget $arguments grid]==1} {
         set gridStr "set grid"
     }
-    if {[dict exist $arguments names]==1} {
-        set columnNames [dict get $arguments names]
+    if {[dexist $arguments names]==1} {
+        set columnNames [dget $arguments names]
     }
-    if {[dict exist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
+    if {[dexist $arguments xlabel]==1} {
+        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
     }
-    if {[dict exist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    if {[dexist $arguments ylabel]==1} {
+        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
     }
-    if {[dict exist $arguments optcmd]==1} {
-        set optcmdStr [dict get $arguments optcmd]
+    if {[dexist $arguments optcmd]==1} {
+        set optcmdStr [dget $arguments optcmd]
     }
-    if {[dict get $arguments darkmode]==1} {
+    if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced background rgb 'black'
+            set term [dget $arguments terminal] noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -408,34 +414,34 @@ proc ::gnuplotutil::plotXNYN {args} {
         "
     } else {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced
+            set term [dget $arguments terminal] noenhanced
         "
     }
-    set columnsNum [llength [dict get $arguments columns]]
+    set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
         error "Number of data columns $columnsNum is odd"
     }
-    set dataNum [expr {int($columnsNum/2)}]
+    set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
     for {set i 0} {$i<$dataNum} {incr i} {
-        set xLen [llength [lindex [dict get $arguments columns] [expr {int($i*2)}]]]
-        set yLen [llength [lindex [dict get $arguments columns] [expr {int($i*2+1)}]]]
+        set xLen [llength [@ [dget $arguments columns] [= {int($i*2)}]]]
+        set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            error "Number of points of y-axis data (column [expr {1+$yColumnCount}]) doesn't match the number of points\
+            error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number of points\
                     of x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
-    if {([dict exist $arguments names]==1)} {
+    if {([dexist $arguments names]==1)} {
             set headerString {}
-        if {[llength $columnNames] != [expr {$dataNum}]} {
+        if {[llength $columnNames] != [= {$dataNum}]} {
             error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
-                set headerString "${headerString} { } [lindex $columnNames $i]"
+                set headerString "${headerString} { } [@ $columnNames $i]"
             }
             lappend outList $headerString
             set autoTitleStr "set key autotitle columnheader"
@@ -445,9 +451,9 @@ proc ::gnuplotutil::plotXNYN {args} {
     for {set i 0} {$i<$numRow} {incr i} {
         set row {}
         for {set j 0} {$j<$dataNum} {incr j} {
-            set columns [dict get $arguments columns]
-            set xVal [lindex [lindex $columns [expr {int($j*2)}]] $i]
-            set yVal [lindex [lindex $columns [expr {int($j*2+1)}]] $i]
+            set columns [dget $arguments columns]
+            set xVal [@ [@ $columns [= {int($j*2)}]] $i]
+            set yVal [@ [@ $columns [= {int($j*2+1)}]] $i]
             if {$xVal=={}} {
                 lappend row { } { }
             } else {
@@ -459,7 +465,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     # save data to temporary file
     set counter 0
     while {true} {
-        set filePath [file join [dict get $arguments path] gnuplotTemp${counter}.csv]
+        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
         if {[file exists $filePath]} {
            incr counter
         } else {
@@ -470,9 +476,9 @@ proc ::gnuplotutil::plotXNYN {args} {
     puts $resFile [::csv::joinlist $outList " "]
     close $resFile
     # create command strings for gnuplot
-    set commandStr "plot '[file join [dict get $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
+    set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
     for {set i 1} {$i<$dataNum} {incr i} {
-        set commandStr  "${commandStr}, '' using [expr {$i*2+1}]:[expr {$i*2+2}] with lines "
+        set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] with lines "
     }
     set commandStr "
         set mouse
@@ -487,7 +493,7 @@ proc ::gnuplotutil::plotXNYN {args} {
         $commandStr
         pause mouse close
     "
-    if {[dict get $arguments background]==1} {
+    if {[dget $arguments background]==1} {
         set status [catch {exec gnuplot << "
             $commandStr
             " & } errorStr]
@@ -497,7 +503,7 @@ proc ::gnuplotutil::plotXNYN {args} {
             "} errorStr]
     }
     
-    if {[dict get $arguments nodelete]==0} {
+    if {[dget $arguments nodelete]==0} {
         file delete $filePath
     }   
     if {$status>0} {
@@ -544,54 +550,54 @@ proc gnuplotutil::plotXNYNMp {args} {
     set gridStrUnset ""
     set autoTitleStr ""
     set optcmdStr ""
-    if {[dict get $arguments xlog]==1} {
+    if {[dget $arguments xlog]==1} {
         set xscaleStr "set logscale x"
         set xscaleStrUnset "unset logscale x"
     }
-    if {[dict get $arguments ylog]==1} {
+    if {[dget $arguments ylog]==1} {
         set yscaleStr "set logscale y"
         set yscaleStrUnset "unset logscale y"
     }
-    if {[dict get $arguments grid]==1} {
+    if {[dget $arguments grid]==1} {
         set gridStr "set grid"
         set gridStrUnset "unset grid"
     }
-    if {[dict exist $arguments names]==1} {
-        set columnNames [dict get $arguments names]
+    if {[dexist $arguments names]==1} {
+        set columnNames [dget $arguments names]
     }
-    if {[dict exist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
+    if {[dexist $arguments xlabel]==1} {
+        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
         set xlabelStrUnset "unset xlabel"
     }
-    if {[dict exist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    if {[dexist $arguments ylabel]==1} {
+        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
         set ylabelStrUnset "unset ylabel"
     }
-    set columnsNum [llength [dict get $arguments columns]]
+    set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
         error "Number of data columns $columnsNum is odd"
     }
-    set dataNum [expr {int($columnsNum/2)}]
+    set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
     for {set i 0} {$i<$dataNum} {incr i} {
-        set xLen [llength [lindex [dict get $arguments columns] [expr {int($i*2)}]]]
-        set yLen [llength [lindex [dict get $arguments columns] [expr {int($i*2+1)}]]]
+        set xLen [llength [@ [dget $arguments columns] [= {int($i*2)}]]]
+        set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            error "Number of points of y-axis data (column [expr {1+$yColumnCount}]) doesn't match the number of points\
+            error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number of points\
                     of x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
-    if {([dict exist $arguments names]==1)} {
+    if {([dexist $arguments names]==1)} {
             set headerString {}
-        if {[llength $columnNames] != [expr {$dataNum}]} {
+        if {[llength $columnNames] != [= {$dataNum}]} {
             error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
-                set headerString "${headerString} { } [lindex $columnNames $i]"
+                set headerString "${headerString} { } [@ $columnNames $i]"
             }
             lappend outList $headerString
             set autoTitleStr "set key autotitle columnheader"
@@ -601,9 +607,9 @@ proc gnuplotutil::plotXNYNMp {args} {
     for {set i 0} {$i<$numRow} {incr i} {
         set row {}
         for {set j 0} {$j<$dataNum} {incr j} {
-            set columns [dict get $arguments columns]
-            set xVal [lindex [lindex $columns [expr {int($j*2)}]] $i]
-            set yVal [lindex [lindex $columns [expr {int($j*2+1)}]] $i]
+            set columns [dget $arguments columns]
+            set xVal [@ [@ $columns [= {int($j*2)}]] $i]
+            set yVal [@ [@ $columns [= {int($j*2+1)}]] $i]
             if {$xVal=={}} {
                 lappend row { } { }
             } else {
@@ -615,7 +621,7 @@ proc gnuplotutil::plotXNYNMp {args} {
     # save data to temporary file
     set counter 0
     while {true} {
-        set filePath [file join [dict get $arguments path] gnuplotTemp${counter}.csv]
+        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
         if {[file exists $filePath]} {
            incr counter
         } else {
@@ -628,7 +634,7 @@ proc gnuplotutil::plotXNYNMp {args} {
     # create command strings for gnuplot
     set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2 with lines "
     for {set i 1} {$i<$dataNum} {incr i} {
-        set commandStr  "${commandStr}, '' using [expr {$i*2+1}]:[expr {$i*2+2}] with lines "
+        set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] with lines "
     }
     set gnuplotCmdString "
         $autoTitleStr
@@ -659,7 +665,8 @@ proc gnuplotutil::multiplotXNYN {layout args} {
     #  -darkmode - boolean switch that enables dark mode for graph, default off
     #  -path - location of temporary file, default is current location
     #  -plots - argument that provides the list of individual plots, the number of plots is not restricted and must 
-    #    be provided at the end of command after all switches, the inputs syntax is the same as [::gnuplotutil::plotXNYN]
+    #    be provided at the end of command after all switches, the inputs syntax is the same as
+    #    [::gnuplotutil::plotXNYN]
     # Returns: gnuplot window with plotted data as multiplot
     # ```
     # Example:
@@ -669,7 +676,8 @@ proc gnuplotutil::multiplotXNYN {layout args} {
     # set y2 [list 36 25 16 9 4 1]
     # set x3 [list 7 8 9 10]
     # set y3 [list 49 64 81 100]
-    # set plot1 [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3] -columns $x1 $y1 $x2 $y2 $x3 $y3]
+    # set plot1 [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]
+    # -columns $x1 $y1 $x2 $y2 $x3 $y3]
     # set plot2 [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2 ]
     # set plot3 [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3 ]
     # set plot4 [list -grid -names [list name2] -columns $x2 $y2 ]
@@ -684,17 +692,17 @@ proc gnuplotutil::multiplotXNYN {layout args} {
         {-path -argument -default "."}
         {-plots -catchall}
     }]
-    if {[dict exists $arguments optcmd]==0} {
+    if {[dexist $arguments optcmd]==0} {
         set optcmd ""
     }
     if {[llength $layout]>2} {
         error "Length of layout arguments is more than 2"
     } else {
-        set layoutStr "set multiplot layout [lindex $layout 0],[lindex $layout 1]"
+        set layoutStr "set multiplot layout [@ $layout 0],[@ $layout 1]"
     }
-    if {[dict get $arguments darkmode]==1} {
+    if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced background rgb 'black'
+            set term [dget $arguments terminal] noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -703,13 +711,13 @@ proc gnuplotutil::multiplotXNYN {layout args} {
         "
     } else {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced
+            set term [dget $arguments terminal] noenhanced
         "
     }
-    foreach plot [dict get $arguments plots] {
+    foreach plot [dget $arguments plots] {
         set plotResults [gnuplotutil::plotXNYNMp {*}$plot]
-        lappend cmdStrings [dict get $plotResults cmdString]
-        lappend fileNames [dict get $plotResults file]
+        lappend cmdStrings [dget $plotResults cmdString]
+        lappend fileNames [dget $plotResults file]
     }
     set commandStr "
         $optcmd
@@ -719,7 +727,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
         unset multiplot
         pause mouse close
     "
-    if {[dict get $arguments background]==1} {
+    if {[dget $arguments background]==1} {
         set status [catch {exec gnuplot << "
             $commandStr
             " & } errorStr]
@@ -728,7 +736,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
             $commandStr
             "} errorStr]
     }
-    if {[dict get $arguments nodelete]==0} {
+    if {[dget $arguments nodelete]==0} {
         foreach fileName $fileNames {
             file delete $fileName
         }
@@ -769,7 +777,8 @@ proc gnuplotutil::plotHist {x args} {
     # set x1 [list 0 1 2 3 4 5 6]
     # set y1 [list 0 1 4 9 16 25 36]
     # set y2 [list 0 1 8 27 64 125 216]
-    # gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+    # gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" -ylabel "y label" -names [list y1 y2]
+    # -columns $y1 $y2]
     # ```
     set arguments [argparse -inline {
         {-nodelete -boolean}
@@ -801,15 +810,15 @@ proc gnuplotutil::plotHist {x args} {
     set fillStr ""
     set backgroundStr ""
     set darkmodeStr ""
-    if {[dict exists $arguments names]} {
-        set columnNames [dict get $arguments names]
+    if {[dexist $arguments names]} {
+        set columnNames [dget $arguments names]
     }
-    if {[dict exists $arguments optcmd]} {
-        set optcmdStr [dict get $arguments optcmd]
+    if {[dexist $arguments optcmd]} {
+        set optcmdStr [dget $arguments optcmd]
     }
-    if {[dict get $arguments darkmode]==1} {
+    if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced background rgb 'black'
+            set term [dget $arguments terminal] noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -818,46 +827,46 @@ proc gnuplotutil::plotHist {x args} {
         "
     } else {
         set darkmodeStr "
-            set term [dict get $arguments terminal] noenhanced
+            set term [dget $arguments terminal] noenhanced
         "
     }
-    if {[dict get $arguments grid]==1} {
+    if {[dget $arguments grid]==1} {
         set gridStr "set grid"
     }
-    if {[dict exists $arguments xlabel]} {
-        set xlabelStr "set xlabel '[dict get $arguments xlabel]'"
+    if {[dexist $arguments xlabel]} {
+        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
     }
-    if {[dict exists $arguments ylabel]} {
-        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    if {[dexist $arguments ylabel]} {
+        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
     }
-    if {[dict exists $arguments ylabel]} {
-        set ylabelStr "set ylabel '[dict get $arguments ylabel]'"
+    if {[dexist $arguments ylabel]} {
+        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
     }
-    if {[dict exists $arguments boxwidth]} {
-        set boxwidthStr "set boxwidth '[dict get $arguments boxwidth]'"
+    if {[dexist $arguments boxwidth]} {
+        set boxwidthStr "set boxwidth '[dget $arguments boxwidth]'"
     }
-    if {[dict exists $arguments fill]} {
-        if {[dict get $arguments transparent]==1} {
-            set fillStr "set style fill transparent [dict get $arguments fill]"
+    if {[dexist $arguments fill]} {
+        if {[dget $arguments transparent]==1} {
+            set fillStr "set style fill transparent [dget $arguments fill]"
         } else {
-            set fillStr "set style fill [dict get $arguments fill]"
+            set fillStr "set style fill [dget $arguments fill]"
         }
-        if {[dict exists $arguments density]} {
-            append fillStr " [dict get $arguments density]"
+        if {[dexist $arguments density]} {
+            append fillStr " [dget $arguments density]"
         }
-        if {[dict exists $arguments border]} {
-            append fillStr " border lt [dict get $arguments border]"
+        if {[dexist $arguments border]} {
+            append fillStr " border lt [dget $arguments border]"
         }
     }
-    if {[dict exists $arguments style]} {
-        if {([dict exists $arguments gap]) && ([dict get $arguments style] in {clustered})} {
-             set styleStr "set style histogram [dict get $arguments style] gap [dict get $arguments gap]"
+    if {[dexist $arguments style]} {
+        if {([dexist $arguments gap]) && ([dget $arguments style] in {clustered})} {
+             set styleStr "set style histogram [dget $arguments style] gap [dget $arguments gap]"
         } else {
-            set styleStr "set style histogram [dict get $arguments style]"
+            set styleStr "set style histogram [dget $arguments style]"
         }
     }
     set yColumnCount 0
-    foreach val [dict get $arguments columns] {
+    foreach val [dget $arguments columns] {
         if {[llength $val] != [llength $x]} {
             error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of points of x-axis\
                     data"
@@ -865,9 +874,9 @@ proc gnuplotutil::plotHist {x args} {
         }
     }
     # fill output structure with values
-    set numCol [llength [dict get $arguments columns]]
-    if {([dict exist $arguments names]==1)} {
-        if {[llength $columnNames] != [expr {$numCol}]} {
+    set numCol [llength [dget $arguments columns]]
+    if {([dexist $arguments names]==1)} {
+        if {[llength $columnNames] != [= {$numCol}]} {
             error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
@@ -877,16 +886,16 @@ proc gnuplotutil::plotHist {x args} {
     }
     set numRow [llength $x]
     for {set i 0} {$i<$numRow} {incr i} {
-        set row [lindex $x $i]
-        foreach val [dict get $arguments columns] {
-            lappend row [lindex $val $i]
+        set row [@ $x $i]
+        foreach val [dget $arguments columns] {
+            lappend row [@ $val $i]
         }
         lappend outList $row
     }
     # save data to temporary file
     set counter 0
     while {true} {
-        set filePath [file join [dict get $arguments path] gnuplotTemp${counter}.csv]
+        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
         if {[file exists $filePath]} {
            incr counter
         } else {
@@ -899,7 +908,7 @@ proc gnuplotutil::plotHist {x args} {
     # create command strings for gnuplot
     set commandStr "plot 'gnuplotTemp${counter}.csv' using 2:xtic(1)"
     for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using [expr {$i+2}]"
+        set commandStr  "${commandStr}, '' using [= {$i+2}]"
     }
     set commandStr "
         set mouse
@@ -915,7 +924,7 @@ proc gnuplotutil::plotHist {x args} {
         $commandStr
         pause mouse close
     "
-    if {[dict get $arguments background]==1} {
+    if {[dget $arguments background]==1} {
         set status [catch {exec gnuplot << "
             $commandStr
             " & } errorStr]
@@ -924,7 +933,7 @@ proc gnuplotutil::plotHist {x args} {
             $commandStr
             "} errorStr]
     }
-    if {[dict get $arguments nodelete]==0} {
+    if {[dget $arguments nodelete]==0} {
         file delete $filePath
     }   
     if {$status>0} {
