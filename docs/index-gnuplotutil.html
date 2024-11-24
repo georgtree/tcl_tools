@@ -82,7 +82,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
         {<font color=#463e11>-nodelete</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-background</font> <font color=#463e11>-boolean</font> <font color=#463e11>-require</font> {nodelete}}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
-        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
         {<font color=#463e11>-plots</font> <font color=#463e11>-catchall</font>}
@@ -95,9 +95,21 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> layoutStr <font color=#035103>&quot;set multiplot layout <font color=#4A181B>[</font>@ <font color=#4A181B>$</font>layout 0<font color=#4A181B>]</font>,<font color=#4A181B>[</font>@ <font color=#4A181B>$</font>layout 1<font color=#4A181B>]</font>&quot;</font>
     }
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> terminal]==1} {
+        <b><font color=#923B23>set</font></b> terminalStr [dget <font color=#4A181B>$arguments</font> terminal]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>global</font></b> tcl_platform
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *linux* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr x11
+        } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *windows nt* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr windows
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> terminalStr qt
+        }
+    }
     <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -106,7 +118,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#463e11>-plots</font> <font color=#
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>foreach</font></b> plot [dget <font color=#4A181B>$arguments</font> plots] {
@@ -220,7 +232,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-background</font> <font color=#463e11>-boolean</font> <font color=#463e11>-require</font> {nodelete}}
-        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
         {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-names</font> <font color=#463e11>-argument</font>}
@@ -247,9 +259,21 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
     <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]} {
         <b><font color=#923B23>set</font></b> optcmdStr [dget <font color=#4A181B>$arguments</font> optcmd]
     }
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> terminal]==1} {
+        <b><font color=#923B23>set</font></b> terminalStr [dget <font color=#4A181B>$arguments</font> terminal]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>global</font></b> tcl_platform
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *linux* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr x11
+        } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *windows nt* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr windows
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> terminalStr qt
+        }
+    }
     <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -258,7 +282,7 @@ gnuplotutil::plotHist <font color=#4A181B>$x1</font> <font color=#463e11>-style<
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> grid]==1} {
@@ -440,7 +464,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
         {<font color=#463e11>-xlabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
-        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;&quot;</font>}
@@ -477,9 +501,21 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
     <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]==1} {
         <b><font color=#923B23>set</font></b> optcmdStr [dget <font color=#4A181B>$arguments</font> optcmd]
     }
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> terminal]==1} {
+        <b><font color=#923B23>set</font></b> terminalStr [dget <font color=#4A181B>$arguments</font> terminal]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>global</font></b> tcl_platform
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *linux* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr x11
+        } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *windows nt* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr windows
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> terminalStr qt
+        }
+    }
     <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -488,7 +524,7 @@ gnuplotutil::plotXNYN <font color=#463e11>-xlog</font> <font color=#463e11>-ylog
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>set</font></b> columnsNum [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$arguments</font> columns]]
@@ -806,7 +842,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
         {<font color=#463e11>-xlabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-ylabel</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-optcmd</font> <font color=#463e11>-argument</font>}
-        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;x11&quot;</font>}
+        {<font color=#463e11>-terminal</font> <font color=#463e11>-argument</font>}
         {<font color=#463e11>-grid</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-darkmode</font> <font color=#463e11>-boolean</font>}
         {<font color=#463e11>-path</font> <font color=#463e11>-argument</font> <font color=#463e11>-default</font> <font color=#035103>&quot;.&quot;</font>}
@@ -843,9 +879,21 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
     <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> optcmd]==1} {
         <b><font color=#923B23>set</font></b> optcmdStr [dget <font color=#4A181B>$arguments</font> optcmd]
     }
+    <b><font color=#923B23>if</font></b> {[dexist <font color=#4A181B>$arguments</font> terminal]==1} {
+        <b><font color=#923B23>set</font></b> terminalStr [dget <font color=#4A181B>$arguments</font> terminal]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>global</font></b> tcl_platform
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *linux* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr x11
+        } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> match <font color=#463e11>-nocase</font> *windows nt* <font color=#4A181B>$tcl_platform(os)</font>]} {
+            <b><font color=#923B23>set</font></b> terminalStr windows
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> terminalStr qt
+        }
+    }
     <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> darkmode]==1} {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced background rgb 'black'</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced background rgb 'black'</font>
 <font color=#035103>            set border lc rgb 'white'</font>
 <font color=#035103>            set xlabel tc rgb 'white'</font>
 <font color=#035103>            set key textcolor rgb 'white'</font>
@@ -854,7 +902,7 @@ gnuplotutil::plotXYN <font color=#4A181B>$x</font> <font color=#463e11>-xlog</fo
 <font color=#035103>        &quot;</font>
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>set</font></b> darkmodeStr <font color=#035103>&quot;</font>
-<font color=#035103>            set term <font color=#4A181B>[</font>dget <font color=#4A181B>$</font>arguments terminal<font color=#4A181B>]</font> noenhanced</font>
+<font color=#035103>            set term <font color=#4A181B>$</font>terminalStr noenhanced</font>
 <font color=#035103>        &quot;</font>
     }
     <b><font color=#923B23>set</font></b> yColumnCount 0

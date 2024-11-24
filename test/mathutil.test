@@ -96,7 +96,7 @@ test movAvgTest-1 {test procedure of moving average filter} -setup {
 }
 
 
-test movAvgTest-2 {test procedure of moving average filter} -setup {
+test movAvgTest-2 {test procedure of moving average filter} -match mtchLst -setup {
     for {set i 0} {$i<=100} {incr i} {
         set xi [= {$i*0.05}]
         lappend x $xi

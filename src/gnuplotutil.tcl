@@ -47,7 +47,7 @@ proc gnuplotutil::plotXYN {x args} {
         {-xlabel -argument}
         {-ylabel -argument}
         {-optcmd -argument}
-        {-terminal -argument -default "x11"}
+        {-terminal -argument}
         {-grid -boolean}
         {-darkmode -boolean}
         {-path -argument -default "."}
@@ -84,9 +84,21 @@ proc gnuplotutil::plotXYN {x args} {
     if {[dexist $arguments optcmd]==1} {
         set optcmdStr [dget $arguments optcmd]
     }
+    if {[dexist $arguments terminal]==1} {
+        set terminalStr [dget $arguments terminal]
+    } else {
+        global tcl_platform
+        if {[string match -nocase *linux* $tcl_platform(os)]} {
+            set terminalStr x11
+        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+            set terminalStr windows
+        } else {
+            set terminalStr qt
+        }
+    }
     if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced background rgb 'black'
+            set term $terminalStr noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -95,7 +107,7 @@ proc gnuplotutil::plotXYN {x args} {
         "
     } else {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced
+            set term $terminalStr noenhanced
         "
     }
     set yColumnCount 0
@@ -176,160 +188,6 @@ proc gnuplotutil::plotXYN {x args} {
     }
 }
 
-proc gnuplotutil::plotXNYNMp {args} {
-    # Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files
-    #  for individual plots
-    #  -xlog - arg xlog boolean switch of log scale of x axis, default off
-    #  -ylog - boolean switch of log scale of y axis, default off
-    #  -xlabel - argument to set x-axis label to display, string must be provided after it
-    #  -ylabel - argument to set y-axis label to display, string must be provided after it
-    #  -grid - boolean switch that enables display of grid, default off
-    #  -path - location of temporary file, default is current location
-    #  -names - argument that enable setting the column names of provided data, value must be provided as list
-    #    in the same order as data columns provided, must have the length 1+number of y data colums
-    #  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must 
-    #    be provided at the end of command after all switches
-    # Returns: list that contains command script and name of data file 
-    set arguments [argparse -inline {
-        {-xlog -boolean}
-        {-ylog -boolean}
-        {-xlabel -argument}
-        {-ylabel -argument}
-        {-grid -boolean}
-        {-path -argument -default "."}
-        {-names -argument}
-        {-columns -catchall}
-    }]
-    set xscaleStr ""
-    set yscaleStr ""
-    set xlabelStr ""
-    set ylabelStr ""
-    set gridStr ""
-    set xscaleStrUnset ""
-    set yscaleStrUnset ""
-    set xlabelStrUnset ""
-    set ylabelStrUnset ""
-    set gridStrUnset ""
-    set autoTitleStr ""
-    set optcmdStr ""
-    if {[dget $arguments xlog]==1} {
-        set xscaleStr "set logscale x"
-        set xscaleStrUnset "unset logscale x"
-    }
-    if {[dget $arguments ylog]==1} {
-        set yscaleStr "set logscale y"
-        set yscaleStrUnset "unset logscale y"
-    }
-    if {[dget $arguments grid]==1} {
-        set gridStr "set grid"
-        set gridStrUnset "unset grid"
-    }
-    if {[dexist $arguments names]==1} {
-        set columnNames [dget $arguments names]
-    }
-    if {[dexist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
-        set xlabelStrUnset "unset xlabel"
-    }
-    if {[dexist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
-        set ylabelStrUnset "unset ylabel"
-    }
-    set columnsNum [llength [dget $arguments columns]]
-    if {$columnsNum % 2 != 0} {
-        error "Number of data columns $columnsNum is odd"
-    }
-    set dataNum [= {int($columnsNum/2)}]
-    set yColumnCount 0
-    for {set i 0} {$i<$dataNum} {incr i} {
-        set xLen [llength [@ [dget $arguments columns] [= {int($i*2)}]]]
-        set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
-        lappend xLengths $xLen
-        if {$xLen != $yLen} {
-            error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number of points\
-                    of x-axis data (column $yColumnCount)"
-        }
-        incr yColumnCount
-    }
-    # fill output structure with values
-    if {([dexist $arguments names]==1)} {
-            set headerString {}
-        if {[llength $columnNames] != [= {$dataNum}]} {
-            error "Column names count is not the same as count of data columns"
-            set autoTitleStr ""
-        } else {
-            for {set i 0} {$i<=$dataNum} {incr i} {
-                set headerString "${headerString} { } [@ $columnNames $i]"
-            }
-            lappend outList $headerString
-            set autoTitleStr "set key autotitle columnheader"
-        }
-    }
-    set numRow [tcl::mathfunc::max {*}$xLengths]
-    for {set i 0} {$i<$numRow} {incr i} {
-        set row {}
-        for {set j 0} {$j<$dataNum} {incr j} {
-            set columns [dget $arguments columns]
-            set xVal [@ [@ $columns [= {int($j*2)}]] $i]
-            set yVal [@ [@ $columns [= {int($j*2+1)}]] $i]
-            if {$xVal=={}} {
-                lappend row { } { }
-            } else {
-                lappend row $xVal $yVal
-            }
-        }
-        lappend outList $row
-    }
-    # save data to temporary file
-    set counter 0
-    while {true} {
-        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
-        if {[file exists $filePath]} {
-           incr counter
-        } else {
-            set resFile [open $filePath w+]
-            break
-        }
-    }
-    puts $resFile [::csv::joinlist $outList " "]
-    close $resFile
-    # create command strings for gnuplot
-    set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
-    for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using 1:[= {$i+2}] with lines "
-    }
-    set commandStr "
-        set mouse
-        $darkmodeStr
-        $optcmdStr
-        $autoTitleStr
-        $xlabelStr
-        $ylabelStr
-        $xscaleStr
-        $yscaleStr
-        $gridStr
-        $commandStr
-        pause mouse close
-    "
-    if {[dget $arguments background]==1} {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            " & } errorStr]
-    } else {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            "} errorStr]
-    }
-    if {[dget $arguments nodelete]==0} {
-            file delete $filePath
-    }   
-    if {$status>0} {
-        return $errorStr
-    } else {
-        return
-    }
-}
-
 proc ::gnuplotutil::plotXNYN {args} {
     # Plots 2D graphs in Gnuplot with individual x-values.
     # Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.
@@ -366,7 +224,7 @@ proc ::gnuplotutil::plotXNYN {args} {
         {-xlabel -argument}
         {-ylabel -argument}
         {-optcmd -argument}
-        {-terminal -argument -default "x11"}
+        {-terminal -argument}
         {-grid -boolean}
         {-darkmode -boolean}
         {-path -argument -default ""}
@@ -403,9 +261,21 @@ proc ::gnuplotutil::plotXNYN {args} {
     if {[dexist $arguments optcmd]==1} {
         set optcmdStr [dget $arguments optcmd]
     }
+    if {[dexist $arguments terminal]==1} {
+        set terminalStr [dget $arguments terminal]
+    } else {
+        global tcl_platform
+        if {[string match -nocase *linux* $tcl_platform(os)]} {
+            set terminalStr x11
+        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+            set terminalStr windows
+        } else {
+            set terminalStr qt
+        }
+    }
     if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced background rgb 'black'
+            set term $terminalStr noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -414,7 +284,7 @@ proc ::gnuplotutil::plotXNYN {args} {
         "
     } else {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced
+            set term $terminalStr noenhanced
         "
     }
     set columnsNum [llength [dget $arguments columns]]
@@ -687,7 +557,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
         {-nodelete -boolean}
         {-background -boolean -require {nodelete}}
         {-optcmd -argument}
-        {-terminal -argument -default "x11"}
+        {-terminal -argument}
         {-darkmode -boolean}
         {-path -argument -default "."}
         {-plots -catchall}
@@ -700,9 +570,21 @@ proc gnuplotutil::multiplotXNYN {layout args} {
     } else {
         set layoutStr "set multiplot layout [@ $layout 0],[@ $layout 1]"
     }
+    if {[dexist $arguments terminal]==1} {
+        set terminalStr [dget $arguments terminal]
+    } else {
+        global tcl_platform
+        if {[string match -nocase *linux* $tcl_platform(os)]} {
+            set terminalStr x11
+        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+            set terminalStr windows
+        } else {
+            set terminalStr qt
+        }
+    }
     if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced background rgb 'black'
+            set term $terminalStr noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -711,7 +593,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
         "
     } else {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced
+            set term $terminalStr noenhanced
         "
     }
     foreach plot [dget $arguments plots] {
@@ -789,7 +671,7 @@ proc gnuplotutil::plotHist {x args} {
         {-optcmd -argument}
         {-grid -boolean}
         {-background -boolean -require {nodelete}}
-        {-terminal -argument -default "x11"}
+        {-terminal -argument}
         {-path -argument -default "."}
         {-darkmode -boolean}
         {-names -argument}
@@ -816,9 +698,21 @@ proc gnuplotutil::plotHist {x args} {
     if {[dexist $arguments optcmd]} {
         set optcmdStr [dget $arguments optcmd]
     }
+    if {[dexist $arguments terminal]==1} {
+        set terminalStr [dget $arguments terminal]
+    } else {
+        global tcl_platform
+        if {[string match -nocase *linux* $tcl_platform(os)]} {
+            set terminalStr x11
+        } elseif {[string match -nocase *windows nt* $tcl_platform(os)]} {
+            set terminalStr windows
+        } else {
+            set terminalStr qt
+        }
+    }
     if {[dget $arguments darkmode]==1} {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced background rgb 'black'
+            set term $terminalStr noenhanced background rgb 'black'
             set border lc rgb 'white'
             set xlabel tc rgb 'white'
             set key textcolor rgb 'white'
@@ -827,7 +721,7 @@ proc gnuplotutil::plotHist {x args} {
         "
     } else {
         set darkmodeStr "
-            set term [dget $arguments terminal] noenhanced
+            set term $terminalStr noenhanced
         "
     }
     if {[dget $arguments grid]==1} {
