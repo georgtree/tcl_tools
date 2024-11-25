@@ -12,7 +12,7 @@ namespace eval ::mathutil {
     interp alias {} dexist {} dict exists
 }
 
-proc mathutil::trapz {xList yList} {
+proc ::mathutil::trapz {xList yList} {
     # Does trapezoidal integration of x-y lists
     #  xList - list of x values
     #  yList - list of y values
@@ -29,7 +29,7 @@ proc mathutil::trapz {xList yList} {
     return $result
 }
 
-proc mathutil::cumtrapz {xList yList {init 0}} {
+proc ::mathutil::cumtrapz {xList yList {init 0}} {
     # Does trapezoidal integration with storing cumulative data at each point
     #  xList - list of x values
     #  yList - list of y values

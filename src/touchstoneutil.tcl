@@ -17,7 +17,7 @@ namespace eval ::touchstoneutil {
 
 # format of s2p must be without space between # and Hz, #Hz S RI R 50
 
-proc touchstoneutil::s2p_read {filePath} {
+proc ::touchstoneutil::s2p_read {filePath} {
     variable degtorad
     set infile [open $filePath r]
     set i 0

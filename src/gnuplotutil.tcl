@@ -12,7 +12,7 @@ namespace eval ::gnuplotutil {
     interp alias {} dexist {} dict exists
 }
 
-proc gnuplotutil::plotXYN {x args} {
+proc ::gnuplotutil::plotXYN {x args} {
     # Plots 2D graphs in Gnuplot with the common x-values.
     #  x - List that contains x-point for 2D graph
     #  -xlog - boolean switch of log scale of x axis, default off
@@ -384,7 +384,7 @@ proc ::gnuplotutil::plotXNYN {args} {
 }
 
 
-proc gnuplotutil::plotXNYNMp {args} {
+proc ::gnuplotutil::plotXNYNMp {args} {
     # Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files
     #  for individual plots
     #  -xlog - arg xlog boolean switch of log scale of x axis, default off
@@ -525,7 +525,7 @@ proc gnuplotutil::plotXNYNMp {args} {
 
 
 
-proc gnuplotutil::multiplotXNYN {layout args} {
+proc ::gnuplotutil::multiplotXNYN {layout args} {
     # Plots 2D graphs in Gnuplot with individual x-values and by using multiplot.
     #  layout - list of layout configurations values, for example, {2 2}
     #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
@@ -630,7 +630,7 @@ proc gnuplotutil::multiplotXNYN {layout args} {
     }
 }
 
-proc gnuplotutil::plotHist {x args} {
+proc ::gnuplotutil::plotHist {x args} {
     # Plots 2D histograms in Gnuplot with the common x-values.
     #  x - List of strings that contains x-point for 2D histogram
     #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
