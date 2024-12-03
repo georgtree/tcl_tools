@@ -6,7 +6,7 @@ namespace import ::math::complexnumbers::*
 set script_path [file dirname [file normalize [info script]]]
 lappend auto_path "$script_path/../"
 package require touchstoneutil
-
+namespace import ::touchstoneutil::*
 
 set epsilon 1e-6
 
@@ -49,7 +49,7 @@ customMatch mtchCmpMat matchComplexMatrix
 
 
 test s2pImportRiTest {test import of touchstone file with ri (real-imaginary) format} -match mtchCmpMat  -body {
-    touchstoneutil::s2p_read "$script_path/example_files/s2p_file_example_ri.s2p"
+    s2p_read "$script_path/example_files/s2p_file_example_ri.s2p"
 } -result [dict create freq [list 100000.000000 100537.158439 101077.202269] \
                    11 [list [complex -0.003039 0.000600] [complex 0.000649 -0.000684] [complex -0.000447 0.001236]]\
                    21 [list [complex 0.983824 0.002927] [complex 1.000473 -0.011960] [complex 0.999915 0.000810]] \
@@ -58,7 +58,7 @@ test s2pImportRiTest {test import of touchstone file with ri (real-imaginary) fo
                         
 test s2pImportDbTest {test import of touchstone file with db (magnitude in dB - phase in degrees) format}\
         -match mtchCmpMat -body {
-    touchstoneutil::s2p_read "$script_path/example_files/s2p_file_example_db.s2p"
+    s2p_read "$script_path/example_files/s2p_file_example_db.s2p"
 } -result [dict create freq [list 100000.000000 100537.158439 101077.202269]\
                    11 [list [complex 7.528886660075589e-5 0.0016926484060004092]\
                                [complex 6.498775422207239e-5 0.0017932609841918479]\

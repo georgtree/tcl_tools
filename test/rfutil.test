@@ -6,7 +6,7 @@ namespace import ::math::complexnumbers::*
 set script_path [file dirname [file normalize [info script]]]
 lappend auto_path "$script_path/../"
 package require rfutil
-
+namespace import ::rfutil::*
 
 set epsilon 1e-6
 
@@ -90,6 +90,31 @@ proc matchComplexMatrixEqPY {expected actual} {
     return $match
 }
 
+proc matchElem {expected actual elem} {
+    variable epsilon
+    set match true
+    set len [llength [dget $expected ${elem}1]]
+    for {set i 0} {$i<$len} {incr i} {
+        set exp1 [@ [dget $expected ${elem}1] $i]
+        set exp2 [@ [dget $expected ${elem}2] $i]
+        set exp3 [@ [dget $expected ${elem}3] $i]
+        set act1 [@ [dget $actual ${elem}1] $i]
+        set act2 [@ [dget $actual ${elem}2] $i]
+        set act3 [@ [dget $actual ${elem}3] $i]
+        if {abs($act1-$exp1) > $epsilon} {
+            set match false
+            break
+        } elseif {abs($act2-$exp2) > $epsilon} {
+            set match false
+            break
+        } elseif {abs($act3-$exp3) > $epsilon} {
+            set match false
+            break
+        }
+    }
+    return $match
+}
+
 proc matchList {expected actual} {
     variable epsilon
     set match 1
@@ -97,7 +122,7 @@ proc matchList {expected actual} {
     for {set i 0} {$i<$len} {incr i} {
         set exp [@ $expected $i]
         set act [@ $actual $i]
-        if {(abs($act-$exp) > $epsilon) || (abs($act-$exp) > $epsilon)} {
+        if {abs($act-$exp) > $epsilon} {
             set match 0
             break
         }
@@ -112,13 +137,15 @@ customMatch mtchLst matchList
 
 test s2zProcTest {test s to z parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
-                           12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                       12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
 } -body {
-    rfutil::s2z $input [complex 50 0]
+    s2z $input [complex 50 0]
 } -result [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
                    21 [list [complex 347.6850372060927 -444.4716615335903]]\
                    12 [list [complex 356.19867545712253 -467.38380377408123]]\
-                   22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+                   22 [list [complex 293.11455772396096 -537.4346167518531]]] -cleanup {
+    unset input               
+}    
 
 test z2sProcTest {test z to s parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
@@ -126,19 +153,23 @@ test z2sProcTest {test z to s parameters conversion} -match mtchCmpMat -setup {
                        12 [list [complex 356.19867545712253 -467.38380377408123]]\
                        22 [list [complex 293.11455772396096 -537.4346167518531]]] 
 } -body {
-    rfutil::z2s $input [complex 50 0]
+    z2s $input [complex 50 0]
 } -result [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
-                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                   12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] -cleanup {
+    unset input               
+} 
 
 test s2yProcTest {test s to y parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]] \
-                           12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                       12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
 } -body {
-    rfutil::s2y $input [complex 50 0]
+    s2y $input [complex 50 0]
 } -result [dict create 11 [list [complex 0.0009319427169542614 0.003980281912372034]]\
                    21 [list [complex -0.0002465661361646395 -0.003760220994777801]]\
                    12 [list [complex -0.00030612711544994274 -0.003912188910222377]]\
-                   22 [list [complex 0.0004699080361578966 0.005037926386021431]]] 
+                   22 [list [complex 0.0004699080361578966 0.005037926386021431]]] -cleanup {
+    unset input               
+} 
 
 test y2sProcTest {test y to s parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 0.0009319427169542614 0.003980281912372034]]\
@@ -146,19 +177,77 @@ test y2sProcTest {test y to s parameters conversion} -match mtchCmpMat -setup {
                        12 [list [complex -0.00030612711544994274 -0.003912188910222377]]\
                        22 [list [complex 0.0004699080361578966 0.005037926386021431]]] 
 } -body {
-    rfutil::y2s $input [complex 50 0]
+    y2s $input [complex 50 0]
 } -result [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
-                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                   12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] -cleanup {
+    unset input               
+} 
+
+test z2yProcTest {test z to y parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                       21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                       12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                       22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    z2y $input
+} -result [dict create 11 [list [complex 0.0009319427169542649 0.003980281912372032]]\
+                   21 [list [complex -0.0002465661361646429 -0.0037602209947778]]\
+                   12 [list [complex -0.0003061271154499466 -0.003912188910222375]]\
+                   22 [list [complex 0.0004699080361579015 0.00503792638602143]]] -cleanup {
+    unset input               
+} 
+
+test y2zProcTest {test y to z parameters conversion} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 0.0009319427169542649 0.003980281912372032]]\
+                       21 [list [complex -0.0002465661361646429 -0.0037602209947778]]\
+                       12 [list [complex -0.0003061271154499466 -0.003912188910222375]]\
+                       22 [list [complex 0.0004699080361579015 0.00503792638602143]]] 
+} -body {
+    y2z $input
+} -result [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                   21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                   12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                   22 [list [complex 293.11455772396096 -537.4346167518531]]] -cleanup {
+    unset input               
+} 
+
+test invMatTest-1 {test procedure to invert matrix} -match mtchCmpMat -setup {
+    set input [dict create 11 [list [complex 0.0009319427169542649 0.003980281912372032]]\
+                       21 [list [complex -0.0002465661361646429 -0.0037602209947778]]\
+                       12 [list [complex -0.0003061271154499466 -0.003912188910222375]]\
+                       22 [list [complex 0.0004699080361579015 0.00503792638602143]]] 
+} -body {
+    inv2x2 $input
+} -result [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                   21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                   12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                   22 [list [complex 293.11455772396096 -537.4346167518531]]] -cleanup {
+    unset input               
+}
+
+test invMatTest-2 {test procedure to invert matrix} -setup {
+    set input [dict create 11 [list [complex 1 0]]\
+                       21 [list [complex 1 0]]\
+                       12 [list [complex 1 0]]\
+                       22 [list [complex 1 0]]] 
+} -body {
+    catch {inv2x2 $input} errorStr
+    return $errorStr
+} -result "Matrix can't be inverted" -cleanup {
+    unset input errorStr              
+}
 
 test s2tProcTest {test s to transfer parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
-                           12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                       12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
 } -body {
-    rfutil::s2t $input
+    s2t $input
 } -result [dict create 11 [list [complex 1.0052626641651032 2.5058255159474676]]\
                    21 [list [complex -0.010318949343339753 2.7532833020637897]]\
                    12 [list [complex 0.28236397748592873 -2.612570356472795]]\
-                   22 [list [complex 1.4071294559099436 -2.720450281425891]]] 
+                   22 [list [complex 1.4071294559099436 -2.720450281425891]]] -cleanup {
+    unset input               
+} 
 
 test t2sProcTest {test transfer to s parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 1.0052626641651032 2.5058255159474676]]\
@@ -166,9 +255,11 @@ test t2sProcTest {test transfer to s parameters conversion} -match mtchCmpMat -s
                        12 [list [complex 0.28236397748592873 -2.612570356472795]]\
                        22 [list [complex 1.4071294559099436 -2.720450281425891]]] 
 } -body {
-    rfutil::t2s $input
+    t2s $input
 } -result [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
-                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                   12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] -cleanup {
+    unset input               
+} 
 
 test zTEqProcTest {test of element values calculation of equivalent T circuit } -match mtchCmpMatEqTZ -setup {
     set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
@@ -176,10 +267,76 @@ test zTEqProcTest {test of element values calculation of equivalent T circuit } 
                        12 [list [complex 356.19867545712253 -467.38380377408123]]\
                        22 [list [complex 293.11455772396096 -537.4346167518531]]] 
 } -body {
-    rfutil::zTEq $input
+    zTEq $input
 } -result [dict create z1 [list [complex 102.55842297547184 -164.95547516556798]]\
                    z2 [list [complex -54.57047948213176 -92.96295521826283]]\
-                        z3 [list [complex 347.6850372060927 -444.4716615335903]]] 
+                   z3 [list [complex 347.6850372060927 -444.4716615335903]]] -cleanup {
+    unset input               
+} 
+
+test cxxTEqProcTest {test of element values calculation of capacitive part equivalent T circuit elements values} -setup {
+    set freq 1e6
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                       21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                       12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                       22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    set actual [cxxTEq $freq $input]
+    set expected [dict create c1 [list 9.648357711809775e-10]\
+                          c2 [list 1.7120254268834701e-9]\
+                          c3 [list 3.5807669389484227e-10]]
+    return [matchElem $actual $expected c]
+} -result true -cleanup {
+    unset freq input actual expected             
+}
+
+test lxxTEqProcTest {test of element values calculation of inductive part equivalent T circuit elements values} -setup {
+    set freq 1e6
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                       21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                       12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                       22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    set actual [lxxTEq $freq $input]
+    set expected [dict create l1 [list -2.6253479262672528e-5]\
+                          l2 [list -1.4795513847417038e-5]\
+                          l3 [list -7.073986199733873e-5]]
+    return [matchElem $actual $expected l]
+} -result true -cleanup {
+    unset freq input actual expected             
+}
+
+test cxxPEqProcTest {test of element values calculation of capacitive part equivalent P circuit elements values} -setup {
+    set freq 1e6
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                       21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                       12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                       22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    set actual [cxxPEq $freq $input]
+    set expected [dict create c1 [list -0.00016773320325734999]\
+                          c2 [list -0.0001562752378420945]\
+                          c3 [list 7.073986199733873e-5]]
+    return [matchElem $actual $expected c]
+} -result true -cleanup {
+    unset freq input actual expected             
+}
+
+test lxxPEqProcTest {test of element values calculation of inductive part equivalent P circuit elements values} -setup {
+    set freq 1e6
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                       21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                       12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                       22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    set actual [lxxPEq $freq $input]
+    set expected [dict create l1 [list 1.5101539479765756e-10]\
+                          l2 [list 1.6208771306545048e-10]\
+                          l3 [list -3.5807669389484227e-10]]
+    return [matchElem $actual $expected l]
+} -result true -cleanup {
+    unset freq input actual expected             
+}
 
 test yPEqProcTest {test of element values calculation of equivalent P circuit } -match mtchCmpMatEqPY -setup {
     set input [dict create 11 [list [complex 0.0009319427169542614 0.003980281912372034]]\
@@ -187,44 +344,83 @@ test yPEqProcTest {test of element values calculation of equivalent P circuit } 
                        12 [list [complex -0.00030612711544994274 -0.003912188910222377]]\
                        22 [list [complex 0.0004699080361578966 0.005037926386021431]]] 
 } -body {
-    rfutil::yPEq $input
+    yPEq $input
 } -result [dict create y1 [list [complex 0.0006853765807896219 0.00022006091759423346]]\
                    y2 [list [complex 0.0002233418999932571 0.00127770539124363]]\
-                   y3 [list [complex 0.0002465661361646395 0.003760220994777801]]] 
+                   y3 [list [complex 0.0002465661361646395 0.003760220994777801]]] -cleanup {
+    unset input               
+} 
 
 test magProcTest {test procedure of magnitude calculation} -match mtchLst -setup {
     set input [list [complex 0.8 -0.31]]
 } -body {
-    rfutil::mag $input
-} -result [list 0.857962703152066]
+    mag $input
+} -result [list 0.857962703152066] -cleanup {
+    unset input               
+} 
 
 test magDbProcTest {test procedure of magnitude calculation with db units} -match mtchLst -setup {
     set input [list [complex 0.8 -0.31]]
 } -body {
-    rfutil::mag $input -db
-} -result [list -1.3306318226836054]
+    mag $input -db
+} -result [list -1.3306318226836054] -cleanup {
+    unset input               
+} 
 
 test angleProcTest {test procedure of angle calculation} -match mtchLst -setup {
     set input [list [complex 0.8 -0.31]]
 } -body {
-    rfutil::angle $input
-} -result [list -0.36968428879530135]
+    angle $input
+} -result [list -0.36968428879530135] -cleanup {
+    unset input               
+} 
 
 test angleDegProcTest {test procedure of angle calculation in degrees} -match mtchLst -setup {
     set input [list [complex 0.8 -0.31]]
 } -body {
-    rfutil::angle $input -deg
-} -result [list -21.18134950027277]
+    angle $input -deg
+} -result [list -21.18134950027277] -cleanup {
+    unset input               
+} 
 
 test matMul2x2ProcTest {test multiplication of 2x2 matrix} -match mtchCmpMat -setup {
     set mat1 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
-                          12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                      12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
     set mat2 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
-                          12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+                      12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
 } -body {
-    rfutil::matMul2x2 $mat1 $mat2
+    matMul2x2 $mat1 $mat2
 } -result [dict create 11 [list [complex 0.48090000000000016 -0.4046]] 21 [list [complex 0.4488 0.356]]\
-                           12 [list [complex 0.472 0.3648]] 22 [list [complex 0.40890000000000015 -0.5646]]] 
+                   12 [list [complex 0.472 0.3648]] 22 [list [complex 0.40890000000000015 -0.5646]]] -cleanup {
+    unset mat1 mat2               
+}
 
+test matMul2x2ProcTest {test multiplication of 2x2 matrix} -setup {
+    set mat1 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
+                      12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+    set mat2 [dict create 11 [list [complex 0.8 -0.31] [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
+                      12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+} -body {
+    catch {matMul2x2 $mat1 $mat2} errorStr
+    return $errorStr
+} -result "Lengths of matrix elements lists are different" -cleanup {
+    unset mat1 mat2               
+} 
+
+test deembProcTest {test of deembeding procedure} -match mtchCmpMat -setup {
+    set sFixt1 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
+                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
+    set sFixt2 [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
+                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]]
+    set sMeas [dict create 11 [list [complex 0.1 -0.31]] 21 [list [complex 0.3 0.5]]\
+                       12 [list [complex 0.2 0.3]] 22 [list [complex 0.2 -0.32]]] 
+} -body {
+   deemb $sMeas $sFixt1 $sFixt2
+} -result [dict create 11 [list [complex 0.8610059362729546 0.4728521321173413]]\
+                   21 [list [complex -0.019709687244412168 -0.115412513070291]]\
+                   12 [list [complex -0.012707080013344196 -0.06554116373052565]]\
+                   22 [list [complex 0.9265123919188608 0.3873509121312989]]] -cleanup {
+    unset sFixt1 sFixt2 sMeas             
+}
 
 cleanupTests

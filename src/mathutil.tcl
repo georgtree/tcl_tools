@@ -5,44 +5,44 @@ package provide mathutil 0.1
 namespace eval ::mathutil {
 
     namespace import ::tcl::mathop::*
-    namespace export trapz cumtrapz findApprox movAvg deriv1 deriv1
+    namespace export trapz cumtrapz findApprox movAvg deriv1 deriv2
     interp alias {} dget {} dict get
     interp alias {} @ {} lindex
     interp alias {} = {} expr
     interp alias {} dexist {} dict exists
 }
 
-proc ::mathutil::trapz {xList yList} {
+proc ::mathutil::trapz {x y} {
     # Does trapezoidal integration of x-y lists
-    #  xList - list of x values
-    #  yList - list of y values
+    #  x - list of x values
+    #  y - list of y values
     # Returns: value of integral
-    set xLen [llength $xList]
-    set yLen [llength $yList]
+    set xLen [llength $x]
+    set yLen [llength $y]
     if {$xLen != $yLen} {
-        error "Length of xList $xLen is not equal to length of yList $yLen"
+        error "Length of x '$xLen' is not equal to length of y '$yLen'"
     }
     set result 0.0
     for {set i 0} {$i<[- $xLen 1]} {incr i} {
-        set result [= {$result+([@ $yList [+ $i 1]]+[@ $yList $i])/2.0*([@ $xList [+ $i 1]]-[@ $xList $i])}]
+        set result [= {$result+([@ $y [+ $i 1]]+[@ $y $i])/2.0*([@ $x [+ $i 1]]-[@ $x $i])}]
     }
     return $result
 }
 
-proc ::mathutil::cumtrapz {xList yList {init 0}} {
+proc ::mathutil::cumtrapz {x y {init 0}} {
     # Does trapezoidal integration with storing cumulative data at each point
-    #  xList - list of x values
-    #  yList - list of y values
+    #  x - list of x values
+    #  y - list of y values
     #  init - start value
     # Returns: list each value of which is the value of integral across all previous xy values
-    set xLen [llength $xList]
-    set yLen [llength $yList]
+    set xLen [llength $x]
+    set yLen [llength $y]
     if {$xLen != $yLen} {
-        error "Length of xList $xLen is not equal to length of yList $yLen"
+        error "Length of x '$xLen' is not equal to length of y '$yLen'"
     }
     set result $init
     for {set i 0} {$i<[- $xLen 1]} {incr i} {
-        set result [= {$result+([@ $yList [+ $i 1]]+[@ $yList $i])/2.0*([@ $xList [+ $i 1]]-[@ $xList $i])}]
+        set result [= {$result+([@ $y [+ $i 1]]+[@ $y $i])/2.0*([@ $x [+ $i 1]]-[@ $x $i])}]
         lappend resultList $result
     }
     return $resultList
@@ -128,9 +128,9 @@ proc ::mathutil::deriv1 {x y} {
     set xLen [llength $x]
     set yLen [llength $y]
     if {$xLen != $yLen} {
-        error "Length of x $xLen is not equal to length of y $yLen"
+        error "Length of x '$xLen' is not equal to length of y '$yLen'"
     }
-    set numPoints [llength $x]
+    set numPoints $xLen
     # calculate first point
     set h1 [- [@ $x 1] [@ $x 0]]
     set h2 [- [@ $x 2] [@ $x 1]]
@@ -163,9 +163,9 @@ proc ::mathutil::deriv2 {x y} {
     set xLen [llength $x]
     set yLen [llength $y]
     if {$xLen != $yLen} {
-        error "Length of x $xLen is not equal to length of y $yLen"
+        error "Length of x '$xLen' is not equal to length of y '$yLen'"
     }
-    set numPoints [llength $x]
+    set numPoints $xLen
     # calculate first point
     set h1 [- [@ $x 1] [@ $x 0]]
     set h2 [- [@ $x 2] [@ $x 1]]
