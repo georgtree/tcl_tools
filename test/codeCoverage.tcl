@@ -1,19 +1,3 @@
-#  .|'''.|            ||                   ..|'''.|                   |''||''|         '||' 
-#  ||..  '  ... ...  ...    ....    ....  .|'     '    ....  .. ...      ||      ....   ||  
-#   ''|||.   ||'  ||  ||  .|   '' .|...|| ||    .... .|...||  ||  ||     ||    .|   ''  ||  
-# .     '||  ||    |  ||  ||      ||      '|.    ||  ||       ||  ||     ||    ||       ||  
-# |'....|'   ||...'  .||.  '|...'  '|...'  ''|...'|   '|...' .||. ||.   .||.    '|...' .||. 
-#            ||                                                                             
-#           ''''                                                                            
-# codeCoverage.tcl
-# File that runs code coverage by tests
-#
-# Copyright (c) 2024 George Yashin, georgtree@gmail.com
-#
-# MIT License
-# See the file "LICENSE.txt" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-
 global env
 set nagelfarPath "/home/$env(USER)/tcl/nagelfar/"
 set currentDir [file dirname [file normalize [info script]]]

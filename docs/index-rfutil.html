@@ -51,6 +51,32 @@
     }
     <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$result</font>
 }</pre></div>
+</div><h3 class='ruffproc'><a name='::rfutil::compLen'>compLen</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
+<div style='clear:both;'></div>
+<p class='ruff'>Check the lengths of lists of each dictionary's list</p>
+<div class='ruff_synopsis'><span class='ruff_cmd'>compLen</span> <span class='ruff_arg'>dict</span></div>
+<h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code><b><font color=#923B23>dict</font></b></code></td><td>Input dictionary.</td></tr>
+</table>
+<div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_compLen' href="javascript:toggleSource('rfutil_compLen')">Show source</a></p>
+<div id='rfutil_compLen' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::compLen {<b><font color=#923B23>dict</font></b>} {
+
+    <i><font color=#4b5d50># Check the lengths of lists of each dictionary's list</font></i>
+    <i><font color=#4b5d50>#  dict - input dictionary</font></i>
+    <b><font color=#923B23>set</font></b> keys [dkeys <font color=#4A181B>$dict</font>]
+    <b><font color=#923B23>set</font></b> values [dvalues <font color=#4A181B>$dict</font>]
+    <b><font color=#923B23>set</font></b> size [dsize <font color=#4A181B>$dict</font>]
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;[= {<font color=#4A181B>$size</font>-1}]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> keyA [@ <font color=#4A181B>$keys</font> <font color=#4A181B>$i</font>]
+        <b><font color=#923B23>set</font></b> keyB [@ <font color=#4A181B>$keys</font> [= {<font color=#4A181B>$i</font>+1}]]
+        <b><font color=#923B23>set</font></b> lenA [<b><font color=#923B23>llength</font></b> [@ <font color=#4A181B>$values</font> <font color=#4A181B>$i</font>]]
+        <b><font color=#923B23>set</font></b> lenB [<b><font color=#923B23>llength</font></b> [@ <font color=#4A181B>$values</font> [= {<font color=#4A181B>$i</font>+1}]]]
+        <b><font color=#923B23>if</font></b> {<font color=#4A181B>$lenA</font>!=<font color=#4A181B>$lenB</font>} {
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of <font color=#4A181B>$</font>keyA '<font color=#4A181B>$</font>lenA' is not equal to length of <font color=#4A181B>$</font>keyB '<font color=#4A181B>$</font>lenB'&quot;</font>
+        }
+    }
+    <b><font color=#ca14ca>return</font></b>
+}</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::cxxPEq'>cxxPEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Calculates capacitive part equivalent P circuit elements values.</p>
@@ -96,6 +122,7 @@
     <i><font color=#4b5d50>#          .     |             |     .</font></i>
     <i><font color=#4b5d50>#          o-----o-------------o-----o</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$yxx</font>]
     <b><font color=#923B23>variable</font></b> pi
     <b><font color=#923B23>set</font></b> yEq [::rfutil::yPEq <font color=#4A181B>$yxx</font>]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
@@ -155,6 +182,7 @@
     <i><font color=#4b5d50>#         .            |            .</font></i>
     <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$zxx</font>]
     <b><font color=#923B23>variable</font></b> pi
     <b><font color=#923B23>set</font></b> zEq [::rfutil::zTEq <font color=#4A181B>$zxx</font>]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
@@ -201,6 +229,7 @@
     <i><font color=#4b5d50>#    │ Tdut │ = │ Tfixtl │  x  │ Tmeas │  x  │ Tfixtr │</font></i>
     <i><font color=#4b5d50>#    └      ┘   └        ┘     └       ┘     └        ┘</font></i>
     <i><font color=#4b5d50>#```</font></i>
+    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge <font color=#4A181B>$sMeas</font> <font color=#4A181B>$sFixtL</font> <font color=#4A181B>$sFixtR</font>]
     <b><font color=#923B23>set</font></b> tMeas [s2t <font color=#4A181B>$sMeas</font>]
     <b><font color=#923B23>set</font></b> tFixtL [inv2x2 [s2t <font color=#4A181B>$sFixtL</font>]]
     <b><font color=#923B23>set</font></b> tFixtR [inv2x2 [s2t <font color=#4A181B>$sFixtR</font>]]
@@ -228,6 +257,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with resulted matrix</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$mat</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$mat</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
@@ -293,6 +323,7 @@
     <i><font color=#4b5d50>#           .     |             |     .</font></i>
     <i><font color=#4b5d50>#           o-----o-------------o-----o</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$yxx</font>]
     <b><font color=#923B23>variable</font></b> pi
     <b><font color=#923B23>set</font></b> yEq [::rfutil::yPEq <font color=#4A181B>$yxx</font>]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
@@ -352,6 +383,7 @@
     <i><font color=#4b5d50>#         .            |            .</font></i>
     <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$zxx</font>]
     <b><font color=#923B23>variable</font></b> pi
     <b><font color=#923B23>set</font></b> zEq [::rfutil::zTEq <font color=#4A181B>$zxx</font>]
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
@@ -390,7 +422,7 @@
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$data</font>]
     <b><font color=#923B23>if</font></b> {[dget <font color=#4A181B>$arguments</font> db]==1} {
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [= {20*log10([mod [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]])} ]
+            <b><font color=#923B23>lappend</font></b> result [= {20*log10([mod [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]])}]
         }
     } <b><font color=#923B23>else</font></b> {
         <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
@@ -418,11 +450,10 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionaries with resulted matrix</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge <font color=#4A181B>$mat1</font> <font color=#4A181B>$mat2</font>]
     <b><font color=#923B23>set</font></b> len1 [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$mat1</font> 11]]
-    <b><font color=#923B23>set</font></b> len2 [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$mat2</font> 11]]
-    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$len1</font>!=<font color=#4A181B>$len2</font>} {
-        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Lengths of matrix elements lists are different&quot;</font>
-    }
+    ::rfutil::compLen <font color=#4A181B>$mat1</font>
+    ::rfutil::compLen <font color=#4A181B>$mat2</font>
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len1</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> a1 [@ [dget <font color=#4A181B>$mat1</font> 11] <font color=#4A181B>$i</font>]
         <b><font color=#923B23>set</font></b> b1 [@ [dget <font color=#4A181B>$mat1</font> 12] <font color=#4A181B>$i</font>]
@@ -459,6 +490,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with transfer parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$sxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$sxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
@@ -496,6 +528,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$sxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$sxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
@@ -535,6 +568,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$sxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$sxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
@@ -569,6 +603,7 @@
     <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$txx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$txx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
@@ -606,6 +641,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$yxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$yxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
@@ -643,6 +679,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$yxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$yxx</font> 11]]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
@@ -700,6 +737,7 @@
     <i><font color=#4b5d50>#         \./    |             |    \./</font></i>
     <i><font color=#4b5d50>#          o-----o-------------o-----o</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$yxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$yxx</font> 11]]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
@@ -734,6 +772,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$zxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$zxx</font> 11]]
     <b><font color=#923B23>set</font></b> 1c [complex 1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
@@ -769,6 +808,7 @@
     <i><font color=#4b5d50>#</font></i>
     <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$zxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$zxx</font> 11]]
     <b><font color=#923B23>set</font></b> m1c [complex -1 0]
     <b><font color=#923B23>set</font></b> 2c [complex 2 0]
@@ -826,6 +866,7 @@
     <i><font color=#4b5d50>#        \./           |           \./</font></i>
     <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
     <i><font color=#4b5d50>#</font></i>
+    ::rfutil::compLen <font color=#4A181B>$zxx</font>
     <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [dget <font color=#4A181B>$zxx</font> 11]]
     <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
         <b><font color=#923B23>set</font></b> 11 [@ [dget <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
@@ -845,6 +886,7 @@
 <li class='ruff-toc1'><a class='ruff-highlight' href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
 <hr><li class='ruff-toc2'><a href='#::rfutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::angle'>angle</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;angle&lt;/span&gt; &lt;span class='ruff_arg'&gt;data ?args?&lt;/span&gt;</pre>Calculates angle (phase) of complex number.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::compLen'>compLen</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;compLen&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#923B23>dict</font></b>&lt;/span&gt;</pre>Check the lengths of lists of each dictionary's list
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::cxxPEq'>cxxPEq</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cxxPEq&lt;/span&gt; &lt;span class='ruff_arg'&gt;freq yxx&lt;/span&gt;</pre>Calculates capacitive part equivalent P circuit elements values.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::cxxTEq'>cxxTEq</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cxxTEq&lt;/span&gt; &lt;span class='ruff_arg'&gt;freq zxx&lt;/span&gt;</pre>Calculates capacitive part equivalent T circuit elements values.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::deemb'>deemb</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;deemb&lt;/span&gt; &lt;span class='ruff_arg'&gt;sMeas sFixtL sFixtR&lt;/span&gt;</pre>Procedure for deembedding of DUT from test fixture.

@@ -135,7 +135,7 @@ customMatch mtchCmpMatEqTZ matchComplexMatrixEqTZ
 customMatch mtchCmpMatEqPY matchComplexMatrixEqPY
 customMatch mtchLst matchList
 
-test s2zProcTest {test s to z parameters conversion} -match mtchCmpMat -setup {
+test s2zProcTest-1 {test s to z parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
                        12 [list [complex 0.16 0.3]] 22 [list [complex 0.8 -0.41]]] 
 } -body {
@@ -145,7 +145,17 @@ test s2zProcTest {test s to z parameters conversion} -match mtchCmpMat -setup {
                    12 [list [complex 356.19867545712253 -467.38380377408123]]\
                    22 [list [complex 293.11455772396096 -537.4346167518531]]] -cleanup {
     unset input               
-}    
+}
+
+test s2zProcTest-2 {test s to z parameters conversion} -setup {
+    set input [dict create 11 [list [complex 0.8 -0.31]] 21 [list [complex 0.15 0.29]]\
+                       12 [list [complex 0.16 0.3] [complex 0.17 0.31]] 22 [list [complex 0.8 -0.41]]] 
+} -body {
+    catch {s2z $input [complex 50 0]} errorStr
+    return $errorStr
+} -result "Length of 21 '1' is not equal to length of 12 '2'" -cleanup {
+    unset input               
+} 
 
 test z2sProcTest {test z to s parameters conversion} -match mtchCmpMat -setup {
     set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
@@ -274,7 +284,7 @@ test zTEqProcTest {test of element values calculation of equivalent T circuit } 
     unset input               
 } 
 
-test cxxTEqProcTest {test of element values calculation of capacitive part equivalent T circuit elements values} -setup {
+test cxxTEqProcTest-1 {test of element values calculation of capacitive part equivalent T circuit elements values} -setup {
     set freq 1e6
     set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
                        21 [list [complex 347.6850372060927 -444.4716615335903]]\
@@ -288,6 +298,19 @@ test cxxTEqProcTest {test of element values calculation of capacitive part equiv
     return [matchElem $actual $expected c]
 } -result true -cleanup {
     unset freq input actual expected             
+}
+
+test cxxTEqProcTest-2 {test of element values calculation of capacitive part equivalent T circuit elements values} -setup {
+    set freq [list 1e6 1e8]
+    set input [dict create 11 [list [complex 450.24346018156456 -609.4271366991583]]\
+                       21 [list [complex 347.6850372060927 -444.4716615335903]]\
+                       12 [list [complex 356.19867545712253 -467.38380377408123]]\
+                       22 [list [complex 293.11455772396096 -537.4346167518531]]] 
+} -body {
+    catch {cxxTEq $freq $input} errorStr
+    return $errorStr
+} -result "Length of freq '2' is not equal to length of 11 '1'" -cleanup {
+    unset freq input errorStr           
 }
 
 test lxxTEqProcTest {test of element values calculation of inductive part equivalent T circuit elements values} -setup {
@@ -403,7 +426,7 @@ test matMul2x2ProcTest {test multiplication of 2x2 matrix} -setup {
 } -body {
     catch {matMul2x2 $mat1 $mat2} errorStr
     return $errorStr
-} -result "Lengths of matrix elements lists are different" -cleanup {
+} -result "Length of 11 '2' is not equal to length of 21 '1'" -cleanup {
     unset mat1 mat2               
 } 
 

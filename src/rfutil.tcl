@@ -15,11 +15,31 @@ namespace eval ::rfutil {
             angle 
     ::math::constants::constants radtodeg degtorad pi
     interp alias {} dget {} dict get
+    interp alias {} dkeys {} dict keys
+    interp alias {} dvalues {} dict values
     interp alias {} @ {} lindex
     interp alias {} = {} expr
     interp alias {} dexist {} dict exists
+    interp alias {} dsize {} dict size
 }
 
+proc ::rfutil::compLen {dict} {
+    # Check the lengths of lists of each dictionary's list
+    #  dict - input dictionary
+    set keys [dkeys $dict]
+    set values [dvalues $dict]
+    set size [dsize $dict]
+    for {set i 0} {$i<[= {$size-1}]} {incr i} {
+        set keyA [@ $keys $i]
+        set keyB [@ $keys [= {$i+1}]]
+        set lenA [llength [@ $values $i]]
+        set lenB [llength [@ $values [= {$i+1}]]]
+        if {$lenA!=$lenB} {
+            error "Length of $keyA '$lenA' is not equal to length of $keyB '$lenB'"
+        }
+    }
+    return
+}
 
 proc ::rfutil::s2z {sxx z0} {
     # Converts 2-port s-parameters to z-parameters.
@@ -32,6 +52,7 @@ proc ::rfutil::s2z {sxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with z-parameters
     #
+    ::rfutil::compLen $sxx
     set len [llength [dget $sxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
@@ -58,6 +79,7 @@ proc ::rfutil::s2t {sxx} {
     # 
     # Returns dictionary of the same form as input dictionary with transfer parameters
     #
+    ::rfutil::compLen $sxx
     set len [llength [dget $sxx 11]]
     set 1c [complex 1 0]
     set m1c [complex -1 0]
@@ -83,6 +105,7 @@ proc ::rfutil::t2s {txx} {
     #   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
     # Returns dictionary of the same form as input dictionary with s-parameters
     #
+    ::rfutil::compLen $txx
     set len [llength [dget $txx 11]]
     set 1c [complex 1 0]
     set m1c [complex -1 0]
@@ -110,6 +133,7 @@ proc ::rfutil::s2y {sxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with y-parameters
     #
+    ::rfutil::compLen $sxx
     set len [llength [dget $sxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
@@ -139,6 +163,7 @@ proc ::rfutil::z2s {zxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with s-parameters
     #
+    ::rfutil::compLen $zxx
     set len [llength [dget $zxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
@@ -166,6 +191,7 @@ proc ::rfutil::y2s {yxx z0} {
     # 
     # Returns dictionary of the same form as input dictionary with s-parameters
     #
+    ::rfutil::compLen $yxx
     set len [llength [dget $yxx 11]]
     set 1c [complex 1 0]
     set 2c [complex 2 0]
@@ -194,6 +220,7 @@ proc ::rfutil::z2y {zxx} {
     # 
     # Returns dictionary of the same form as input dictionary with y-parameters
     #
+    ::rfutil::compLen $zxx
     set len [llength [dget $zxx 11]]
     set m1c [complex -1 0]
     set 2c [complex 2 0]
@@ -220,6 +247,7 @@ proc ::rfutil::y2z {yxx} {
     # 
     # Returns dictionary of the same form as input dictionary with z-parameters
     #
+    ::rfutil::compLen $yxx
     set len [llength [dget $yxx 11]]
     set m1c [complex -1 0]
     set 2c [complex 2 0]
@@ -257,6 +285,7 @@ proc ::rfutil::zTEq {zxx} {
     #        \./           |           \./                                  
     #         o----------- o -----------o   
     #
+    ::rfutil::compLen $zxx
     set len [llength [dget $zxx 11]]
     for {set i 0} {$i<$len} {incr i} {
         set 11 [@ [dget $zxx 11] $i]
@@ -292,6 +321,7 @@ proc ::rfutil::cxxTEq {freq zxx} {
     #         .            |            .    
     #         o----------- o -----------o 
     #
+    ::rfutil::compLen [dict merge [dict create freq $freq] $zxx]
     variable pi
     set zEq [::rfutil::zTEq $zxx]
     set 1c [complex 1 0]
@@ -331,6 +361,7 @@ proc ::rfutil::lxxTEq {freq zxx} {
     #         .            |            .   
     #         o----------- o -----------o   
     #
+    ::rfutil::compLen [dict merge [dict create freq $freq] $zxx]
     variable pi
     set zEq [::rfutil::zTEq $zxx]
     set len [llength $freq]
@@ -367,6 +398,7 @@ proc ::rfutil::yPEq {yxx} {
     #         \./    |             |    \./                                   
     #          o-----o-------------o-----o       
     #
+    ::rfutil::compLen $yxx
     set len [llength [dget $yxx 11]]
     set m1c [complex -1 0]
     for {set i 0} {$i<$len} {incr i} {
@@ -403,6 +435,7 @@ proc ::rfutil::cxxPEq {freq yxx} {
     #          .     |             |     .    
     #          o-----o-------------o-----o    
     #
+    ::rfutil::compLen [dict merge [dict create freq $freq] $yxx]
     variable pi
     set yEq [::rfutil::yPEq $yxx]
     set len [llength $freq]
@@ -441,6 +474,7 @@ proc ::rfutil::lxxPEq {freq yxx} {
     #           .     |             |     .    
     #           o-----o-------------o-----o      
     #
+    ::rfutil::compLen [dict merge [dict create freq $freq] $yxx]
     variable pi
     set yEq [::rfutil::yPEq $yxx]
     set len [llength $freq]
@@ -466,6 +500,7 @@ proc ::rfutil::inv2x2 {mat} {
     # 
     # Returns dictionary of the same form as input dictionary with resulted matrix
     #
+    ::rfutil::compLen $mat
     set len [llength [dget $mat 11]]
     set 1c [complex 1 0]
     set m1c [complex -1 0]
@@ -495,11 +530,10 @@ proc ::rfutil::matMul2x2 {mat1 mat2} {
     #                
     # Returns dictionary of the same form as input dictionaries with resulted matrix
     #
+    ::rfutil::compLen [dict merge $mat1 $mat2]
     set len1 [llength [dget $mat1 11]]
-    set len2 [llength [dget $mat2 11]]
-    if {$len1!=$len2} {
-        error "Lengths of matrix elements lists are different"
-    }
+    ::rfutil::compLen $mat1
+    ::rfutil::compLen $mat2
     for {set i 0} {$i<$len1} {incr i} {
         set a1 [@ [dget $mat1 11] $i]
         set b1 [@ [dget $mat1 12] $i]
@@ -530,6 +564,7 @@ proc ::rfutil::deemb {sMeas sFixtL sFixtR} {
     #    │ Tdut │ = │ Tfixtl │  x  │ Tmeas │  x  │ Tfixtr │
     #    └      ┘   └        ┘     └       ┘     └        ┘
     #```
+    ::rfutil::compLen [dict merge $sMeas $sFixtL $sFixtR]
     set tMeas [s2t $sMeas]
     set tFixtL [inv2x2 [s2t $sFixtL]]
     set tFixtR [inv2x2 [s2t $sFixtR]]
@@ -551,7 +586,7 @@ proc ::rfutil::mag {data args} {
     set len [llength $data]
     if {[dget $arguments db]==1} {
         for {set i 0} {$i<$len} {incr i} {
-            lappend result [= {20*log10([mod [@ $data $i]])} ]
+            lappend result [= {20*log10([mod [@ $data $i]])}]
         }
     } else {
         for {set i 0} {$i<$len} {incr i} {
