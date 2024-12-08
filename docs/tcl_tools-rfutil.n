@@ -1,0 +1,601 @@
+'\"
+'\" '\" Copyright (c) George Yashin
+'\"
+.TH "rfutil" 3tcl 0\&.1 "tcl_tools" "Collection of Tcl tools"
+.SH NAME
+rfutil - Commands in namespace rfutil
+.SH SYNOPSIS
+\fBangle\fP \fIdata ?args?\fP
+.br
+\fBcompLen\fP \fIdict\fP
+.br
+\fBcxxPEq\fP \fIfreq yxx\fP
+.br
+\fBcxxTEq\fP \fIfreq zxx\fP
+.br
+\fBdeemb\fP \fIsMeas sFixtL sFixtR\fP
+.br
+\fBinv2x2\fP \fImat\fP
+.br
+\fBlxxPEq\fP \fIfreq yxx\fP
+.br
+\fBlxxTEq\fP \fIfreq zxx\fP
+.br
+\fBmag\fP \fIdata ?args?\fP
+.br
+\fBmatMul2x2\fP \fImat1 mat2\fP
+.br
+\fBs2t\fP \fIsxx\fP
+.br
+\fBs2y\fP \fIsxx z0\fP
+.br
+\fBs2z\fP \fIsxx z0\fP
+.br
+\fBt2s\fP \fItxx\fP
+.br
+\fBy2s\fP \fIyxx z0\fP
+.br
+\fBy2z\fP \fIyxx\fP
+.br
+\fByPEq\fP \fIyxx\fP
+.br
+\fBz2s\fP \fIzxx z0\fP
+.br
+\fBz2y\fP \fIzxx\fP
+.br
+\fBzTEq\fP \fIzxx\fP
+.br
+.SH ::RFUTIL
+.SH COMMANDS
+.PP
+.RS -4n
+\fBangle\fR (::rfutil)
+.RE
+.PP
+Calculates angle (phase) of complex number\&.
+.RS 4n\fBangle\fP \fIdata ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+data
+List with complex data in form a+i*b\&.
+.TP
+-deg
+Option to select angle in degrees units\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns list of angles
+.PP
+.RS -4n
+\fBcompLen\fR (::rfutil)
+.RE
+.PP
+Check the lengths of lists of each dictionary's list
+.RS 4n\fBcompLen\fP \fIdict\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+dict
+Input dictionary\&.
+.RE
+.PP
+.RS -4n
+\fBcxxPEq\fR (::rfutil)
+.RE
+.PP
+Calculates capacitive part equivalent P circuit elements values\&.
+.RS 4n\fBcxxPEq\fP \fIfreq yxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+freq
+Frequency values list\&.
+.TP
+yxx
+Dictionary that contains 2-port matrix of y-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+                C3
+                 | |
+     o-----o-----| |-----o-----o
+     \&.     |     | |     |     \&.
+     \&.     |             |     \&.
+  P1 \&.  C1---         C2---    \&. P2
+     \&.    ---           ---    \&.
+    \\\&./    |             |    \\\&./
+     \&.     |             |     \&.
+     o-----o-------------o-----o
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements
+admittance
+.PP
+.RS -4n
+\fBcxxTEq\fR (::rfutil)
+.RE
+.PP
+Calculates capacitive part equivalent T circuit elements values\&.
+.RS 4n\fBcxxTEq\fP \fIfreq zxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+freq
+Frequency values list\&.
+.TP
+zxx
+Dictionary that contains 2-port matrix of z-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+        C1           C2
+         | |           | |
+    o----| |-----o-----| |----o
+    \&.    | |     |     | |    \&.
+    \&.            |            \&.
+ P1 \&.         C3---           \&. P2
+    \&.           ---           \&.
+   \\\&./           |           \\\&./
+    \&.            |            \&.
+    o----------- o -----------o
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements
+impedance
+.PP
+.RS -4n
+\fBdeemb\fR (::rfutil)
+.RE
+.PP
+Procedure for deembedding of DUT from test fixture\&.
+.RS 4n\fBdeemb\fP \fIsMeas sFixtL sFixtR\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+sMeas
+Measured s-parameters matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+sFixtL
+S-parameters matrix of left fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+sFixtR
+S-parameters matrix of right fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+   ┌      ┐   ┌        ┐-1   ┌       ┐     ┌        ┐-1
+   │ Tdut │ = │ Tfixtl │  x  │ Tmeas │  x  │ Tfixtr │
+   └      ┘   └        ┘     └       ┘     └        ┘
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionaries with deembedded DUT s-matrix
+.PP
+.RS -4n
+\fBinv2x2\fR (::rfutil)
+.RE
+.PP
+Calculates inverse matrix of input matrix with size 2x2\&.
+.RS 4n\fBinv2x2\fP \fImat\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+mat
+Dictionary that contains 2-port matrix, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with resulted matrix
+.PP
+.RS -4n
+\fBlxxPEq\fR (::rfutil)
+.RE
+.PP
+Calculates inductive part equivalent P circuit elements values\&.
+.RS 4n\fBlxxPEq\fP \fIfreq yxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+freq
+Frequency values list\&.
+.TP
+yxx
+Dictionary that contains 2-port matrix of y-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+                  L3
+                  ___
+      o-----o-----UUU-----o-----o
+      \&.     |             |     \&.
+      \&.  L1 C|         L2 C|    \&.
+   P1 \&.     C|            C|    \&. P2
+      \&.     C|            C|    \&.
+     \\\&./    |             |    \\\&./
+      \&.     |             |     \&.
+      o-----o-------------o-----o
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements
+impedance
+.PP
+.RS -4n
+\fBlxxTEq\fR (::rfutil)
+.RE
+.PP
+Calculates inductive part equivalent T circuit elements values\&.
+.RS 4n\fBlxxTEq\fP \fIfreq zxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+freq
+Frequency values list\&.
+.TP
+zxx
+Dictionary that contains 2-port matrix of z-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+        L1            L2
+         ___           ___
+    o----UUU-----o-----UUU----o
+    \&.            |            \&.
+    \&.         L3 C|           \&.
+ P1 \&.            C|           \&. P2
+    \&.            C|           \&.
+   \\\&./           |           \\\&./
+    \&.            |            \&.
+    o----------- o -----------o
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements
+impedance
+.PP
+.RS -4n
+\fBmag\fR (::rfutil)
+.RE
+.PP
+Calculates magnitude of complex number\&.
+.RS 4n\fBmag\fP \fIdata ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+data
+List with complex data in form a+i*b\&.
+.TP
+-db
+Option to select magnitude in db scale\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns list of magnitudes
+.PP
+.RS -4n
+\fBmatMul2x2\fR (::rfutil)
+.RE
+.PP
+Calculates multiply matrices with 2x2 size\&.
+.RS 4n\fBmatMul2x2\fP \fImat1 mat2\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+mat1
+First matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+mat2
+Second matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionaries with resulted matrix
+.PP
+.RS -4n
+\fBs2t\fR (::rfutil)
+.RE
+.PP
+Converts 2-port s-parameters to transfer parameters\&.
+.RS 4n\fBs2t\fP \fIsxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+sxx
+Dictionary that contains 2-port matrix of s-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with transfer parameters
+.PP
+.RS -4n
+\fBs2y\fR (::rfutil)
+.RE
+.PP
+Converts 2-port s-parameters to y-parameters\&.
+.RS 4n\fBs2y\fP \fIsxx z0\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+sxx
+Dictionary that contains 2-port matrix of s-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+z0
+Reference impedance in form of {real imag}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with y-parameters
+.PP
+.RS -4n
+\fBs2z\fR (::rfutil)
+.RE
+.PP
+Converts 2-port s-parameters to z-parameters\&.
+.RS 4n\fBs2z\fP \fIsxx z0\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+sxx
+Dictionary that contains 2-port matrix of s-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+z0
+Reference impedance in form of {real imag}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with z-parameters
+.PP
+.RS -4n
+\fBt2s\fR (::rfutil)
+.RE
+.PP
+Converts 2-port transfer parameters to s-parameters\&.
+.RS 4n\fBt2s\fP \fItxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+txx
+Dictionary that contains 2-port matrix of transfer parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with s-parameters
+.PP
+.RS -4n
+\fBy2s\fR (::rfutil)
+.RE
+.PP
+Converts 2-port y-parameters to s-parameters\&.
+.RS 4n\fBy2s\fP \fIyxx z0\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+yxx
+Dictionary that contains 2-port matrix of y-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+z0
+Reference impedance in form of {real imag}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with s-parameters
+.PP
+.RS -4n
+\fBy2z\fR (::rfutil)
+.RE
+.PP
+Converts 2-port y-parameters to z-parameters\&.
+.RS 4n\fBy2z\fP \fIyxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+yxx
+Dictionary that contains 2-port matrix of y-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with z-parameters
+.PP
+.RS -4n
+\fByPEq\fR (::rfutil)
+.RE
+.PP
+Calculates equivalent P circuit elements values\&.
+.RS 4n\fByPEq\fP \fIyxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+yxx
+Dictionary that contains 2-port matrix of y-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+                 Y3
+                 ___
+     o-----o----|___|----o-----o
+     \&.     |             |     \&.
+     \&.    \&.-\&.           \&.-\&.    \&.
+  P1 \&.    | |           | |    \&. P2
+     \&.  Y1| |         Y2| |    \&.
+     \&.    '-'           '-'    \&.
+    \\\&./    |             |    \\\&./
+     o-----o-------------o-----o
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the form {y1 {list} y2 {list} y3 {list}} with impedances of equivalent elements
+.PP
+.RS -4n
+\fBz2s\fR (::rfutil)
+.RE
+.PP
+Converts 2-port z-parameters to s-parameters\&.
+.RS 4n\fBz2s\fP \fIzxx z0\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+zxx
+Dictionary that contains 2-port matrix of z-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.TP
+z0
+Reference impedance in form of {real imag}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with s-parameters
+.PP
+.RS -4n
+\fBz2y\fR (::rfutil)
+.RE
+.PP
+Converts 2-port z-parameters to y-parameters\&.
+.RS 4n\fBz2y\fP \fIzxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+zxx
+Dictionary that contains 2-port matrix of z-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the same form as input dictionary with y-parameters
+.PP
+.RS -4n
+\fBzTEq\fR (::rfutil)
+.RE
+.PP
+Calculates equivalent T circuit elements values\&.
+.RS 4n\fBzTEq\fP \fIzxx\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+zxx
+Dictionary that contains 2-port matrix of z-parameters, each matrix element is the list of values at different frequencies (or other parameter) in form of {real imag}\&. The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+          Z1            Z2
+         ___           ___
+    o---|___|----o----|___|---o
+    \&.            |            \&.
+    \&.           \&.-\&.           \&.
+ P1 \&.           | |           \&. P2
+    \&.         Z3| |           \&.
+    \&.           '-'           \&.
+   \\\&./           |           \\\&./
+    o----------- o -----------o
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns dictionary of the form {z1 {list} z2 {list} z3 {list}} with impedances of equivalent elements
+

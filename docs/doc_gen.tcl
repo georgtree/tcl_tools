@@ -18,7 +18,7 @@ set packageVersion 0.1
 
 set title "Collection of Tcl tools"
 
-set common [list \
+set commonHtml [list \
                 -title $title \
                 -sortnamespaces false \
                 -preamble $startPage \
@@ -34,13 +34,32 @@ set common [list \
                 -version $packageVersion \
                 -copyright "George Yashin" {*}$::argv
                ]
+set commonNroff [list \
+                -title $title \
+                -sortnamespaces false \
+                -preamble $startPage \
+                -pagesplit namespace \
+                -recurse false \
+                -pagesplit namespace \
+                -autopunctuate true \
+                -compact false \
+                -includeprivate true \
+                -product tcl_tools \
+                -diagrammer "ditaa --border-width 1" \
+                -version $packageVersion \
+                -copyright "George Yashin" {*}$::argv
+               ]
 set namespaces [list ::gnuplotutil ::mathutil ::rfutil ::touchstoneutil]
 
 if {[llength $argv] == 0 || "html" in $argv} {
     ruff::document $namespaces \
         -format html \
         -outfile index.html \
-        {*}$common
+        {*}$commonHtml
+    ruff::document $namespaces \
+        -format nroff \
+        -outfile tcl_tools.n \
+        {*}$commonNroff
 }
 
 

@@ -8,13 +8,20 @@ This package provides different Tcl tools:
 
 # Installation and dependencies
 
-To install this package just unzip code to folder and append `auto_path` variable with location.
-
 Packages are written in pure Tcl and relies on Tcllib. The only necessary external dependency is 
 the `argparse` package.
 
 - [Tcllib](https://www.tcl.tk/software/tcllib/)
 - [argparse](https://wiki.tcl-lang.org/page/argparse)
+
+To install, run 
+```bash
+./configure
+make
+sudo make install
+```
+If you have different versions of Tcl on the same machine, you can set the path to this version with `-with-tcl=path`
+flag to configure script.
 
 # Supported platforms
 

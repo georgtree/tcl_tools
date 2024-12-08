@@ -1,0 +1,26 @@
+'\"
+'\" '\" Copyright (c) George Yashin
+'\"
+.TH "touchstoneutil" 3tcl 0\&.1 "tcl_tools" "Collection of Tcl tools"
+.SH NAME
+touchstoneutil - Commands in namespace touchstoneutil
+.SH SYNOPSIS
+\fBs2p_read\fP \fIfilePath\fP
+.br
+.SH ::TOUCHSTONEUTIL
+.SH COMMANDS
+.PP
+.RS -4n
+\fBs2p_read\fR (::touchstoneutil)
+.RE
+.RS 4n\fBs2p_read\fP \fIfilePath\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+filePath
+Not documented\&.
+.RE
+

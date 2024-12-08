@@ -1,0 +1,353 @@
+'\"
+'\" '\" Copyright (c) George Yashin
+'\"
+.TH "gnuplotutil" 3tcl 0\&.1 "tcl_tools" "Collection of Tcl tools"
+.SH NAME
+gnuplotutil - Commands in namespace gnuplotutil
+.SH SYNOPSIS
+\fBmultiplotXNYN\fP \fIlayout ?args?\fP
+.br
+\fBplotHist\fP \fIx ?args?\fP
+.br
+\fBplotXNYN\fP \fI?args?\fP
+.br
+\fBplotXNYNMp\fP \fI?args?\fP
+.br
+\fBplotXYN\fP \fIx ?args?\fP
+.br
+.SH ::GNUPLOTUTIL
+.SH COMMANDS
+.PP
+.RS -4n
+\fBmultiplotXNYN\fR (::gnuplotutil)
+.RE
+.PP
+Plots 2D graphs in Gnuplot with individual x-values and by using multiplot\&.
+.RS 4n\fBmultiplotXNYN\fP \fIlayout ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+layout
+List of layout configurations values, for example, {2 2}
+.TP
+-background
+Boolean switch to run gnuplot in background, requires -nodelete switch, default off\&.
+.TP
+-darkmode
+Boolean switch that enables dark mode for graph, default off\&.
+.TP
+-nodelete
+Boolean switch that disables deleting of temporary file after end of plotting, default off\&.
+.TP
+-optcmd
+Argument with optional string that may contain additional commands to gnuplot\&.
+.TP
+-path
+Location of temporary file, default is current location\&.
+.TP
+-plots
+Argument that provides the list of individual plots, the number of plots is not restricted and must be provided at the end of command after all switches, the inputs syntax is the same as \fI::gnuplotutil::plotXNYN\fP
+.TP
+-terminal
+Select terminal, default 'x11' on linux and 'windows' on windows\&.
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+Example:
+set x1 [list 1 2 3 4 5 6]
+set y1 [list 1 4 9 16 25 36]
+set x2 [list 6 5 4 3 2 1]
+set y2 [list 36 25 16 9 4 1]
+set x3 [list 7 8 9 10]
+set y3 [list 49 64 81 100]
+set plot1 [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]
+-columns $x1 $y1 $x2 $y2 $x3 $y3]
+set plot2 [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2 ]
+set plot3 [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3 ]
+set plot4 [list -grid -names [list name2] -columns $x2 $y2 ]
+gnuplotutil::multiplotXNYN {2 2} -plots $plot1 $plot2 $plot3 $plot4
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+gnuplot window with plotted data as multiplot
+.PP
+.RS -4n
+\fBplotHist\fR (::gnuplotutil)
+.RE
+.PP
+Plots 2D histograms in Gnuplot with the common x-values\&.
+.RS 4n\fBplotHist\fP \fIx ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+x
+List of strings that contains x-point for 2D histogram\&.
+.TP
+-background
+Boolean switch to run gnuplot in background, requires -nodelete switch, default off\&.
+.TP
+-border
+Set border of columns with particular style, -fill argument is required\&.
+.TP
+-boxwidth
+Width of columns, must be in range (0,1]
+.TP
+-columns
+Argument that provides the y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches\&.
+.TP
+-darkmode
+Boolean switch that enables dark mode for graph, default off\&.
+.TP
+-density
+Set density of solid filling, -fill argument is required\&.
+.TP
+-fill
+Set fill of columns, must be empty or solid\&.
+.TP
+-gap
+Gap between columns in clustered style,-style argument is required\&.
+.TP
+-grid
+Set grid of histogram\&.
+.TP
+-names
+Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums\&.
+.TP
+-nodelete
+Boolean switch that disables deleting of temporary file after end of plotting, default off\&.
+.TP
+-optcmd
+Argument with optional string that may contain additional commands to gnuplot\&.
+.TP
+-path
+Location of temporary file, default is current location\&.
+.TP
+-style
+Set style of diagram, must be clustered, rowstacked or columnstacked\&.
+.TP
+-terminal
+Select terminal, default 'x11' on linux and 'windows' on windows\&.
+.TP
+-transparent
+Add transparent modificator to filling of columns, -fill argument is required\&.
+.TP
+-xlabel
+Argument to set x-axis label to display, string must be provided after it\&.
+.TP
+-ylabel
+Argument to set y-axis label to display, string must be provided after it\&.
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+Example:
+set x1 [list 0 1 2 3 4 5 6]
+set y1 [list 0 1 4 9 16 25 36]
+set y2 [list 0 1 8 27 64 125 216]
+gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" -ylabel "y label" -names [list y1 y2]
+-columns $y1 $y2]
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+gnuplot window with plotted data
+.PP
+.RS -4n
+\fBplotXNYN\fR (::gnuplotutil)
+.RE
+.PP
+Plots 2D graphs in Gnuplot with individual x-values\&.
+Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot\&.
+.RS 4n\fBplotXNYN\fP \fI?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+-background
+Boolean switch to run gnuplot in background, requires -nodelete switch, default off\&.
+.TP
+-columns
+Argument that provides the x and y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches\&.
+.TP
+-darkmode
+Boolean switch that enables dark mode for graph, default off\&.
+.TP
+-grid
+Boolean switch that enables display of grid, default off\&.
+.TP
+-names
+Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums\&.
+.TP
+-nodelete
+Boolean switch that disables deleting of temporary file after end of plotting, default off\&.
+.TP
+-optcmd
+Argument with optional string that may contain additional commands to gnuplot\&.
+.TP
+-path
+Location of temporary file, default is current location\&.
+.TP
+-terminal
+Select terminal, default 'x11' on linux and 'windows' on windows\&.
+.TP
+-xlabel
+Argument to set x-axis label to display, string must be provided after it\&.
+.TP
+-xlog
+Arg xlog boolean switch of log scale of x axis, default off\&.
+.TP
+-ylabel
+Argument to set y-axis label to display, string must be provided after it\&.
+.TP
+-ylog
+Boolean switch of log scale of y axis, default off\&.
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+Example:
+set x1 [list 0 1 2 3 4 5 6]
+set y1 [list 0 1 4 9 16 25 36]
+set x2 [list 0 1 2 3 4 5 6 7]
+set y2 [list 0 1 8 27 64 125 216 350]
+gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -names [list y1 y2]
+-columns $x1 $y1 $x2 $y2
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+gnuplot window with plotted data
+.PP
+.RS -4n
+\fBplotXNYNMp\fR (::gnuplotutil)
+.RE
+.PP
+Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files
+for individual plots
+.RS 4n\fBplotXNYNMp\fP \fI?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+-columns
+Argument that provides the x and y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches\&.
+.TP
+-grid
+Boolean switch that enables display of grid, default off\&.
+.TP
+-names
+Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums\&.
+.TP
+-path
+Location of temporary file, default is current location\&.
+.TP
+-xlabel
+Argument to set x-axis label to display, string must be provided after it\&.
+.TP
+-xlog
+Arg xlog boolean switch of log scale of x axis, default off\&.
+.TP
+-ylabel
+Argument to set y-axis label to display, string must be provided after it\&.
+.TP
+-ylog
+Boolean switch of log scale of y axis, default off\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+list that contains command script and name of data file
+.PP
+.RS -4n
+\fBplotXYN\fR (::gnuplotutil)
+.RE
+.PP
+Plots 2D graphs in Gnuplot with the common x-values\&.
+.RS 4n\fBplotXYN\fP \fIx ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+x
+List that contains x-point for 2D graph\&.
+.TP
+-background
+Boolean switch to run gnuplot in background, requires -nodelete switch, default off\&.
+.TP
+-columns
+Argument that provides the y data to plot, the number of columns is not restricted and must be provided at the end of command after all switches\&.
+.TP
+-darkmode
+Boolean switch that enables dark mode for graph, default off\&.
+.TP
+-grid
+Boolean switch that enables display of grid, default off\&.
+.TP
+-names
+Argument that enable setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 1+number of y data colums\&.
+.TP
+-nodelete
+Boolean switch that disables deleting of temporary file after end of plotting, default off\&.
+.TP
+-optcmd
+Argument with optional string that may contain additional commands to gnuplot\&.
+.TP
+-path
+Location of temporary file, default is current location\&.
+.TP
+-terminal
+Select terminal, default 'x11' on linux and 'windows' on windows\&.
+.TP
+-xlabel
+Argument to set x-axis label to display, string must be provided after it\&.
+.TP
+-xlog
+Boolean switch of log scale of x axis, default off\&.
+.TP
+-ylabel
+Argument to set y-axis label to display, string must be provided after it\&.
+.TP
+-ylog
+Boolean switch of log scale of y axis, default off\&.
+.RE
+.PP
+\fBDescription\fR
+.PP
+.RS 4n
+.nf
+Example:
+set x [list 0 1 2 3 4 5 6]
+set y1 [list 0 1 4 9 16 25 36]
+set y2 [list 0 1 8 27 64 125 216]
+gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2]
+-columns $y1 $y2
+.fi
+.RE
+.PP
+\fBReturn value\fR
+.PP
+gnuplot window with plotted data
+

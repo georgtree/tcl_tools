@@ -1,0 +1,181 @@
+'\"
+'\" '\" Copyright (c) George Yashin
+'\"
+.TH "mathutil" 3tcl 0\&.1 "tcl_tools" "Collection of Tcl tools"
+.SH NAME
+mathutil - Commands in namespace mathutil
+.SH SYNOPSIS
+\fBcumtrapz\fP \fIx y ?init?\fP
+.br
+\fBderiv1\fP \fIx y\fP
+.br
+\fBderiv2\fP \fIx y\fP
+.br
+\fBfindApprox\fP \fIlist value ?epsilon?\fP
+.br
+\fBmovAvg\fP \fIy winSize ?args?\fP
+.br
+\fBtrapz\fP \fIx y\fP
+.br
+.SH ::MATHUTIL
+.SH COMMANDS
+.PP
+.RS -4n
+\fBcumtrapz\fR (::mathutil)
+.RE
+.PP
+Does trapezoidal integration with storing cumulative data at each point
+.RS 4n\fBcumtrapz\fP \fIx y ?init?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+x
+List of x values\&.
+.TP
+y
+List of y values\&.
+.TP
+init
+Start value\&. Optional, default 0\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+list each value of which is the value of integral across all previous xy values
+.PP
+.RS -4n
+\fBderiv1\fR (::mathutil)
+.RE
+.PP
+Calculates first derivative of x-y lists
+.RS 4n\fBderiv1\fP \fIx y\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+x
+List of x values\&.
+.TP
+y
+List of y values\&.
+.RE
+.PP
+\fBDescription\fR
+.PP
+For calculating derivative we use 3-point method with unequal steps, equations
+were taken from "Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula",
+January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
+.PP
+\fBReturn value\fR
+.PP
+value of first derivative
+.PP
+.RS -4n
+\fBderiv2\fR (::mathutil)
+.RE
+.PP
+Calculates second derivative of x-y lists
+.RS 4n\fBderiv2\fP \fIx y\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+x
+List of x values\&.
+.TP
+y
+List of y values\&.
+.RE
+.PP
+\fBDescription\fR
+.PP
+For calculating derivative we use 3-point method with unequal steps, equations
+were taken from "Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula",
+January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
+.PP
+\fBReturn value\fR
+.PP
+value of second derivative
+.PP
+.RS -4n
+\fBfindApprox\fR (::mathutil)
+.RE
+.PP
+Finds index of firts matched value in list with epsilon tolerance
+.RS 4n\fBfindApprox\fP \fIlist value ?epsilon?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+List of values\&.
+.TP
+value
+Value to match\&.
+.TP
+epsilon
+Tolerance\&. Optional, default 1\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+value from the list
+.PP
+.RS -4n
+\fBmovAvg\fR (::mathutil)
+.RE
+.PP
+Finds moving average of y with given window size\&.
+.RS 4n\fBmovAvg\fP \fIy winSize ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+y
+List of values, must be larger than window size\&.
+.TP
+winSize
+Size of the window, must be an integer larger than 1\&.
+.TP
+-x
+Optional argument with x values\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+list of y, and x if -x argument is specified
+.PP
+.RS -4n
+\fBtrapz\fR (::mathutil)
+.RE
+.PP
+Does trapezoidal integration of x-y lists
+.RS 4n\fBtrapz\fP \fIx y\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+x
+List of x values\&.
+.TP
+y
+List of y values\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+value of integral
+

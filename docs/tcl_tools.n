@@ -1,0 +1,53 @@
+'\"
+'\" '\" Copyright (c) George Yashin
+'\"
+.TH "tcl_tools" 3tcl 0\&.1 "tcl_tools" "Collection of Tcl tools"
+.SH NAME
+Introduction - Collection of Tcl tools
+.SH CONTENT
+.PP
+This package provides different Tcl tools:
+.TP
+\(bu
+\fISimple wrapper to some 2D plots of Gnuplot\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-gnuplotutil\&.html] - "src/gnuplotutil\&.tcl"
+.TP
+\(bu
+\fISome math function\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-mathutil\&.html] - "src/mathutil\&.tcl"
+.TP
+\(bu
+\fIBasic procedure to read touchstone \&.s2p files\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-touchstoneutil\&.html] - "src/touchstoneutil\&.tcl"
+.TP
+\(bu
+\fICollection of functions to work with 2-port network parameters\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-rfutil\&.html] - "src/rfutil\&.tcl"
+.SH "INSTALLATION AND DEPENDENCIES"
+.PP
+Packages are written in pure Tcl and relies on Tcllib\&. The only necessary external dependency is
+the argparse package\&.
+.TP
+\(bu
+\fITcllib\fP [URL: https://www\&.tcl\&.tk/software/tcllib/]
+.TP
+\(bu
+\fIargparse\fP [URL: https://wiki\&.tcl-lang\&.org/page/argparse]
+.PP
+To install, run
+.PP
+.RS 4n
+.nf
+\&./configure
+make
+sudo make install
+.fi
+.RE
+.PP
+If you have different versions of Tcl on the same machine, you can set the path to this version with -with-tcl=path
+flag to configure script\&.
+.SH "SUPPORTED PLATFORMS"
+.PP
+Any OS that has Tcl8\&.6 or Tcl9\&.0 (Linux, Windows, FreeBSD)\&.
+.PP
+Tested on Kubuntu 24\&.04 and Windows 11 (Magicsplat Tcl distribution)\&.
+.SH DOCUMENTATION
+.PP
+You can find some documentation \fIhere\fP [URL: https://georgtree\&.github\&.io/tcl_tools]
+
