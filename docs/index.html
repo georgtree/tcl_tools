@@ -37,6 +37,8 @@ sudo make install
 </pre>
 
 </figure><p class='ruff'>If you have different versions of Tcl on the same machine, you can set the path to this version with <code><font color=#463e11>-with-tcl</font>=path</code> flag to configure script.</p>
+<p class='ruff'>On Windows you can use <a href="https://www.msys2.org/" >MSYS64 UCRT64 environment</a>, the above steps are identical if you run it from UCRT64 shell. After installing the package, you can move tcl_tools package folder (usually located in <code>C:\msys64\ucrt64\lib\</code>) to path listed in <code>auto_path</code> variable of your local Tcl installation.</p>
+<p class='ruff'>On the other hands, because the package is Tcl only, you can just put files from <code>src</code> folder to <code>tcl_tools</code> folder together with <code>pkgIndex.tcl.in</code> renamed to <code>pkgIndex.tcl</code>. And then put this folder to path listed in <code>auto_path</code> variable of your local Tcl installation.</p>
 <h1 class='ruff'><a name='Supported platforms'></a>Supported platforms<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
 <div style='clear:both;'></div>
 <p class='ruff'>Any OS that has Tcl8.6 or Tcl9.0 (Linux, Windows, FreeBSD).</p>
