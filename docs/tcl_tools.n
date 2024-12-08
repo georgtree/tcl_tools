@@ -43,20 +43,20 @@ sudo make install
 If you have different versions of Tcl on the same machine, you can set the path to this version with -with-tcl=path
 flag to configure script\&.
 .PP
+After installation you can run make test to test installed packages\&.
+.PP
 On Windows you can use \fIMSYS64 UCRT64 environment\fP [URL: https://www\&.msys2\&.org/], the above
 steps are identical if you run it from UCRT64 shell\&. After installing the package, you can move tcl_tools package
 folder (usually located in C:\\\\msys64\\\\ucrt64\\\\lib\\\\) to path listed in auto_path variable of your local Tcl
 installation\&.
 .PP
-On the other hands, because the package is Tcl only, you can just put files from src folder to tcl_tools folder
-together with pkgIndex\&.tcl\&.in renamed to pkgIndex\&.tcl\&. And then put this folder to path listed in auto_path
-variable of your local Tcl installation\&.
+On the other hands, because the package is Tcl only, you can just download zip package in release section\&. And then
+put this folder to path listed in auto_path variable of your local Tcl installation\&.
 .SH "SUPPORTED PLATFORMS"
 .PP
-Any OS that has Tcl8\&.6 or Tcl9\&.0 (Linux, Windows, FreeBSD)\&.
-.PP
-Tested on Kubuntu 24\&.04 and Windows 11 (Magicsplat Tcl distribution)\&.
+Any OS that has tcl8\&.6/tcl9\&.0 (Linux, Windows, FreeBSD)\&.
 .SH DOCUMENTATION
 .PP
 You can find some documentation \fIhere\fP [URL: https://georgtree\&.github\&.io/tcl_tools]
+Also on Linux you can open manpages installed after run of make install\&.
 
