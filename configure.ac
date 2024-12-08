@@ -60,7 +60,7 @@ TEA_PREFIX
 #-----------------------------------------------------------------------
 
 #TEA_SETUP_COMPILER
-AC_PROG_INSTALL
+#AC_PROG_INSTALL
 
 #-----------------------------------------------------------------------
 # __CHANGE__
@@ -78,7 +78,7 @@ TEA_ADD_INCLUDES([])
 TEA_ADD_LIBS([])
 TEA_ADD_CFLAGS([])
 TEA_ADD_STUB_SOURCES([])
-TEA_ADD_TCL_SOURCES([src/gnuplotutil.tcl src/mathutil.tcl src/rfutil.tcl src/touchstoneutil.tcl])
+TEA_ADD_TCL_SOURCES([gnuplotutil.tcl mathutil.tcl rfutil.tcl touchstoneutil.tcl])
 
 #--------------------------------------------------------------------
 # __CHANGE__
@@ -173,7 +173,7 @@ TEA_PROG_TCLSH
 #--------------------------------------------------------------------
 
 #TEA_EXPORT_CONFIG([sample])
-#AC_SUBST(SAMPLE_VAR)
+AC_SUBST(TCLLIBPATH)
 
 #--------------------------------------------------------------------
 # Specify files to substitute AC variables in. You may alternatively

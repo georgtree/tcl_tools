@@ -131,14 +131,13 @@ TCL_SRC_DIR	= @TCL_SRC_DIR@
 
 EXTRA_PATH	= $(top_builddir):$(TCL_BIN_DIR)
 #EXTRA_PATH	= $(top_builddir):$(TCL_BIN_DIR):$(TK_BIN_DIR)
-TCLLIBPATH	= $(top_builddir)
+#TCLLIBPATH	= $(top_builddir)
+TCLLIBPATH	= @TCLLIBPATH@
 TCLSH_ENV	= TCL_LIBRARY=`@CYGPATH@ $(TCL_SRC_DIR)/library`
-PKG_ENV		= @LD_LIBRARY_PATH_VAR@="$(EXTRA_PATH):$(@LD_LIBRARY_PATH_VAR@)" \
-		  PATH="$(EXTRA_PATH):$(PATH)" \
-		  TCLLIBPATH="$(TCLLIBPATH)"
+PKG_ENV		= PATH="$(EXTRA_PATH):$(PATH)" TCLLIBPATH="$(TCLLIBPATH)"
 
 TCLSH_PROG	= @TCLSH_PROG@
-TCLSH		= $(TCLSH_ENV) $(PKG_ENV) $(TCLSH_PROG)
+TCLSH		= $(PKG_ENV) $(TCLSH_PROG)
 
 #WISH_ENV	= TK_LIBRARY=`@CYGPATH@ $(TK_SRC_DIR)/library`
 #WISH_PROG	= @WISH_PROG@
@@ -250,10 +249,8 @@ install-doc: doc
 	    $(INSTALL_DATA) $$i "$(DESTDIR)$(mandir)/mann" ; \
 	done
 
-test: binaries libraries
-	$(TCLSH) `@CYGPATH@ $(srcdir)/tests/all.tcl` $(TESTFLAGS) \
-	    -load "package ifneeded $(PACKAGE_NAME) $(PACKAGE_VERSION) \
-		[list load `@CYGPATH@ $(PKG_LIB_FILE)` [string totitle $(PACKAGE_NAME)]]"
+test: libraries
+	$(TCLSH) `@CYGPATH@ $(srcdir)/test/all.tcl` $(TESTFLAGS)
 
 shell: binaries libraries
 	@$(TCLSH) $(SCRIPT)

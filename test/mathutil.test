@@ -1,8 +1,6 @@
 package require tcltest
 namespace import ::tcltest::*
 
-set script_path [file dirname [file normalize [info script]]]
-lappend auto_path "$script_path/../"
 package require mathutil
 namespace import ::mathutil::*
 

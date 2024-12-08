@@ -3,8 +3,6 @@ namespace import ::tcltest::*
 package require csv
 package require argparse
 
-set script_path [file dirname [file normalize [info script]]]
-lappend auto_path "$script_path/../"
 package require gnuplotutil
 
 

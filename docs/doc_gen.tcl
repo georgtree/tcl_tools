@@ -1,13 +1,11 @@
-#RUNF: doc_gen.tcl
 
-lappend auto_path "../"
-lappend auto_path "/home/georgtree/tcl/"
-set path_to_hl_tcl "/home/georgtree/tcl/hl_tcl"
+global env
+set path_to_hl_tcl "$env(TCLLIBPATH)/hl_tcl"
 package require ruff
 package require fileutil
 package require hl_tcl
 set dir [file dirname [file normalize [info script]]]
-set sourceDir "${dir}/../src"
+set sourceDir "${dir}/.."
 source startPage.ruff
 source [file join $sourceDir gnuplotutil.tcl]
 source [file join $sourceDir mathutil.tcl]
