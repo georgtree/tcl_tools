@@ -35,7 +35,6 @@ To install, run
 .RS 4n
 .nf
 \&./configure
-make
 sudo make install
 .fi
 .RE

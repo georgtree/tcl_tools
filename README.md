@@ -17,7 +17,6 @@ the `argparse` package.
 To install, run 
 ```bash
 ./configure
-make
 sudo make install
 ```
 If you have different versions of Tcl on the same machine, you can set the path to this version with `-with-tcl=path`
