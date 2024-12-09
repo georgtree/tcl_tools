@@ -129,16 +129,13 @@ dist: dist-clean
 		cp -p $$i $(DIST_DIR)/ ; \
 	    fi; \
 	done;
-
-	list='test'; \
-	for p in $$list; do \
-	    if test -d $(srcdir)/$$p ; then \
-		mkdir $(DIST_DIR)/$$p; \
-		cp -p $(srcdir)/$$p/*.* $(DIST_DIR)/$$p/; \
-		mkdir $(DIST_DIR)/$$p/example_files; \
-		cp -p $(srcdir)/$$p/example_files/*.* $(DIST_DIR)/$$p/example_files/; \
-	    fi; \
-	done
+	mkdir -p $(DIST_DIR)/test
+	cp -p $(srcdir)/test/all.tcl $(DIST_DIR)/test/
+	cp -p $(srcdir)/test/gnuplotutil.test $(DIST_DIR)/test/
+	cp -p $(srcdir)/test/mathutil.test $(DIST_DIR)/test/
+	cp -p $(srcdir)/test/rfutil.test $(DIST_DIR)/test/
+	cp -p $(srcdir)/test/touchstoneutil.test $(DIST_DIR)/test/
+	cp -r $(srcdir)/test/example_files $(DIST_DIR)/test/
 
 	(cd $(DIST_ROOT); $(COMPRESS); $(COMPRESS_ZIP))
 
