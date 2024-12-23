@@ -17,22 +17,28 @@ namespace eval ::gnuplotutil {
     set darkmodeStyle [join $darkmodeStyleList "\n"]
 }
 
-
-
-proc ::gnuplotutil::initEmptyStrings {args} {
-    foreach arg $args {
-        uplevel [list set $arg ""]
-    }
-    return
-}
-
-proc ::gnuplotutil::initOptString {optDict optName varName value} {
+proc ::gnuplotutil::initArgStr {optDict optName varName value} {
     if {[dexist $optDict $optName]} {
         uplevel set $varName $value
     } else {
         uplevel set $varName {""}
     }
     return
+}
+
+proc ::gnuplotutil::initTerminalStr {optDict varName} {
+    if {[dexist $optDict terminal]} {
+        uplevel set $varName [dget $optDict terminal]
+    } else {
+        global tcl_platform
+        if {[string match -nocase *linux* $tcl_platform(os)]} {
+            uplevel set $varName x11
+        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
+            uplevel set $varName windows
+        } else {
+            uplevel set $varName qt
+        }
+    }
 }
 
 proc ::gnuplotutil::plotXYN {x args} {
@@ -81,25 +87,14 @@ proc ::gnuplotutil::plotXYN {x args} {
         -names=
         {-columns -catchall}
     }]
-    initOptString $arguments xlog xscaleStr {"set logscale x"}
-    initOptString $arguments ylog yscaleStr {"set logscale y"}
-    initOptString $arguments grid gridStr {"set grid"}
-    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
-    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
-    initOptString $arguments names columnNames {[dget $arguments names]}
-    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
-    if {[dexist $arguments terminal]} {
-        set terminalStr [dget $arguments terminal]
-    } else {
-        global tcl_platform
-        if {[string match -nocase *linux* $tcl_platform(os)]} {
-            set terminalStr x11
-        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
-            set terminalStr windows
-        } else {
-            set terminalStr qt
-        }
-    }
+    initArgStr $arguments xlog xscaleStr {"set logscale x"}
+    initArgStr $arguments ylog yscaleStr {"set logscale y"}
+    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initArgStr $arguments names columnNames {[dget $arguments names]}
+    initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
         set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
         append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
@@ -153,19 +148,19 @@ proc ::gnuplotutil::plotXYN {x args} {
     }
     set commandList [list "set mouse" $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
                              $yscaleStr $gridStr $commandStr "pause mouse close"]
-    set commandStr [join $commandList "\n"]
+    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
         set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
     if {![dexist $arguments nodelete]} {
-            file delete $filePath
+        file delete $filePath
     }   
     if {$status>0} {
         return -code error $errorStr
     } else {
-        return
+        return $commandStr
     }
 }
 
@@ -216,25 +211,14 @@ proc ::gnuplotutil::plotXNYN {args} {
         -names=
         {-columns -catchall}
     }]
-    initOptString $arguments xlog xscaleStr {"set logscale x"}
-    initOptString $arguments ylog yscaleStr {"set logscale y"}
-    initOptString $arguments grid gridStr {"set grid"}
-    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
-    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
-    initOptString $arguments names columnNames {[dget $arguments names]}
-    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
-    if {[dexist $arguments terminal]} {
-        set terminalStr [dget $arguments terminal]
-    } else {
-        global tcl_platform
-        if {[string match -nocase *linux* $tcl_platform(os)]} {
-            set terminalStr x11
-        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
-            set terminalStr windows
-        } else {
-            set terminalStr qt
-        }
-    }
+    initArgStr $arguments xlog xscaleStr {"set logscale x"}
+    initArgStr $arguments ylog yscaleStr {"set logscale y"}
+    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initArgStr $arguments names columnNames {[dget $arguments names]}
+    initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
         set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
         append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
@@ -306,7 +290,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     }
     set commandList [list "set mouse" $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
                              $yscaleStr $gridStr $commandStr "pause mouse close"]
-    set commandStr [join $commandList "\n"]
+    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
@@ -318,7 +302,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     if {$status>0} {
         return $errorStr
     } else {
-        return
+        return $commandStr
     }
 }
 
@@ -349,17 +333,17 @@ proc ::gnuplotutil::plotXNYNMp {args} {
         -names=
         {-columns -catchall}
     }]
-    initOptString $arguments xlog xscaleStr {"set logscale x"}
-    initOptString $arguments xlog xscaleStrUnset {"unset logscale x"}
-    initOptString $arguments ylog yscaleStr {"set logscale y"}
-    initOptString $arguments ylog yscaleStrUnset {"unset logscale y"}
-    initOptString $arguments grid gridStr {"set grid"}
-    initOptString $arguments grid gridStrUnset {"unset grid"}
-    initOptString $arguments names columnNames {[dget $arguments names]}
-    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
-    initOptString $arguments xlabel xlabelStrUnset {"unset xlabel"}
-    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
-    initOptString $arguments ylabel ylabelStrUnset {"unset ylabel"}
+    initArgStr $arguments xlog xscaleStr {"set logscale x"}
+    initArgStr $arguments xlog xscaleStrUnset {"unset logscale x"}
+    initArgStr $arguments ylog yscaleStr {"set logscale y"}
+    initArgStr $arguments ylog yscaleStrUnset {"unset logscale y"}
+    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments grid gridStrUnset {"unset grid"}
+    initArgStr $arguments names columnNames {[dget $arguments names]}
+    initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initArgStr $arguments xlabel xlabelStrUnset {"unset xlabel"}
+    initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initArgStr $arguments ylabel ylabelStrUnset {"unset ylabel"}
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
         return -code error "Number of data columns $columnsNum is odd"
@@ -425,7 +409,7 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     }
     set commandList [list $autoTitleStr $xlabelStr $ylabelStr $xscaleStr $yscaleStr $gridStr $commandStr $xlabelStrUnset\
                              $ylabelStrUnset $xscaleStrUnset $yscaleStrUnset $gridStrUnset]
-    set commandStr [join $commandList "\n"]
+    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
     return [dict create cmdString $commandStr file $filePath]
 }
 
@@ -470,24 +454,13 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
         -darkmode
         {-plots -catchall}
     }]
-    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     if {[llength $layout]>2} {
         return -code error "Length of layout arguments is more than 2"
     } else {
         set layoutStr "set multiplot layout [@ $layout 0],[@ $layout 1]"
     }
-    if {[dexist $arguments terminal]} {
-        set terminalStr [dget $arguments terminal]
-    } else {
-        global tcl_platform
-        if {[string match -nocase *linux* $tcl_platform(os)]} {
-            set terminalStr x11
-        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
-            set terminalStr windows
-        } else {
-            set terminalStr qt
-        }
-    }
+    initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
         set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
         append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
@@ -500,7 +473,7 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
         lappend fileNames [dget $plotResults file]
     }
     set commandList [list $optcmdStr $darkmodeStr $layoutStr [join $cmdStrings \n] "unset multiplot" "pause mouse close"]
-    set commandStr [join $commandList "\n"]
+    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
@@ -514,7 +487,7 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
     if {$status>0} {
         return $errorStr
     } else {
-        return
+        return $commandStr
     }
 }
 
@@ -575,26 +548,15 @@ proc ::gnuplotutil::plotHist {x args} {
         {-border= -require {fill}}
         {-columns -catchall}
     }]
-    initOptString $arguments xlog xscaleStr {"set logscale x"}
-    initOptString $arguments ylog yscaleStr {"set logscale y"}
-    initOptString $arguments grid gridStr {"set grid"}
-    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
-    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
-    initOptString $arguments names columnNames {[dget $arguments names]}
-    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
-    initOptString $arguments boxwidth boxwidthStr {"set boxwidth '[dget $arguments boxwidth]'"}
-    if {[dexist $arguments terminal]} {
-        set terminalStr [dget $arguments terminal]
-    } else {
-        global tcl_platform
-        if {[string match -nocase *linux* $tcl_platform(os)]} {
-            set terminalStr x11
-        } elseif {[string match -nocase "*windows nt*" $tcl_platform(os)]} {
-            set terminalStr windows
-        } else {
-            set terminalStr qt
-        }
-    }
+    initArgStr $arguments xlog xscaleStr {"set logscale x"}
+    initArgStr $arguments ylog yscaleStr {"set logscale y"}
+    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initArgStr $arguments names columnNames {[dget $arguments names]}
+    initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    initArgStr $arguments boxwidth boxwidthStr {"set boxwidth '[dget $arguments boxwidth]'"}
+    initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
         set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
         append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
@@ -672,7 +634,7 @@ proc ::gnuplotutil::plotHist {x args} {
     }
     set commandList [list "set mouse" $darkmodeStr "set style data histogram" $styleStr $fillStr $optcmdStr $gridStr\
                             $autoTitleStr $xlabelStr $ylabelStr $boxwidthStr $commandStr "pause mouse close"]
-    set commandStr [join $commandList "\n"]
+    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
@@ -684,6 +646,6 @@ proc ::gnuplotutil::plotHist {x args} {
     if {$status>0} {
         return $errorStr
     } else {
-        return
+        return $commandStr
     }
 }

@@ -5,9 +5,9 @@
 .SH NAME
 gnuplotutil - Commands in namespace gnuplotutil
 .SH SYNOPSIS
-\fBinitEmptyStrings\fP \fI?args?\fP
+\fBinitArgStr\fP \fIoptDict optName varName value\fP
 .br
-\fBinitOptString\fP \fIoptDict optName varName value\fP
+\fBinitTerminalStr\fP \fIoptDict varName\fP
 .br
 \fBmultiplotXNYN\fP \fIlayoutList ?-background? ?-nodelete? ?-optcmd string? ?-terminal? ?-darkmode? ?-size list? -columns plotList1 ?plotList2 \&.\&.\&.?\fP
 .br
@@ -23,20 +23,9 @@ gnuplotutil - Commands in namespace gnuplotutil
 .SH COMMANDS
 .PP
 .RS -4n
-\fBinitEmptyStrings\fR (::gnuplotutil)
+\fBinitArgStr\fR (::gnuplotutil)
 .RE
-.RS 4n\fBinitEmptyStrings\fP \fI?args?\fP
-.br
-.RE
-.PP
-\fBParameters\fR
-.RS 4n
-.RE
-.PP
-.RS -4n
-\fBinitOptString\fR (::gnuplotutil)
-.RE
-.RS 4n\fBinitOptString\fP \fIoptDict optName varName value\fP
+.RS 4n\fBinitArgStr\fP \fIoptDict optName varName value\fP
 .br
 .RE
 .PP
@@ -53,6 +42,23 @@ varName
 Not documented\&.
 .TP
 value
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBinitTerminalStr\fR (::gnuplotutil)
+.RE
+.RS 4n\fBinitTerminalStr\fP \fIoptDict varName\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+optDict
+Not documented\&.
+.TP
+varName
 Not documented\&.
 .RE
 .PP
