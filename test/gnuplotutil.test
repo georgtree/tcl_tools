@@ -11,7 +11,7 @@ test testPlotXYN-1 {test for all on switches} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2]\
+    set result [gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list y1 y2]\
                         -columns $y1 $y2]
     return $result
 } -result ""
@@ -30,7 +30,7 @@ test testPlotXYN-3 {test with data of different length} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125]
 } -body {
-    catch {gnuplotutil::plotXYN $x -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2] -columns $y1 $y2}\
+    catch {gnuplotutil::plotXYN $x -xlabel "x label" -ylabel "y label" -grid -names [list y1 y2] -columns $y1 $y2}\
             errorStr
     return $errorStr
 } -result {Number of points of y-axis data (column 0) doesn't match the number of points of x-axis data}
@@ -40,7 +40,7 @@ test testPlotXYN-4 {test mismatched -names length} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    catch {gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1]\
+    catch {gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list y1]\
                    -columns $y1 $y2} errorStr
     return $errorStr
 } -result {Column names count is not the same as count of data columns}
@@ -84,12 +84,12 @@ test testMultiplotXNYN-1 {general test} -setup {
     set x3 [list 7 8 9 10]
     set y3 [list 49 64 81 100]
 } -body {
-    set result [gnuplotutil::multiplotXNYN {2 2} -plots \
+    set result [gnuplotutil::multiplotXNYN {2 2} -plots\
                         [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2 ] \
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3 ] \
-                        [list -grid -names [list name2] -columns $x2 $y2 ]]
+                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result ""
 
@@ -104,9 +104,9 @@ test testMultiplotXNYN-2 {general test} -setup {
     set result [gnuplotutil::multiplotXNYN {2 2} -darkmode -plots \
                         [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2 ] \
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3 ] \
-                        [list -grid -names [list name2] -columns $x2 $y2 ]]
+                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result ""
 
@@ -118,12 +118,12 @@ test testMultiplotXNYN-3 {general test} -setup {
     set x3 [list 7 8 9 10]
     set y3 [list 49 64 81 100]
 } -body {
-    set result [gnuplotutil::multiplotXNYN {2 2} -darkmode -background -nodelete -plots \
+    set result [gnuplotutil::multiplotXNYN {2 2} -darkmode -background -nodelete -plots\
                         [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2 ] \
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3 ] \
-                        [list -grid -names [list name2] -columns $x2 $y2 ]]
+                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result "" -cleanup {
     after 1000
@@ -139,8 +139,8 @@ test testPlotHist-1 {test clustered style} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label"\
+                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -149,8 +149,8 @@ test testPlotHist-2 {test rowstacked style} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style rowstacked -xlabel "x label" -ylabel "y label" \
-                        -names [list  y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style rowstacked -xlabel "x label" -ylabel "y label"\
+                        -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -159,8 +159,8 @@ test testPlotHist-3 {test columnstacked style} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style columnstacked -fill solid -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style columnstacked -fill solid -xlabel "x label"\
+                        -ylabel "y label" -names [list y1 y2] -size [list 1800 1000] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -169,8 +169,8 @@ test testPlotHist-4 {test clustered style with border} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -border 2 -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -border 2 -xlabel "x label"\
+                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -179,8 +179,8 @@ test testPlotHist-5 {test boxwidth} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -xlabel "x label"\
+                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -189,8 +189,8 @@ test testPlotHist-6 {test style fill with density} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -density 0.5 -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -density 0.5 -xlabel "x label"\
+                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -201,7 +201,7 @@ test testPlotHist-7 {test style fill with density and transparent modificator} -
 } -body {
     set result [gnuplotutil::plotHist $x1 -style rowstacked -boxwidth 0.5 -fill solid -transparent -density 0.1\
                         -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -212,7 +212,7 @@ test testPlotHist-8 {test with grid} -setup {
 } -body {
     set result [gnuplotutil::plotHist $x1 -grid -style rowstacked -boxwidth 0.5 -fill solid -transparent -density 0.1\
                         -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -columns $y1 $y2]
+                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -224,7 +224,7 @@ test testPlotHist-9 {test with optional command} -setup {
 } -body {
     set result [gnuplotutil::plotHist $x1 -grid -style rowstacked -boxwidth 0.5 -fill solid -transparent -density 0.1\
                         -xlabel "x label" \
-                        -ylabel "y label" -names [list  y1 y2] -optcmd $optCommand -columns $y1 $y2]
+                        -ylabel "y label" -names [list y1 y2] -optcmd $optCommand -columns $y1 $y2]
     return $result
 } -result ""
 

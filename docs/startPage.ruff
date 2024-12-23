@@ -16,7 +16,7 @@ variable startPage {
     - [Tcllib](https://www.tcl.tk/software/tcllib/)
     - [argparse](https://wiki.tcl-lang.org/page/argparse)
 
-    To install, run 
+    To install, run
     ```bash
     ./configure
     sudo make install

@@ -1,6 +1,7 @@
 
-global env
-set path_to_hl_tcl "$env(TCLLIBPATH)/hl_tcl"
+lappend auto_path "../"
+lappend auto_path "/home/georgtree/tcl/"
+set path_to_hl_tcl "/home/georgtree/tcl/hl_tcl"
 package require ruff
 package require fileutil
 package require hl_tcl
@@ -12,7 +13,7 @@ source [file join $sourceDir mathutil.tcl]
 source [file join $sourceDir rfutil.tcl]
 source [file join $sourceDir touchstoneutil.tcl]
 
-set packageVersion 0.1
+set packageVersion [package versions gnuplotutil]
 
 set title "Collection of Tcl tools"
 

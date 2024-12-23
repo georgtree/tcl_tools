@@ -1,6 +1,7 @@
 package require csv
 package require argparse
-
+package require textutil::trim
+namespace import ::textutil::trim::trim
 package provide gnuplotutil 0.1
 
 namespace eval ::gnuplotutil {
@@ -10,27 +11,52 @@ namespace eval ::gnuplotutil {
     interp alias {} @ {} lindex
     interp alias {} = {} expr
     interp alias {} dexist {} dict exists
+
+    set darkmodeStyleList [list "set border lc rgb 'white'" "set xlabel tc rgb 'white'" "set key textcolor rgb 'white'"\
+                               "set grid ytics lt 0 lw 1 lc rgb 'white'" "set grid xtics lt 0 lw 1 lc rgb 'white'"]
+    set darkmodeStyle [join $darkmodeStyleList "\n"]
+}
+
+
+
+proc ::gnuplotutil::initEmptyStrings {args} {
+    foreach arg $args {
+        uplevel [list set $arg ""]
+    }
+    return
+}
+
+proc ::gnuplotutil::initOptString {optDict optName varName value} {
+    if {[dexist $optDict $optName]} {
+        uplevel set $varName $value
+    } else {
+        uplevel set $varName {""}
+    }
+    return
 }
 
 proc ::gnuplotutil::plotXYN {x args} {
     # Plots 2D graphs in Gnuplot with the common x-values.
-    #  x - List that contains x-point for 2D graph
-    #  -xlog - boolean switch of log scale of x axis, default off
-    #  -ylog - boolean switch of log scale of y axis, default off
-    #  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off
-    #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
-    #  -xlabel - argument to set x-axis label to display, string must be provided after it
-    #  -ylabel - argument to set y-axis label to display, string must be provided after it
-    #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
-    #  -grid - boolean switch that enables display of grid, default off
-    #  -darkmode - boolean switch that enables dark mode for graph, default off
-    #  -path - location of temporary file, default is current location
-    #  -names - argument that enable setting the column names of provided data, value must be provided as list
-    #    in the same order as data columns provided, must have the length 1+number of y data colums
-    #  -columns - argument that provides the y data to plot, the number of columns is not restricted and must 
-    #    be provided at the end of command after all switches
-    # Returns: gnuplot window with plotted data
+    #  x - list of x-point for 2D graph
+    #  -xlog - enables log scale of x axis
+    #  -ylog - enables log scale of y axis
+    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -nodelete - disables deleting of temporary file after end of plotting
+    #  -xlabel - provides x-axis label to display, string must be provided after it
+    #  -ylabel - provides y-axis label to display, string must be provided after it
+    #  -optcmd - provides optional string that may contain additional commands to gnuplot
+    #  -terminal - selects terminal, default 'x11' on Linux and 'windows' on Windows
+    #  -grid - enables display of grid
+    #  -darkmode - enables dark mode for graph
+    #  -size - provides size of the window, must be list with two elements: width and height in pixels
+    #  -path - provides location of temporary file, default is the current location
+    #  -names - enables setting the column names of provided data, value must be provided as list
+    #    in the same order as data columns provided, must have the length equal to the number of y data colums
+    #  -columns - provides the y data to plot, the number of columns is not restricted and must be provided at the end
+    #    of command after all switches
+    # Returns: creates gnuplot window with plotted data, and returns string contains commands sent to gnuplot
+    # Synopsis: x ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string?
+    #   ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns yList1 ?yList2 ...?
     # ```
     # Example:
     # set x [list 0 1 2 3 4 5 6]
@@ -40,51 +66,29 @@ proc ::gnuplotutil::plotXYN {x args} {
     # -columns $y1 $y2
     # ```
     set arguments [argparse -inline {
-        {-xlog -boolean}
-        {-ylog -boolean}
-        {-background -boolean -require {nodelete}}
-        {-nodelete -boolean}
-        {-xlabel -argument}
-        {-ylabel -argument}
-        {-optcmd -argument}
-        {-terminal -argument}
-        {-grid -boolean}
-        {-darkmode -boolean}
-        {-path -argument -default "."}
-        {-names -argument}
+        -xlog
+        -ylog
+        {-background -require {nodelete}}
+        -nodelete
+        -xlabel=
+        -ylabel=
+        -optcmd=
+        -terminal=
+        -grid
+        -darkmode
+        {-path= -default "."}
+        {-size= -default {800 600}}
+        -names=
         {-columns -catchall}
     }]
-    set xscaleStr ""
-    set yscaleStr ""
-    set xlabelStr ""
-    set ylabelStr ""
-    set gridStr ""
-    set autoTitleStr ""
-    set optcmdStr ""
-    set backgroundStr ""
-    set darkmodeStr ""
-    if {[dget $arguments xlog]==1} {
-        set xscaleStr "set logscale x"
-    }
-    if {[dget $arguments ylog]==1} {
-        set yscaleStr "set logscale y"
-    }
-    if {[dget $arguments grid]==1} {
-        set gridStr "set grid"
-    }
-    if {[dexist $arguments names]==1} {
-        set columnNames [dget $arguments names]
-    }
-    if {[dexist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
-    }
-    if {[dexist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
-    }
-    if {[dexist $arguments optcmd]==1} {
-        set optcmdStr [dget $arguments optcmd]
-    }
-    if {[dexist $arguments terminal]==1} {
+    initOptString $arguments xlog xscaleStr {"set logscale x"}
+    initOptString $arguments ylog yscaleStr {"set logscale y"}
+    initOptString $arguments grid gridStr {"set grid"}
+    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initOptString $arguments names columnNames {[dget $arguments names]}
+    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    if {[dexist $arguments terminal]} {
         set terminalStr [dget $arguments terminal]
     } else {
         global tcl_platform
@@ -96,33 +100,25 @@ proc ::gnuplotutil::plotXYN {x args} {
             set terminalStr qt
         }
     }
-    if {[dget $arguments darkmode]==1} {
-        set darkmodeStr "
-            set term $terminalStr noenhanced background rgb 'black'
-            set border lc rgb 'white'
-            set xlabel tc rgb 'white'
-            set key textcolor rgb 'white'
-            set grid ytics lt 0 lw 1 lc rgb 'white'
-            set grid xtics lt 0 lw 1 lc rgb 'white'
-        "
+    if {[dexist $arguments darkmode]} {
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
+        append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
     } else {
-        set darkmodeStr "
-            set term $terminalStr noenhanced
-        "
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced"
     }
     set yColumnCount 0
     foreach val [dget $arguments columns] {
-        if {[llength $val] != [llength $x]} {
-            error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of points of x-axis\
-                    data"
+        if {[llength $val]!=[llength $x]} {
+            return -code error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of\
+                    points of x-axis data"
             incr yColumnCount
         }
     }
     # fill output structure with values
     set numCol [llength [dget $arguments columns]]
-    if {([dexist $arguments names]==1)} {
-        if {[llength $columnNames] != [= {$numCol}]} {
-            error "Column names count is not the same as count of data columns"
+    if {([dexist $arguments names])} {
+        if {[llength $columnNames]!=[= {$numCol}]} {
+            return -code error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             lappend outList "{ } $columnNames"
@@ -155,34 +151,19 @@ proc ::gnuplotutil::plotXYN {x args} {
     for {set i 1} {$i<$numCol} {incr i} {
         set commandStr  "${commandStr}, '' using 1:[= {$i+2}] with lines "
     }
-    set commandStr "
-        set mouse
-        $darkmodeStr
-        $optcmdStr
-        $autoTitleStr
-        $xlabelStr
-        $ylabelStr
-        $xscaleStr
-        $yscaleStr
-        $gridStr
-        $commandStr
-        pause mouse close
-    "
-    if {[dget $arguments background]==1} {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            " & } errorStr]
+    set commandList [list "set mouse" $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
+                             $yscaleStr $gridStr $commandStr "pause mouse close"]
+    set commandStr [join $commandList "\n"]
+    if {[dexist $arguments background]} {
+        set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            "} errorStr]
+        set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    
-    if {[dget $arguments nodelete]==0} {
+    if {![dexist $arguments nodelete]} {
             file delete $filePath
     }   
     if {$status>0} {
-        return $errorStr
+        return -code error $errorStr
     } else {
         return
     }
@@ -190,23 +171,26 @@ proc ::gnuplotutil::plotXYN {x args} {
 
 proc ::gnuplotutil::plotXNYN {args} {
     # Plots 2D graphs in Gnuplot with individual x-values.
-    # Creates input and command files to plot 2D graphs with the individual x points, and sends it to gnuplot.
-    #  -xlog - arg xlog boolean switch of log scale of x axis, default off
-    #  -ylog - boolean switch of log scale of y axis, default off
-    #  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off
-    #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
-    #  -xlabel - argument to set x-axis label to display, string must be provided after it
-    #  -ylabel - argument to set y-axis label to display, string must be provided after it
-    #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
-    #  -grid - boolean switch that enables display of grid, default off
-    #  -darkmode - boolean switch that enables dark mode for graph, default off
-    #  -path - location of temporary file, default is current location
-    #  -names - argument that enable setting the column names of provided data, value must be provided as list
-    #    in the same order as data columns provided, must have the length 1+number of y data colums
-    #  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must 
+    #  -xlog - enables log scale of x axis
+    #  -ylog - enables log scale of y axis
+    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -nodelete - disables deleting of temporary file after end of plotting
+    #  -xlabel - provides x-axis label to display, string must be provided after it
+    #  -ylabel - provides y-axis label to display, string must be provided after it
+    #  -optcmd - provides optional string that may contain additional commands to gnuplot
+    #  -terminal - selects terminal, default 'x11' on Linux and 'windows' on Windows
+    #  -size - provides size of the window, must be list with two elements: width and height in pixels
+    #  -grid - enables display of grid
+    #  -darkmode - enables dark mode for graph
+    #  -path - provides location of temporary file, default is the current location
+    #  -names - enables setting the column names of provided data, value must be provided as list
+    #    in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+    #  -columns -  provides the x and y data to plot, the number of columns is not restricted and must 
     #    be provided at the end of command after all switches
-    # Returns: gnuplot window with plotted data
+    # Returns: creates gnuplot window with plotted data, and returns string contains commands sent to gnuplot
+    # Synopsis: ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string?
+    #   ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns xList1 yList1 
+    #   ?xList2 yList2 ...?
     # ```
     # Example:
     # set x1 [list 0 1 2 3 4 5 6]
@@ -217,51 +201,29 @@ proc ::gnuplotutil::plotXNYN {args} {
     # -columns $x1 $y1 $x2 $y2
     # ```
     set arguments [argparse -inline {
-        {-xlog -boolean}
-        {-ylog -boolean}
-        {-background -boolean -require {nodelete}}
-        {-nodelete -boolean}
-        {-xlabel -argument}
-        {-ylabel -argument}
-        {-optcmd -argument}
-        {-terminal -argument}
-        {-grid -boolean}
-        {-darkmode -boolean}
-        {-path -argument -default ""}
-        {-names -argument}
+        -xlog
+        -ylog
+        {-background -require {nodelete}}
+        -nodelete
+        -xlabel=
+        -ylabel=
+        -optcmd=
+        -terminal=
+        {-size= -default {800 600}}
+        -grid
+        -darkmode
+        {-path= -default ""}
+        -names=
         {-columns -catchall}
     }]
-    set xscaleStr ""
-    set yscaleStr ""
-    set xlabelStr ""
-    set ylabelStr ""
-    set gridStr ""
-    set autoTitleStr ""
-    set optcmdStr ""
-    set backgroundStr ""
-    set darkmodeStr ""
-    if {[dget $arguments xlog]==1} {
-        set xscaleStr "set logscale x"
-    }
-    if {[dget $arguments ylog]==1} {
-        set yscaleStr "set logscale y"
-    }
-    if {[dget $arguments grid]==1} {
-        set gridStr "set grid"
-    }
-    if {[dexist $arguments names]==1} {
-        set columnNames [dget $arguments names]
-    }
-    if {[dexist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
-    }
-    if {[dexist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
-    }
-    if {[dexist $arguments optcmd]==1} {
-        set optcmdStr [dget $arguments optcmd]
-    }
-    if {[dexist $arguments terminal]==1} {
+    initOptString $arguments xlog xscaleStr {"set logscale x"}
+    initOptString $arguments ylog yscaleStr {"set logscale y"}
+    initOptString $arguments grid gridStr {"set grid"}
+    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initOptString $arguments names columnNames {[dget $arguments names]}
+    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    if {[dexist $arguments terminal]} {
         set terminalStr [dget $arguments terminal]
     } else {
         global tcl_platform
@@ -273,23 +235,15 @@ proc ::gnuplotutil::plotXNYN {args} {
             set terminalStr qt
         }
     }
-    if {[dget $arguments darkmode]==1} {
-        set darkmodeStr "
-            set term $terminalStr noenhanced background rgb 'black'
-            set border lc rgb 'white'
-            set xlabel tc rgb 'white'
-            set key textcolor rgb 'white'
-            set grid ytics lt 0 lw 1 lc rgb 'white'
-            set grid xtics lt 0 lw 1 lc rgb 'white'
-        "
+    if {[dexist $arguments darkmode]} {
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
+        append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
     } else {
-        set darkmodeStr "
-            set term $terminalStr noenhanced
-        "
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced"
     }
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
-        error "Number of data columns $columnsNum is odd"
+        return -code error "Number of data columns $columnsNum is odd"
     }
     set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
@@ -298,16 +252,16 @@ proc ::gnuplotutil::plotXNYN {args} {
         set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number of points\
-                    of x-axis data (column $yColumnCount)"
+            return -code error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number\
+                    of pointsof x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
-    if {([dexist $arguments names]==1)} {
+    if {([dexist $arguments names])} {
             set headerString {}
-        if {[llength $columnNames] != [= {$dataNum}]} {
-            error "Column names count is not the same as count of data columns"
+        if {[llength $columnNames]!=[= {$dataNum}]} {
+            return -code error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
@@ -350,30 +304,15 @@ proc ::gnuplotutil::plotXNYN {args} {
     for {set i 1} {$i<$dataNum} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] with lines "
     }
-    set commandStr "
-        set mouse
-        $darkmodeStr
-        $optcmdStr
-        $autoTitleStr
-        $xlabelStr
-        $ylabelStr
-        $xscaleStr
-        $yscaleStr
-        $gridStr
-        $commandStr
-        pause mouse close
-    "
-    if {[dget $arguments background]==1} {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            " & } errorStr]
+    set commandList [list "set mouse" $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
+                             $yscaleStr $gridStr $commandStr "pause mouse close"]
+    set commandStr [join $commandList "\n"]
+    if {[dexist $arguments background]} {
+        set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            "} errorStr]
+        set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    
-    if {[dget $arguments nodelete]==0} {
+    if {![dexist $arguments nodelete]} {
         file delete $filePath
     }   
     if {$status>0} {
@@ -387,65 +326,43 @@ proc ::gnuplotutil::plotXNYN {args} {
 proc ::gnuplotutil::plotXNYNMp {args} {
     # Auxilary function for gnuplotutil::multiplotXNYN, creates command strings and data files
     #  for individual plots
-    #  -xlog - arg xlog boolean switch of log scale of x axis, default off
-    #  -ylog - boolean switch of log scale of y axis, default off
-    #  -xlabel - argument to set x-axis label to display, string must be provided after it
-    #  -ylabel - argument to set y-axis label to display, string must be provided after it
-    #  -grid - boolean switch that enables display of grid, default off
-    #  -path - location of temporary file, default is current location
-    #  -names - argument that enable setting the column names of provided data, value must be provided as list
-    #    in the same order as data columns provided, must have the length 1+number of y data colums
-    #  -columns -  argument that provides the x and y data to plot, the number of columns is not restricted and must 
+    #  -xlog - enables log scale of x axis
+    #  -ylog - enables log scale of y axis
+    #  -xlabel - provides x-axis label to display, string must be provided after it
+    #  -ylabel - provides y-axis label to display, string must be provided after it
+    #  -grid - enables display of grid
+    #  -path - provides location of temporary file, default is current location
+    #  -names - enables setting the column names of provided data, value must be provided as list
+    #    in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+    #  -columns -  provides the x and y data to plot, the number of columns is not restricted and must 
     #    be provided at the end of command after all switches
-    # Returns: list that contains command script and name of data file 
+    # Returns: list that contains command script and name of data file
+    # Synopsis: ?-xlog? ?-ylog? ?-xlabel string? ?-ylabel string? ?-grid? ?-path string? ?-names list?
+    #   -columns xList1 yList1 ?xList2 yList2 ...? 
     set arguments [argparse -inline {
-        {-xlog -boolean}
-        {-ylog -boolean}
-        {-xlabel -argument}
-        {-ylabel -argument}
-        {-grid -boolean}
-        {-path -argument -default "."}
-        {-names -argument}
+        -xlog
+        -ylog
+        -xlabel=
+        -ylabel=
+        -grid
+        {-path= -default "."}
+        -names=
         {-columns -catchall}
     }]
-    set xscaleStr ""
-    set yscaleStr ""
-    set xlabelStr ""
-    set ylabelStr ""
-    set gridStr ""
-    set xscaleStrUnset ""
-    set yscaleStrUnset ""
-    set xlabelStrUnset ""
-    set ylabelStrUnset ""
-    set gridStrUnset ""
-    set autoTitleStr ""
-    set optcmdStr ""
-    if {[dget $arguments xlog]==1} {
-        set xscaleStr "set logscale x"
-        set xscaleStrUnset "unset logscale x"
-    }
-    if {[dget $arguments ylog]==1} {
-        set yscaleStr "set logscale y"
-        set yscaleStrUnset "unset logscale y"
-    }
-    if {[dget $arguments grid]==1} {
-        set gridStr "set grid"
-        set gridStrUnset "unset grid"
-    }
-    if {[dexist $arguments names]==1} {
-        set columnNames [dget $arguments names]
-    }
-    if {[dexist $arguments xlabel]==1} {
-        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
-        set xlabelStrUnset "unset xlabel"
-    }
-    if {[dexist $arguments ylabel]==1} {
-        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
-        set ylabelStrUnset "unset ylabel"
-    }
+    initOptString $arguments xlog xscaleStr {"set logscale x"}
+    initOptString $arguments xlog xscaleStrUnset {"unset logscale x"}
+    initOptString $arguments ylog yscaleStr {"set logscale y"}
+    initOptString $arguments ylog yscaleStrUnset {"unset logscale y"}
+    initOptString $arguments grid gridStr {"set grid"}
+    initOptString $arguments grid gridStrUnset {"unset grid"}
+    initOptString $arguments names columnNames {[dget $arguments names]}
+    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initOptString $arguments xlabel xlabelStrUnset {"unset xlabel"}
+    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initOptString $arguments ylabel ylabelStrUnset {"unset ylabel"}
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
-        error "Number of data columns $columnsNum is odd"
+        return -code error "Number of data columns $columnsNum is odd"
     }
     set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
@@ -454,16 +371,16 @@ proc ::gnuplotutil::plotXNYNMp {args} {
         set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number of points\
-                    of x-axis data (column $yColumnCount)"
+            return -code error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number\
+                    of points of x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
-    if {([dexist $arguments names]==1)} {
+    if {([dexist $arguments names])} {
             set headerString {}
-        if {[llength $columnNames] != [= {$dataNum}]} {
-            error "Column names count is not the same as count of data columns"
+        if {[llength $columnNames]!=[= {$dataNum}]} {
+            return -code error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
@@ -506,38 +423,29 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     for {set i 1} {$i<$dataNum} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] with lines "
     }
-    set gnuplotCmdString "
-        $autoTitleStr
-        $xlabelStr
-        $ylabelStr
-        $xscaleStr
-        $yscaleStr
-        $gridStr
-        $commandStr
-        $xlabelStrUnset
-        $ylabelStrUnset
-        $xscaleStrUnset
-        $yscaleStrUnset
-        $gridStrUnset
-    "
-    return [dict create cmdString $gnuplotCmdString file $filePath]
+    set commandList [list $autoTitleStr $xlabelStr $ylabelStr $xscaleStr $yscaleStr $gridStr $commandStr $xlabelStrUnset\
+                             $ylabelStrUnset $xscaleStrUnset $yscaleStrUnset $gridStrUnset]
+    set commandStr [join $commandList "\n"]
+    return [dict create cmdString $commandStr file $filePath]
 }
 
 
 
 proc ::gnuplotutil::multiplotXNYN {layout args} {
-    # Plots 2D graphs in Gnuplot with individual x-values and by using multiplot.
+    # Plots 2D graphs in Gnuplot with individual x-values and using multiplot to display.
     #  layout - list of layout configurations values, for example, {2 2}
-    #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
-    #  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off
-    #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
-    #  -darkmode - boolean switch that enables dark mode for graph, default off
-    #  -path - location of temporary file, default is current location
-    #  -plots - argument that provides the list of individual plots, the number of plots is not restricted and must 
-    #    be provided at the end of command after all switches, the inputs syntax is the same as
-    #    [::gnuplotutil::plotXNYN]
-    # Returns: gnuplot window with plotted data as multiplot
+    #  -nodelete - disables deleting of temporary file after end of plotting
+    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -optcmd - provides optional string that may contain additional commands to gnuplot
+    #  -terminal - provides terminal, default 'x11' on linux and 'windows' on windows
+    #  -size - provides size of the window, must be list with two elements: width and height in pixels
+    #  -darkmode - enables dark mode for graph
+    #  -plots - provides the list of individual plots, the number of plots is not restricted and must 
+    #    be provided at the end of command after all switches, the inputs syntax is the same as in
+    #    [::gnuplotutil::plotXNYNMp]
+    # Returns: creates gnuplot window with plotted data, and returns string contains commands sent to gnuplot
+    # Synopsis: layoutList ?-background? ?-nodelete? ?-optcmd string? ?-terminal? ?-darkmode? ?-size list?
+    #   -columns plotList1 ?plotList2 ...?
     # ```
     # Example:
     # set x1 [list 1 2 3 4 5 6]
@@ -554,23 +462,21 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
     # gnuplotutil::multiplotXNYN {2 2} -plots $plot1 $plot2 $plot3 $plot4
     # ```
     set arguments [argparse -inline {
-        {-nodelete -boolean}
-        {-background -boolean -require {nodelete}}
-        {-optcmd -argument}
-        {-terminal -argument}
-        {-darkmode -boolean}
-        {-path -argument -default "."}
+        -nodelete
+        {-background -require {nodelete}}
+        -optcmd=
+        -terminal=
+        {-size= -default {800 600}}
+        -darkmode
         {-plots -catchall}
     }]
-    if {[dexist $arguments optcmd]==0} {
-        set optcmd ""
-    }
+    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     if {[llength $layout]>2} {
-        error "Length of layout arguments is more than 2"
+        return -code error "Length of layout arguments is more than 2"
     } else {
         set layoutStr "set multiplot layout [@ $layout 0],[@ $layout 1]"
     }
-    if {[dexist $arguments terminal]==1} {
+    if {[dexist $arguments terminal]} {
         set terminalStr [dget $arguments terminal]
     } else {
         global tcl_platform
@@ -582,43 +488,25 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
             set terminalStr qt
         }
     }
-    if {[dget $arguments darkmode]==1} {
-        set darkmodeStr "
-            set term $terminalStr noenhanced background rgb 'black'
-            set border lc rgb 'white'
-            set xlabel tc rgb 'white'
-            set key textcolor rgb 'white'
-            set grid ytics lt 0 lw 1 lc rgb 'white'
-            set grid xtics lt 0 lw 1 lc rgb 'white'
-        "
+    if {[dexist $arguments darkmode]} {
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
+        append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
     } else {
-        set darkmodeStr "
-            set term $terminalStr noenhanced
-        "
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced"
     }
     foreach plot [dget $arguments plots] {
         set plotResults [gnuplotutil::plotXNYNMp {*}$plot]
         lappend cmdStrings [dget $plotResults cmdString]
         lappend fileNames [dget $plotResults file]
     }
-    set commandStr "
-        $optcmd
-        $darkmodeStr
-        $layoutStr
-        [join $cmdStrings \n]
-        unset multiplot
-        pause mouse close
-    "
-    if {[dget $arguments background]==1} {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            " & } errorStr]
+    set commandList [list $optcmdStr $darkmodeStr $layoutStr [join $cmdStrings \n] "unset multiplot" "pause mouse close"]
+    set commandStr [join $commandList "\n"]
+    if {[dexist $arguments background]} {
+        set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            "} errorStr]
+        set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    if {[dget $arguments nodelete]==0} {
+    if {![dexist $arguments nodelete]} {
         foreach fileName $fileNames {
             file delete $fileName
         }
@@ -633,27 +521,31 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
 proc ::gnuplotutil::plotHist {x args} {
     # Plots 2D histograms in Gnuplot with the common x-values.
     #  x - List of strings that contains x-point for 2D histogram
-    #  -nodelete - boolean switch that disables deleting of temporary file after end of plotting, default off
-    #  -xlabel - argument to set x-axis label to display, string must be provided after it
-    #  -ylabel - argument to set y-axis label to display, string must be provided after it
-    #  -style - set style of diagram, must be clustered, rowstacked or columnstacked
-    #  -gap - gap between columns in clustered style,-style argument is required
-    #  -boxwidth - width of columns, must be in range (0,1]
-    #  -fill - set fill of columns, must be empty or solid
-    #  -grid - set grid of histogram
-    #  -background - boolean switch to run gnuplot in background, requires -nodelete switch, default off
-    #  -terminal - select terminal, default 'x11' on linux and 'windows' on windows
-    #  -path - location of temporary file, default is current location
-    #  -darkmode - boolean switch that enables dark mode for graph, default off
-    #  -transparent - add transparent modificator to filling of columns, -fill argument is required
-    #  -density - set density of solid filling, -fill argument is required
-    #  -border - set border of columns with particular style, -fill argument is required
-    #  -optcmd - argument with optional string that may contain additional commands to gnuplot
-    #  -names - argument that enable setting the column names of provided data, value must be provided as list
-    #    in the same order as data columns provided, must have the length 1+number of y data colums
-    #  -columns - argument that provides the y data to plot, the number of columns is not restricted and must be 
+    #  -nodelete - disables deleting of temporary file after end of plotting
+    #  -xlabel - provides x-axis label to display, string must be provided after it
+    #  -ylabel - provides y-axis label to display, string must be provided after it
+    #  -style - provides style of diagram, must be clustered, rowstacked or columnstacked
+    #  -gap - provides gap between columns in clustered style, -style argument is required
+    #  -boxwidth - provides width of columns, must be in range (0,1]
+    #  -fill - provides fill of columns, must be empty or solid
+    #  -grid - enables grid of histogram
+    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -terminal - provides terminal, default 'x11' on linux and 'windows' on windows
+    #  -size - provides size of the window, must be list with two elements: width and height in pixels
+    #  -path - provides location of temporary file, default is current location
+    #  -darkmode - enables dark mode for graph
+    #  -transparent - enables transparency to filling of columns, -fill argument is required
+    #  -density - provides density of solid filling, -fill argument is required
+    #  -border - provides border of columns with particular style, -fill argument is required
+    #  -optcmd - provides optional string that may contain additional commands to gnuplot
+    #  -names - enables setting the column names of provided data, value must be provided as list
+    #    in the same order as data columns provided, must have the length equal to number of y data colums
+    #  -columns - provides the y data to plot, the number of columns is not restricted and must be 
     #    provided at the end of command after all switches
-    # Returns: gnuplot window with plotted data
+    # Returns: creates gnuplot window with plotted data, and returns string contains commands sent to gnuplot
+    # Synopsis: x -style ?-gap value? ?-boxwidth value? ?-fill value? ?-transparent? ?-density value? ?-border value?
+    #   ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode?
+    #   ?-size list? ?-path string? ?-names list? -columns xList1 ?xList2 ...?
     # ```
     # Example:
     # set x1 [list 0 1 2 3 4 5 6]
@@ -663,42 +555,35 @@ proc ::gnuplotutil::plotHist {x args} {
     # -columns $y1 $y2]
     # ```
     set arguments [argparse -inline {
-        {-nodelete -boolean}
-        {-xlabel -argument}
-        {-ylabel -argument}
-        {-style -argument -enum {clustered rowstacked columnstacked} -required}
-        {-gap -argument -require {style}}
-        {-optcmd -argument}
-        {-grid -boolean}
-        {-background -boolean -require {nodelete}}
-        {-terminal -argument}
-        {-path -argument -default "."}
-        {-darkmode -boolean}
-        {-names -argument}
-        {-boxwidth -argument}
-        {-fill -argument -enum {empty solid}}
-        {-density -argument -require {fill}}
-        {-transparent -boolean -require {fill}}
-        {-border -argument -require {fill}}
+        -nodelete
+        -xlabel=
+        -ylabel=
+        {-style= -enum {clustered rowstacked columnstacked} -required}
+        {-gap= -require {style}}
+        -optcmd=
+        -grid
+        {-background -require {nodelete}}
+        -terminal=
+        {-size= -default {800 600}}
+        {-path= -default "."}
+        -darkmode
+        -names=
+        -boxwidth=
+        {-fill= -enum {empty solid}}
+        {-density= -require {fill}}
+        {-transparent -require {fill}}
+        {-border= -require {fill}}
         {-columns -catchall}
     }]
-    set xscaleStr ""
-    set yscaleStr ""
-    set autoTitleStr ""
-    set optcmdStr ""
-    set styleStr ""
-    set gridStr ""
-    set boxwidthStr ""
-    set fillStr ""
-    set backgroundStr ""
-    set darkmodeStr ""
-    if {[dexist $arguments names]} {
-        set columnNames [dget $arguments names]
-    }
-    if {[dexist $arguments optcmd]} {
-        set optcmdStr [dget $arguments optcmd]
-    }
-    if {[dexist $arguments terminal]==1} {
+    initOptString $arguments xlog xscaleStr {"set logscale x"}
+    initOptString $arguments ylog yscaleStr {"set logscale y"}
+    initOptString $arguments grid gridStr {"set grid"}
+    initOptString $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
+    initOptString $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
+    initOptString $arguments names columnNames {[dget $arguments names]}
+    initOptString $arguments optcmd optcmdStr {[dget $arguments optcmd]}
+    initOptString $arguments boxwidth boxwidthStr {"set boxwidth '[dget $arguments boxwidth]'"}
+    if {[dexist $arguments terminal]} {
         set terminalStr [dget $arguments terminal]
     } else {
         global tcl_platform
@@ -710,37 +595,14 @@ proc ::gnuplotutil::plotHist {x args} {
             set terminalStr qt
         }
     }
-    if {[dget $arguments darkmode]==1} {
-        set darkmodeStr "
-            set term $terminalStr noenhanced background rgb 'black'
-            set border lc rgb 'white'
-            set xlabel tc rgb 'white'
-            set key textcolor rgb 'white'
-            set grid ytics lt 0 lw 1 lc rgb 'white'
-            set grid xtics lt 0 lw 1 lc rgb 'white'
-        "
+    if {[dexist $arguments darkmode]} {
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced background rgb 'black'"
+        append darkmodeStr "\n" $::gnuplotutil::darkmodeStyle
     } else {
-        set darkmodeStr "
-            set term $terminalStr noenhanced
-        "
-    }
-    if {[dget $arguments grid]==1} {
-        set gridStr "set grid"
-    }
-    if {[dexist $arguments xlabel]} {
-        set xlabelStr "set xlabel '[dget $arguments xlabel]'"
-    }
-    if {[dexist $arguments ylabel]} {
-        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
-    }
-    if {[dexist $arguments ylabel]} {
-        set ylabelStr "set ylabel '[dget $arguments ylabel]'"
-    }
-    if {[dexist $arguments boxwidth]} {
-        set boxwidthStr "set boxwidth '[dget $arguments boxwidth]'"
+        set darkmodeStr "set term $terminalStr size [join [dget $arguments size] ,] noenhanced"
     }
     if {[dexist $arguments fill]} {
-        if {[dget $arguments transparent]==1} {
+        if {[dexist $arguments transparent]} {
             set fillStr "set style fill transparent [dget $arguments fill]"
         } else {
             set fillStr "set style fill [dget $arguments fill]"
@@ -751,27 +613,31 @@ proc ::gnuplotutil::plotHist {x args} {
         if {[dexist $arguments border]} {
             append fillStr " border lt [dget $arguments border]"
         }
+    } else {
+        set fillStr {}
     }
     if {[dexist $arguments style]} {
         if {([dexist $arguments gap]) && ([dget $arguments style] in {clustered})} {
-             set styleStr "set style histogram [dget $arguments style] gap [dget $arguments gap]"
+            set styleStr "set style histogram [dget $arguments style] gap [dget $arguments gap]"
         } else {
             set styleStr "set style histogram [dget $arguments style]"
         }
+    } else {
+        set styleStr {}
     }
     set yColumnCount 0
     foreach val [dget $arguments columns] {
         if {[llength $val] != [llength $x]} {
-            error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of points of x-axis\
-                    data"
+            return -code error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of\
+                    points of x-axis data"
             incr yColumnCount
         }
     }
     # fill output structure with values
     set numCol [llength [dget $arguments columns]]
-    if {([dexist $arguments names]==1)} {
-        if {[llength $columnNames] != [= {$numCol}]} {
-            error "Column names count is not the same as count of data columns"
+    if {([dexist $arguments names])} {
+        if {[llength $columnNames]!=[= {$numCol}]} {
+            return -code error "Column names count is not the same as count of data columns"
             set autoTitleStr ""
         } else {
             lappend outList "{ } $columnNames"
@@ -804,30 +670,15 @@ proc ::gnuplotutil::plotHist {x args} {
     for {set i 1} {$i<$numCol} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i+2}]"
     }
-    set commandStr "
-        set mouse
-        set style data histogram
-        $styleStr
-        $fillStr
-        $optcmdStr
-        $gridStr
-        $autoTitleStr
-        $xlabelStr
-        $ylabelStr
-        $boxwidthStr
-        $commandStr
-        pause mouse close
-    "
-    if {[dget $arguments background]==1} {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            " & } errorStr]
+    set commandList [list "set mouse" $darkmodeStr "set style data histogram" $styleStr $fillStr $optcmdStr $gridStr\
+                            $autoTitleStr $xlabelStr $ylabelStr $boxwidthStr $commandStr "pause mouse close"]
+    set commandStr [join $commandList "\n"]
+    if {[dexist $arguments background]} {
+        set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
-        set status [catch {exec gnuplot << "
-            $commandStr
-            "} errorStr]
+        set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    if {[dget $arguments nodelete]==0} {
+    if {![dexist $arguments nodelete]} {
         file delete $filePath
     }   
     if {$status>0} {

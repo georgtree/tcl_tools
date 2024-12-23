@@ -115,7 +115,8 @@ DIST_ROOT	= /tmp/dist
 DIST_DIR	= $(DIST_ROOT)/$(PKG_DIR)
 
 dist-clean:
-	rm -rf $(DIST_DIR) $(DIST_ROOT)/$(PKG_DIR).tar.*
+	rm -rf $(DIST_DIR) $(DIST_ROOT)/$(PKG_DIR).tar.*;\
+	rm -rf $(DIST_DIR) $(DIST_ROOT)/$(PKG_DIR).zip
 
 dist: dist-clean
 	mkdir -p $(DIST_DIR)
@@ -153,11 +154,14 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-uninstall:
+uninstall-libraries:
 	list='$(PKG_TCL_SOURCES)'; for p in $$list; do \
 	  p=`basename $$p`; \
 	  rm -f "$(DESTDIR)$(pkglibdir)/$$p"; \
 	done
+
+uninstall:
+	rm -rf "$(DESTDIR)$(pkglibdir)"
 
 .PHONY: all clean depend distclean doc install libraries test
 .NOEXPORT:

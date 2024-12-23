@@ -2,7 +2,7 @@ global env
 set nagelfarPath "/home/$env(USER)/tcl/nagelfar/"
 set currentDir [file dirname [file normalize [info script]]]
 #cd $nagelfarPath
-set srcList [list mathutil.tcl rfutil.tcl touchstoneutil.tcl]
+set srcList [list mathutil.tcl rfutil.tcl touchstoneutil.tcl gnuplotutil.tcl]
 # instrument all files in src folder
 foreach file $srcList {
     exec [file join ${nagelfarPath} nagelfar.tcl] -instrument [file join ${currentDir} .. {*}$file]
