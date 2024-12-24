@@ -31,12 +31,11 @@
 </ul>
 <p class='ruff'>To install, run</p>
 
-<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>
-./configure
+<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>./configure
 sudo make install
 </pre>
 
-</figure><p class='ruff'>If you have different versions of Tcl on the same machine, you can set the path to this version with <code>-with-tcl=path</code> flag to configure script.</p>
+</figure><p class='ruff'>If you have different versions of Tcl on the same machine, you can set the path to this version with <code><font color=#463e11>-with-tcl</font>=path</code> flag to configure script.</p>
 <p class='ruff'>After installation you can run <code>make test</code> to test installed packages.</p>
 <p class='ruff'>On Windows you can use <a href="https://www.msys2.org/" >MSYS64 UCRT64 environment</a>, the above steps are identical if you run it from UCRT64 shell. After installing the package, you can move tcl_tools package folder (usually located in <code>C:\msys64\ucrt64\lib\</code>) to path listed in <code>auto_path</code> variable of your local Tcl installation.</p>
 <p class='ruff'>On the other hands, because the package is Tcl only, you can just download zip package in release section. And then put this folder to path listed in <code>auto_path</code> variable of your local Tcl installation.</p>

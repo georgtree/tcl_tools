@@ -24,84 +24,84 @@
 <tr><td><code>filePath</code></td><td>Not documented.</td></tr>
 </table>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_touchstoneutil_s2p_read' href="javascript:toggleSource('touchstoneutil_s2p_read')">Show source</a></p>
-<div id='touchstoneutil_s2p_read' class='ruff_dyn_src'><pre>proc ::touchstoneutil::s2p_read {filePath} {
+<div id='touchstoneutil_s2p_read' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::touchstoneutil::s2p_read {filePath} {
 
-    variable degtorad
-    set infile [open $filePath r]
-    set i 0
-    set format &quot;&quot;
-    while { [gets $infile line] &gt;= 0 } {
-        incr i
-        if {[string match !* $line]} {
-            continue
-        } elseif {[string match #* $line]} {
-            set paramList [textutil::split::splitx $line]
-            foreach param $paramList {
-                if {[string tolower $param] == &quot;ri&quot;} {
-                    set format &quot;ri&quot;
-                } elseif {[string tolower $param] == &quot;db&quot;} {
-                    set format &quot;db&quot;
-                } elseif {[string tolower $param] == &quot;ma&quot;} {
-                    set format &quot;ma&quot;
+    <b><font color=#923B23>variable</font></b> degtorad
+    <b><font color=#923B23>set</font></b> infile [<b><font color=#923B23>open</font></b> <font color=#4A181B>$filePath</font> r]
+    <b><font color=#923B23>set</font></b> i 0
+    <b><font color=#923B23>set</font></b> format <font color=#035103>&quot;&quot;</font>
+    <b><font color=#923B23>while</font></b> { [<b><font color=#923B23>gets</font></b> <font color=#4A181B>$infile</font> line] &gt;= 0 } {
+        <b><font color=#923B23>incr</font></b> i
+        <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> match !* <font color=#4A181B>$line</font>]} {
+            <b><font color=#ca14ca>continue</font></b>
+        } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> match #* <font color=#4A181B>$line</font>]} {
+            <b><font color=#923B23>set</font></b> paramList [textutil::split::splitx <font color=#4A181B>$line</font>]
+            <b><font color=#923B23>foreach</font></b> param <font color=#4A181B>$paramList</font> {
+                <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> tolower <font color=#4A181B>$param</font>] == <font color=#035103>&quot;ri&quot;</font>} {
+                    <b><font color=#923B23>set</font></b> format <font color=#035103>&quot;ri&quot;</font>
+                } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> tolower <font color=#4A181B>$param</font>] == <font color=#035103>&quot;db&quot;</font>} {
+                    <b><font color=#923B23>set</font></b> format <font color=#035103>&quot;db&quot;</font>
+                } <b><font color=#923B23>elseif</font></b> {[<b><font color=#923B23>string</font></b> tolower <font color=#4A181B>$param</font>] == <font color=#035103>&quot;ma&quot;</font>} {
+                    <b><font color=#923B23>set</font></b> format <font color=#035103>&quot;ma&quot;</font>
                 }
             }
-        } else {
-            set lineList [split $line &quot; &quot;]
-            lappend freq [@ $lineList 0]
-            lappend 11a [@ $lineList 1]
-            lappend 11b [@ $lineList 2]
-            lappend 21a [@ $lineList 3]
-            lappend 21b [@ $lineList 4]
-            lappend 12a [@ $lineList 5]
-            lappend 12b [@ $lineList 6]
-            lappend 22a [@ $lineList 7]
-            lappend 22b [@ $lineList 8]
+        } <b><font color=#923B23>else</font></b> {
+            <b><font color=#923B23>set</font></b> lineList [<b><font color=#923B23>split</font></b> <font color=#4A181B>$line</font> <font color=#035103>&quot; &quot;</font>]
+            <b><font color=#923B23>lappend</font></b> freq [@ <font color=#4A181B>$lineList</font> 0]
+            <b><font color=#923B23>lappend</font></b> 11a [@ <font color=#4A181B>$lineList</font> 1]
+            <b><font color=#923B23>lappend</font></b> 11b [@ <font color=#4A181B>$lineList</font> 2]
+            <b><font color=#923B23>lappend</font></b> 21a [@ <font color=#4A181B>$lineList</font> 3]
+            <b><font color=#923B23>lappend</font></b> 21b [@ <font color=#4A181B>$lineList</font> 4]
+            <b><font color=#923B23>lappend</font></b> 12a [@ <font color=#4A181B>$lineList</font> 5]
+            <b><font color=#923B23>lappend</font></b> 12b [@ <font color=#4A181B>$lineList</font> 6]
+            <b><font color=#923B23>lappend</font></b> 22a [@ <font color=#4A181B>$lineList</font> 7]
+            <b><font color=#923B23>lappend</font></b> 22b [@ <font color=#4A181B>$lineList</font> 8]
         }
     }
-    set len [llength $freq]
-    if {$format==&quot;ri&quot;} {
-        for {set i 0} {$i&lt;$len} {incr i} {
-            lappend 11 [complex [@ $11a $i] [@ $11b $i]]
-            lappend 21 [complex [@ $21a $i] [@ $21b $i]]
-            lappend 12 [complex [@ $12a $i] [@ $12b $i]]
-            lappend 22 [complex [@ $22a $i] [@ $22b $i]]
+    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$format</font>==&quot;ri&quot;} {
+        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
+            <b><font color=#923B23>lappend</font></b> 11 [complex [@ <font color=#4A181B>$11a</font> <font color=#4A181B>$i</font>] [@ <font color=#4A181B>$11b</font> <font color=#4A181B>$i</font>]]
+            <b><font color=#923B23>lappend</font></b> 21 [complex [@ <font color=#4A181B>$21a</font> <font color=#4A181B>$i</font>] [@ <font color=#4A181B>$21b</font> <font color=#4A181B>$i</font>]]
+            <b><font color=#923B23>lappend</font></b> 12 [complex [@ <font color=#4A181B>$12a</font> <font color=#4A181B>$i</font>] [@ <font color=#4A181B>$12b</font> <font color=#4A181B>$i</font>]]
+            <b><font color=#923B23>lappend</font></b> 22 [complex [@ <font color=#4A181B>$22a</font> <font color=#4A181B>$i</font>] [@ <font color=#4A181B>$22b</font> <font color=#4A181B>$i</font>]]
         }
-    } elseif {$format==&quot;db&quot;} {
-        for {set i 0} {$i&lt;$len} {incr i} {
-            set 1j [complex 0 1]
-            set mag11 [= {10.0**([@ $11a $i]/20.0)}]
-            set phRad11 [= {$degtorad*[@ $11b $i]}]
-            set mag21 [= {10.0**([@ $21a $i]/20.0)}]
-            set phRad21 [= {$degtorad*[@ $21b $i]}]
-            set mag12 [= {10.0**([@ $12a $i]/20.0)}]
-            set phRad12 [= {$degtorad*[@ $12b $i]}]
-            set mag22 [= {10.0**([@ $22a $i]/20.0)}]
-            set phRad22 [= {$degtorad*[@ $22b $i]}]
-            lappend 11 [* [complex $mag11 0] [exp [* $1j [complex $phRad11 0]]]]
-            lappend 21 [* [complex $mag21 0] [exp [* $1j [complex $phRad21 0]]]]
-            lappend 12 [* [complex $mag12 0] [exp [* $1j [complex $phRad12 0]]]]
-            lappend 22 [* [complex $mag22 0] [exp [* $1j [complex $phRad22 0]]]]
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$format</font>==&quot;db&quot;} {
+        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
+            <b><font color=#923B23>set</font></b> 1j [complex 0 1]
+            <b><font color=#923B23>set</font></b> mag11 [= {10.0**([@ <font color=#4A181B>$11a</font> <font color=#4A181B>$i</font>]/20.0)}]
+            <b><font color=#923B23>set</font></b> phRad11 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$11b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>set</font></b> mag21 [= {10.0**([@ <font color=#4A181B>$21a</font> <font color=#4A181B>$i</font>]/20.0)}]
+            <b><font color=#923B23>set</font></b> phRad21 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$21b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>set</font></b> mag12 [= {10.0**([@ <font color=#4A181B>$12a</font> <font color=#4A181B>$i</font>]/20.0)}]
+            <b><font color=#923B23>set</font></b> phRad12 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$12b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>set</font></b> mag22 [= {10.0**([@ <font color=#4A181B>$22a</font> <font color=#4A181B>$i</font>]/20.0)}]
+            <b><font color=#923B23>set</font></b> phRad22 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$22b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>lappend</font></b> 11 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag11</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad11</font> 0]]]]
+            <b><font color=#923B23>lappend</font></b> 21 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag21</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad21</font> 0]]]]
+            <b><font color=#923B23>lappend</font></b> 12 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag12</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad12</font> 0]]]]
+            <b><font color=#923B23>lappend</font></b> 22 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag22</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad22</font> 0]]]]
         }
-    } elseif {$format==&quot;ma&quot;} {
-        for {set i 0} {$i&lt;$len} {incr i} {
-            set 1j [complex 0 1]
-            set mag11 [@ $11a $i]
-            set phRad11 [= {$degtorad*[@ $11b $i]}]
-            set mag21 [@ $21a $i]
-            set phRad21 [= {$degtorad*[@ $21b $i]}]
-            set mag12 [@ $12a $i]
-            set phRad12 [= {$degtorad*[@ $12b $i]}]
-            set mag22 [@ $22a $i]
-            set phRad22 [= {$degtorad*[@ $22b $i]}]
-            lappend 11 [* [complex $mag11 0] [exp [* $1j [complex $phRad11 0]]]]
-            lappend 21 [* [complex $mag21 0] [exp [* $1j [complex $phRad21 0]]]]
-            lappend 12 [* [complex $mag12 0] [exp [* $1j [complex $phRad12 0]]]]
-            lappend 22 [* [complex $mag22 0] [exp [* $1j [complex $phRad22 0]]]]
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$format</font>==&quot;ma&quot;} {
+        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
+            <b><font color=#923B23>set</font></b> 1j [complex 0 1]
+            <b><font color=#923B23>set</font></b> mag11 [@ <font color=#4A181B>$11a</font> <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> phRad11 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$11b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>set</font></b> mag21 [@ <font color=#4A181B>$21a</font> <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> phRad21 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$21b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>set</font></b> mag12 [@ <font color=#4A181B>$12a</font> <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> phRad12 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$12b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>set</font></b> mag22 [@ <font color=#4A181B>$22a</font> <font color=#4A181B>$i</font>]
+            <b><font color=#923B23>set</font></b> phRad22 [= {<font color=#4A181B>$degtorad</font>*[@ <font color=#4A181B>$22b</font> <font color=#4A181B>$i</font>]}]
+            <b><font color=#923B23>lappend</font></b> 11 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag11</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad11</font> 0]]]]
+            <b><font color=#923B23>lappend</font></b> 21 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag21</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad21</font> 0]]]]
+            <b><font color=#923B23>lappend</font></b> 12 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag12</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad12</font> 0]]]]
+            <b><font color=#923B23>lappend</font></b> 22 [<b><font color=#923B23>*</font></b> [complex <font color=#4A181B>$mag22</font> 0] [exp [<b><font color=#923B23>*</font></b> <font color=#4A181B>$1j</font> [complex <font color=#4A181B>$phRad22</font> 0]]]]
         }
-    } else {
-        error {Format of the file is not ri, db or ma}
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#923B23>error</font></b> {Format of the file is not ri, db or ma}
     }
-    return [dict create freq $freq 11 $11 21 $21 12 $12 22 $22]
+    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font> 11 <font color=#4A181B>$11</font> 21 <font color=#4A181B>$21</font> 12 <font color=#4A181B>$12</font> 22 <font color=#4A181B>$22</font>]
 }</pre></div>
 </div></main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a style='padding-top:2px;' href='index.html'>Start page</a></li>
 <li class='ruff-toc1'><a href='index-docindex.html' accesskey='i'>Index</a></li>
@@ -110,5 +110,5 @@
 <li class='ruff-toc1'><a href='index-mathutil.html'>mathutil</a></li>
 <li class='ruff-toc1'><a href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a class='ruff-highlight' href='index-touchstoneutil.html'>touchstoneutil</a></li>
-<hr><li class='ruff-toc2'><a href='#::touchstoneutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-touchstoneutil.html#::touchstoneutil::s2p_read'>s2p_read</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>s2p_read</span> <span class='ruff_arg'>filePath</span></pre></span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
+<hr><li class='ruff-toc2'><a href='#::touchstoneutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-touchstoneutil.html#::touchstoneutil::s2p_read'>s2p_read</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;s2p_read&lt;/span&gt; &lt;span class='ruff_arg'&gt;filePath&lt;/span&gt;</pre></span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>

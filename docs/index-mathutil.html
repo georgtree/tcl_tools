@@ -28,24 +28,24 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list each value of which is the value of integral across all previous xy values</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_cumtrapz' href="javascript:toggleSource('mathutil_cumtrapz')">Show source</a></p>
-<div id='mathutil_cumtrapz' class='ruff_dyn_src'><pre>proc ::mathutil::cumtrapz {x y {init 0}} {
+<div id='mathutil_cumtrapz' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::cumtrapz {x y {init 0}} {
 
-    # Does trapezoidal integration with storing cumulative data at each point
-    #  x - list of x values
-    #  y - list of y values
-    #  init - start value
-    # Returns: list each value of which is the value of integral across all previous xy values
-    set xLen [llength $x]
-    set yLen [llength $y]
-    if {$xLen != $yLen} {
-        error &quot;Length of x '$xLen' is not equal to length of y '$yLen'&quot;
+    <i><font color=#4b5d50># Does trapezoidal integration with storing cumulative data at each point</font></i>
+    <i><font color=#4b5d50>#  x - list of x values</font></i>
+    <i><font color=#4b5d50>#  y - list of y values</font></i>
+    <i><font color=#4b5d50>#  init - start value</font></i>
+    <i><font color=#4b5d50># Returns: list each value of which is the value of integral across all previous xy values</font></i>
+    <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x '<font color=#4A181B>$</font>xLen' is not equal to length of y '<font color=#4A181B>$</font>yLen'&quot;</font>
     }
-    set result $init
-    for {set i 0} {$i&lt;[- $xLen 1]} {incr i} {
-        set result [= {$result+([@ $y [+ $i 1]]+[@ $y $i])/2.0*([@ $x [+ $i 1]]-[@ $x $i])}]
-        lappend resultList $result
+    <b><font color=#923B23>set</font></b> result <font color=#4A181B>$init</font>
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$xLen</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> result [= {<font color=#4A181B>$result</font>+([@ <font color=#4A181B>$y</font> [+ <font color=#4A181B>$i</font> 1]]+[@ <font color=#4A181B>$y</font> <font color=#4A181B>$i</font>])/2.0*([@ <font color=#4A181B>$x</font> [+ <font color=#4A181B>$i</font> 1]]-[@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>])}]
+        <b><font color=#923B23>lappend</font></b> resultList <font color=#4A181B>$result</font>
     }
-    return $resultList
+    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$resultList</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::deriv1'>deriv1</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -58,37 +58,37 @@
 <h5 class='ruff'>Description</h5><p class='ruff'>For calculating derivative we use 3-point method with unequal steps, equations were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;, January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</p>
 <h5 class='ruff'>Return value</h5><p class='ruff'>value of first derivative</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_deriv1' href="javascript:toggleSource('mathutil_deriv1')">Show source</a></p>
-<div id='mathutil_deriv1' class='ruff_dyn_src'><pre>proc ::mathutil::deriv1 {x y} {
+<div id='mathutil_deriv1' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::deriv1 {x y} {
 
-    # Calculates first derivative of x-y lists
-    #  x - list of x values
-    #  y - list of y values
-    # Returns: value of first derivative
-    #
-    # For calculating derivative we use 3-point method with unequal steps, equations
-    # were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;,
-    # January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
-    set xLen [llength $x]
-    set yLen [llength $y]
-    if {$xLen != $yLen} {
-        error &quot;Length of x '$xLen' is not equal to length of y '$yLen'&quot;
+    <i><font color=#4b5d50># Calculates first derivative of x-y lists</font></i>
+    <i><font color=#4b5d50>#  x - list of x values</font></i>
+    <i><font color=#4b5d50>#  y - list of y values</font></i>
+    <i><font color=#4b5d50># Returns: value of first derivative</font></i>
+    <i><font color=#4b5d50>#</font></i>
+    <i><font color=#4b5d50># For calculating derivative we use 3-point method with unequal steps, equations</font></i>
+    <i><font color=#4b5d50># were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;,</font></i>
+    <i><font color=#4b5d50># January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</font></i>
+    <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x '<font color=#4A181B>$</font>xLen' is not equal to length of y '<font color=#4A181B>$</font>yLen'&quot;</font>
     }
-    set numPoints $xLen
-    # calculate first point
-    set h1 [- [@ $x 1] [@ $x 0]]
-    set h2 [- [@ $x 2] [@ $x 1]]
-    lappend yDeriv [= {-(2*$h1+$h2)/($h1*($h1+$h2))*[@ $y 0]+($h1+$h2)/($h1*$h2)*[@ $y 1]- $h1/($h2*($h1+$h2))*[@ $y 2]}]
-    # calculate inner points
-    for {set i 1} {$i&lt;[- $numPoints 1]} {incr i} {
-        set h1 [- [@ $x $i] [@ $x [- $i 1]]]
-        set h2 [- [@ $x [+ $i 1]] [@ $x $i]]
-        lappend yDeriv [= {-$h2/($h1*($h1+$h2))*[@ $y [- $i 1]]-($h1-$h2)/($h1*$h2)*[@ $y $i]+ $h1/($h2*($h1+$h2))*[@ $y [+ $i 1]]}]
+    <b><font color=#923B23>set</font></b> numPoints <font color=#4A181B>$xLen</font>
+    <i><font color=#4b5d50># calculate first point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [@ <font color=#4A181B>$x</font> 1] [@ <font color=#4A181B>$x</font> 0]]
+    <b><font color=#923B23>set</font></b> h2 [- [@ <font color=#4A181B>$x</font> 2] [@ <font color=#4A181B>$x</font> 1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [= {-(2*<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[@ <font color=#4A181B>$y</font> 0]+(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>)*[@ <font color=#4A181B>$y</font> 1]- <font color=#4A181B>$h1</font>/(<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[@ <font color=#4A181B>$y</font> 2]}]
+    <i><font color=#4b5d50># calculate inner points</font></i>
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$numPoints</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> h1 [- [@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>] [@ <font color=#4A181B>$x</font> [- <font color=#4A181B>$i</font> 1]]]
+        <b><font color=#923B23>set</font></b> h2 [- [@ <font color=#4A181B>$x</font> [+ <font color=#4A181B>$i</font> 1]] [@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]]
+        <b><font color=#923B23>lappend</font></b> yDeriv [= {-<font color=#4A181B>$h2</font>/(<font color=#4A181B>$h1</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[@ <font color=#4A181B>$y</font> [- <font color=#4A181B>$i</font> 1]]-(<font color=#4A181B>$h1</font>-<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>)*[@ <font color=#4A181B>$y</font> <font color=#4A181B>$i</font>]+ <font color=#4A181B>$h1</font>/(<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[@ <font color=#4A181B>$y</font> [+ <font color=#4A181B>$i</font> 1]]}]
     }
-    # calculate last point
-    set h1 [- [@ $x end-1] [@ $x end-2]]
-    set h2 [- [@ $x end] [@ $x end-1]]
-    lappend yDeriv [= {$h2/($h1*($h1+$h2))*[@ $y end-2]-($h1+$h2)/($h1*$h2)*[@ $y end-1]+ ($h1+2*$h2)/($h2*($h1+$h2))*[@ $y end]}]
-    return $yDeriv
+    <i><font color=#4b5d50># calculate last point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [@ <font color=#4A181B>$x</font> end-1] [@ <font color=#4A181B>$x</font> end-2]]
+    <b><font color=#923B23>set</font></b> h2 [- [@ <font color=#4A181B>$x</font> end] [@ <font color=#4A181B>$x</font> end-1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [= {<font color=#4A181B>$h2</font>/(<font color=#4A181B>$h1</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[@ <font color=#4A181B>$y</font> end-2]-(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>)*[@ <font color=#4A181B>$y</font> end-1]+ (<font color=#4A181B>$h1</font>+2*<font color=#4A181B>$h2</font>)/(<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))*[@ <font color=#4A181B>$y</font> end]}]
+    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$yDeriv</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::deriv2'>deriv2</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -101,72 +101,72 @@
 <h5 class='ruff'>Description</h5><p class='ruff'>For calculating derivative we use 3-point method with unequal steps, equations were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;, January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</p>
 <h5 class='ruff'>Return value</h5><p class='ruff'>value of second derivative</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_deriv2' href="javascript:toggleSource('mathutil_deriv2')">Show source</a></p>
-<div id='mathutil_deriv2' class='ruff_dyn_src'><pre>proc ::mathutil::deriv2 {x y} {
+<div id='mathutil_deriv2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::deriv2 {x y} {
 
-    # Calculates second derivative of x-y lists
-    #  x - list of x values
-    #  y - list of y values
-    # Returns: value of second derivative
-    #
-    # For calculating derivative we use 3-point method with unequal steps, equations
-    # were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;,
-    # January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh
-    set xLen [llength $x]
-    set yLen [llength $y]
-    if {$xLen != $yLen} {
-        error &quot;Length of x '$xLen' is not equal to length of y '$yLen'&quot;
+    <i><font color=#4b5d50># Calculates second derivative of x-y lists</font></i>
+    <i><font color=#4b5d50>#  x - list of x values</font></i>
+    <i><font color=#4b5d50>#  y - list of y values</font></i>
+    <i><font color=#4b5d50># Returns: value of second derivative</font></i>
+    <i><font color=#4b5d50>#</font></i>
+    <i><font color=#4b5d50># For calculating derivative we use 3-point method with unequal steps, equations</font></i>
+    <i><font color=#4b5d50># were taken from &quot;Finite Difference Formulae for Unequal Sub-Intervals Using Lagrange's Interpolation Formula&quot;,</font></i>
+    <i><font color=#4b5d50># January 2009, International Journal of Mathematical Analysis 3(17):815-827, Ashok Kumar Singh</font></i>
+    <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x '<font color=#4A181B>$</font>xLen' is not equal to length of y '<font color=#4A181B>$</font>yLen'&quot;</font>
     }
-    set numPoints $xLen
-    # calculate first point
-    set h1 [- [@ $x 1] [@ $x 0]]
-    set h2 [- [@ $x 2] [@ $x 1]]
-    lappend yDeriv [= {2*($h2*[@ $y 0]-($h1+$h2)*[@ $y 1]+$h1*[@ $y 2])/($h1*$h2*($h1+$h2))}]
-    # calculate inner points
-    for {set i 1} {$i&lt;[- $numPoints 1]} {incr i} {
-        set h1 [- [@ $x $i] [@ $x [- $i 1]]]
-        set h2 [- [@ $x [+ $i 1]] [@ $x $i]]
-        lappend yDeriv [= {2*($h2*[@ $y [- $i 1]]-($h1+$h2)*[@ $y $i]+$h1*[@ $y [+ $i 1]])/($h1*$h2*($h1+$h2))}]
+    <b><font color=#923B23>set</font></b> numPoints <font color=#4A181B>$xLen</font>
+    <i><font color=#4b5d50># calculate first point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [@ <font color=#4A181B>$x</font> 1] [@ <font color=#4A181B>$x</font> 0]]
+    <b><font color=#923B23>set</font></b> h2 [- [@ <font color=#4A181B>$x</font> 2] [@ <font color=#4A181B>$x</font> 1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [= {2*(<font color=#4A181B>$h2</font>*[@ <font color=#4A181B>$y</font> 0]-(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)*[@ <font color=#4A181B>$y</font> 1]+<font color=#4A181B>$h1</font>*[@ <font color=#4A181B>$y</font> 2])/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))}]
+    <i><font color=#4b5d50># calculate inner points</font></i>
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 1} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$numPoints</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> h1 [- [@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>] [@ <font color=#4A181B>$x</font> [- <font color=#4A181B>$i</font> 1]]]
+        <b><font color=#923B23>set</font></b> h2 [- [@ <font color=#4A181B>$x</font> [+ <font color=#4A181B>$i</font> 1]] [@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>]]
+        <b><font color=#923B23>lappend</font></b> yDeriv [= {2*(<font color=#4A181B>$h2</font>*[@ <font color=#4A181B>$y</font> [- <font color=#4A181B>$i</font> 1]]-(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)*[@ <font color=#4A181B>$y</font> <font color=#4A181B>$i</font>]+<font color=#4A181B>$h1</font>*[@ <font color=#4A181B>$y</font> [+ <font color=#4A181B>$i</font> 1]])/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))}]
     }
-    # calculate last point
-    set h1 [- [@ $x end-1] [@ $x end-2]]
-    set h2 [- [@ $x end] [@ $x end-1]]
-    lappend yDeriv [= {2*($h2*[@ $y end-2]-($h1+$h2)*[@ $y end-1]+$h1*[@ $y end])/($h1*$h2*($h1+$h2))}]
-    return $yDeriv
+    <i><font color=#4b5d50># calculate last point</font></i>
+    <b><font color=#923B23>set</font></b> h1 [- [@ <font color=#4A181B>$x</font> end-1] [@ <font color=#4A181B>$x</font> end-2]]
+    <b><font color=#923B23>set</font></b> h2 [- [@ <font color=#4A181B>$x</font> end] [@ <font color=#4A181B>$x</font> end-1]]
+    <b><font color=#923B23>lappend</font></b> yDeriv [= {2*(<font color=#4A181B>$h2</font>*[@ <font color=#4A181B>$y</font> end-2]-(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>)*[@ <font color=#4A181B>$y</font> end-1]+<font color=#4A181B>$h1</font>*[@ <font color=#4A181B>$y</font> end])/(<font color=#4A181B>$h1</font>*<font color=#4A181B>$h2</font>*(<font color=#4A181B>$h1</font>+<font color=#4A181B>$h2</font>))}]
+    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$yDeriv</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::findApprox'>findApprox</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Finds index of firts matched value in list with epsilon tolerance</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>findApprox</span> <span class='ruff_arg'>list value ?epsilon?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>list</code></td><td>List of values.</td></tr>
+<tr><td><code><b><font color=#923B23>list</font></b></code></td><td>List of values.</td></tr>
 <tr><td><code>value</code></td><td>Value to match.</td></tr>
 <tr><td><code>epsilon</code></td><td>Tolerance. Optional, default <code>1</code>.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>value from the list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_findApprox' href="javascript:toggleSource('mathutil_findApprox')">Show source</a></p>
-<div id='mathutil_findApprox' class='ruff_dyn_src'><pre>proc ::mathutil::findApprox {list value {epsilon 1}} {
+<div id='mathutil_findApprox' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::findApprox {<b><font color=#923B23>list</font></b> value {epsilon 1}} {
 
-    # Finds index of firts matched value in list with epsilon tolerance
-    #  list - list of values
-    #  value - value to match
-    #  epsilon - tolerance
-    # Returns: value from the list
-    if {[string is double $epsilon]!=1} {
-        error &quot;Epsilon must be a number&quot;
-    } elseif {$epsilon&lt;=0} {
-        error &quot;Epsilon must be larger than zero&quot;
+    <i><font color=#4b5d50># Finds index of firts matched value in list with epsilon tolerance</font></i>
+    <i><font color=#4b5d50>#  list - list of values</font></i>
+    <i><font color=#4b5d50>#  value - value to match</font></i>
+    <i><font color=#4b5d50>#  epsilon - tolerance</font></i>
+    <i><font color=#4b5d50># Returns: value from the list</font></i>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is double <font color=#4A181B>$epsilon</font>]!=1} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Epsilon must be a number&quot;</font>
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$epsilon</font>&lt;=0} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Epsilon must be larger than zero&quot;</font>
     }
-    if {[string is double $value]!=1} {
-        error &quot;Value must be a number&quot;
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is double <font color=#4A181B>$value</font>]!=1} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Value must be a number&quot;</font>
     }
-    set idx 0
-    foreach x $list {
-        if {abs($value - $x) &lt; $epsilon} {
-            return $idx
+    <b><font color=#923B23>set</font></b> idx 0
+    <b><font color=#923B23>foreach</font></b> x <font color=#4A181B>$list</font> {
+        <b><font color=#923B23>if</font></b> {abs(<font color=#4A181B>$value</font> - <font color=#4A181B>$x</font>) &lt; <font color=#4A181B>$epsilon</font>} {
+            <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$idx</font>
         }
-        incr idx
+        <b><font color=#923B23>incr</font></b> idx
     }
-    error &quot;Value '$value' was not found&quot;
+    <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Value '<font color=#4A181B>$</font>value' was not found&quot;</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::movAvg'>movAvg</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -175,52 +175,52 @@
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>y</code></td><td>List of values, must be larger than window size.</td></tr>
 <tr><td><code>winSize</code></td><td>Size of the window, must be an integer larger than 1.</td></tr>
-<tr><td><code>-x</code></td><td>Optional argument with x values.</td></tr>
+<tr><td><code><font color=#463e11>-x</font></code></td><td>Optional argument with x values.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list of y, and x if -x argument is specified</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_movAvg' href="javascript:toggleSource('mathutil_movAvg')">Show source</a></p>
-<div id='mathutil_movAvg' class='ruff_dyn_src'><pre>proc ::mathutil::movAvg {y winSize args} {
+<div id='mathutil_movAvg' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::movAvg {y winSize args} {
 
-    # Finds moving average of y with given window size.
-    #  y - list of values, must be larger than window size
-    #  winSize - size of the window, must be an integer larger than 1
-    #  -x - optional argument with x values
-    # Returns: list of y, and x if -x argument is specified
-    set arguments [argparse {
-        -x=
+    <i><font color=#4b5d50># Finds moving average of y with given window size.</font></i>
+    <i><font color=#4b5d50>#  y - list of values, must be larger than window size</font></i>
+    <i><font color=#4b5d50>#  winSize - size of the window, must be an integer larger than 1</font></i>
+    <i><font color=#4b5d50>#  -x - optional argument with x values</font></i>
+    <i><font color=#4b5d50># Returns: list of y, and x if -x argument is specified</font></i>
+    <b><font color=#923B23>set</font></b> arguments [argparse {
+        <font color=#463e11>-x</font>=
     }]
-    # input verification
-    if {[string is integer $winSize]!=1} {
-        error &quot;Window size must be an integer&quot;
-    } elseif {$winSize&lt;2} {
-        error &quot;Window size must be larger than one&quot;
-    } elseif {$winSize%2==0} {
-        error &quot;Size of window must be odd&quot;
+    <i><font color=#4b5d50># input verification</font></i>
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>string</font></b> is integer <font color=#4A181B>$winSize</font>]!=1} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Window size must be an integer&quot;</font>
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$winSize</font>&lt;2} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Window size must be larger than one&quot;</font>
+    } <b><font color=#923B23>elseif</font></b> {<font color=#4A181B>$winSize</font>%2==0} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Size of window must be odd&quot;</font>
     }
-    set yLen [llength $y]
-    if {$yLen &lt; [+ $winSize 1]} {
-        error &quot;Length of y '$yLen' must be not less than size of window + 1  '$winSize + 1 = [+ $winSize 1]'&quot;
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$yLen</font> &lt; [+ <font color=#4A181B>$winSize</font> 1]} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of y '<font color=#4A181B>$</font>yLen' must be not less than size of window + 1  '<font color=#4A181B>$</font>winSize + 1 = <font color=#4A181B>[</font>+ <font color=#4A181B>$</font>winSize 1<font color=#4A181B>]</font>'&quot;</font>
     }
-    if {[info exists x]} {
-        set xLen [llength $x]
-        if {$xLen != $yLen} {
-            error &quot;Length of x '$xLen' is not equal to length of y '$yLen'&quot;
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>info</font></b> exists x]} {
+        <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+        <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x '<font color=#4A181B>$</font>xLen' is not equal to length of y '<font color=#4A181B>$</font>yLen'&quot;</font>
         }
     }
-    # actual calculations
-    set winSizeM1 [- $winSize 1]
-    set halfWinSize [= {int($winSizeM1/2)}]
-    for {set i $halfWinSize} {$i&lt;[- $yLen $halfWinSize]} {incr i} {
-        set value 0
-        for {set j [- $i $halfWinSize]} {$j&lt;=[+ $i $halfWinSize]} {incr j} {
-            set value [= {$value+[@ $y $j]}]
+    <i><font color=#4b5d50># actual calculations</font></i>
+    <b><font color=#923B23>set</font></b> winSizeM1 [- <font color=#4A181B>$winSize</font> 1]
+    <b><font color=#923B23>set</font></b> halfWinSize [= {int(<font color=#4A181B>$winSizeM1</font>/2)}]
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i <font color=#4A181B>$halfWinSize</font>} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$yLen</font> <font color=#4A181B>$halfWinSize</font>]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> value 0
+        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> j [- <font color=#4A181B>$i</font> <font color=#4A181B>$halfWinSize</font>]} {<font color=#4A181B>$j</font>&lt;=[+ <font color=#4A181B>$i</font> <font color=#4A181B>$halfWinSize</font>]} {<b><font color=#923B23>incr</font></b> j} {
+            <b><font color=#923B23>set</font></b> value [= {<font color=#4A181B>$value</font>+[@ <font color=#4A181B>$y</font> <font color=#4A181B>$j</font>]}]
         }
-        lappend yAvg [= {$value/$winSize}]
+        <b><font color=#923B23>lappend</font></b> yAvg [= {<font color=#4A181B>$value</font>/<font color=#4A181B>$winSize</font>}]
     }
-    if {[info exists x]} {
-        return [list [lrange $x $halfWinSize end-$halfWinSize] $yAvg]
-    } else {
-        return $yAvg
+    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>info</font></b> exists x]} {
+        <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>list</font></b> [<b><font color=#923B23>lrange</font></b> <font color=#4A181B>$x</font> <font color=#4A181B>$halfWinSize</font> end-<font color=#4A181B>$halfWinSize</font>] <font color=#4A181B>$yAvg</font>]
+    } <b><font color=#923B23>else</font></b> {
+        <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$yAvg</font>
     }
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::trapz'>trapz</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -233,22 +233,22 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>value of integral</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_mathutil_trapz' href="javascript:toggleSource('mathutil_trapz')">Show source</a></p>
-<div id='mathutil_trapz' class='ruff_dyn_src'><pre>proc ::mathutil::trapz {x y} {
+<div id='mathutil_trapz' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::mathutil::trapz {x y} {
 
-    # Does trapezoidal integration of x-y lists
-    #  x - list of x values
-    #  y - list of y values
-    # Returns: value of integral
-    set xLen [llength $x]
-    set yLen [llength $y]
-    if {$xLen != $yLen} {
-        error &quot;Length of x '$xLen' is not equal to length of y '$yLen'&quot;
+    <i><font color=#4b5d50># Does trapezoidal integration of x-y lists</font></i>
+    <i><font color=#4b5d50>#  x - list of x values</font></i>
+    <i><font color=#4b5d50>#  y - list of y values</font></i>
+    <i><font color=#4b5d50># Returns: value of integral</font></i>
+    <b><font color=#923B23>set</font></b> xLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$x</font>]
+    <b><font color=#923B23>set</font></b> yLen [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$y</font>]
+    <b><font color=#923B23>if</font></b> {<font color=#4A181B>$xLen</font> != <font color=#4A181B>$yLen</font>} {
+        <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of x '<font color=#4A181B>$</font>xLen' is not equal to length of y '<font color=#4A181B>$</font>yLen'&quot;</font>
     }
-    set result 0.0
-    for {set i 0} {$i&lt;[- $xLen 1]} {incr i} {
-        set result [= {$result+([@ $y [+ $i 1]]+[@ $y $i])/2.0*([@ $x [+ $i 1]]-[@ $x $i])}]
+    <b><font color=#923B23>set</font></b> result 0.0
+    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;[- <font color=#4A181B>$xLen</font> 1]} {<b><font color=#923B23>incr</font></b> i} {
+        <b><font color=#923B23>set</font></b> result [= {<font color=#4A181B>$result</font>+([@ <font color=#4A181B>$y</font> [+ <font color=#4A181B>$i</font> 1]]+[@ <font color=#4A181B>$y</font> <font color=#4A181B>$i</font>])/2.0*([@ <font color=#4A181B>$x</font> [+ <font color=#4A181B>$i</font> 1]]-[@ <font color=#4A181B>$x</font> <font color=#4A181B>$i</font>])}]
     }
-    return $result
+    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$result</font>
 }</pre></div>
 </div></main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a style='padding-top:2px;' href='index.html'>Start page</a></li>
 <li class='ruff-toc1'><a href='index-docindex.html' accesskey='i'>Index</a></li>
@@ -257,11 +257,11 @@
 <li class='ruff-toc1'><a class='ruff-highlight' href='index-mathutil.html'>mathutil</a></li>
 <li class='ruff-toc1'><a href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
-<hr><li class='ruff-toc2'><a href='#::mathutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::cumtrapz'>cumtrapz</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>cumtrapz</span> <span class='ruff_arg'>x y ?init?</span></pre>Does trapezoidal integration with storing cumulative data at each point
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::deriv1'>deriv1</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>deriv1</span> <span class='ruff_arg'>x y</span></pre>Calculates first derivative of x-y lists
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::deriv2'>deriv2</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>deriv2</span> <span class='ruff_arg'>x y</span></pre>Calculates second derivative of x-y lists
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::findApprox'>findApprox</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>findApprox</span> <span class='ruff_arg'>list value ?epsilon?</span></pre>Finds index of firts matched value in list with epsilon tolerance
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::movAvg'>movAvg</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>movAvg</span> <span class='ruff_arg'>y winSize ?args?</span></pre>Finds moving average of y with given window size.
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::trapz'>trapz</a><span class='ruff-tiptext'><pre><span class='ruff_cmd'>trapz</span> <span class='ruff_arg'>x y</span></pre>Does trapezoidal integration of x-y lists
+<hr><li class='ruff-toc2'><a href='#::mathutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::cumtrapz'>cumtrapz</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cumtrapz&lt;/span&gt; &lt;span class='ruff_arg'&gt;x y ?init?&lt;/span&gt;</pre>Does trapezoidal integration with storing cumulative data at each point
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::deriv1'>deriv1</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;deriv1&lt;/span&gt; &lt;span class='ruff_arg'&gt;x y&lt;/span&gt;</pre>Calculates first derivative of x-y lists
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::deriv2'>deriv2</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;deriv2&lt;/span&gt; &lt;span class='ruff_arg'&gt;x y&lt;/span&gt;</pre>Calculates second derivative of x-y lists
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::findApprox'>findApprox</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;findApprox&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#923B23>list</font></b> value ?epsilon?&lt;/span&gt;</pre>Finds index of firts matched value in list with epsilon tolerance
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::movAvg'>movAvg</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;movAvg&lt;/span&gt; &lt;span class='ruff_arg'&gt;y winSize ?args?&lt;/span&gt;</pre>Finds moving average of y with given window size.
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-mathutil.html#::mathutil::trapz'>trapz</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;trapz&lt;/span&gt; &lt;span class='ruff_arg'&gt;x y&lt;/span&gt;</pre>Does trapezoidal integration of x-y lists
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>
