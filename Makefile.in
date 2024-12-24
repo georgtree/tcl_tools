@@ -71,13 +71,14 @@ CONFIG_CLEAN_FILES = Makefile pkgIndex.tcl
 CLEANFILES	= @CLEANFILES@
 
 
-all: libraries doc
+all: libraries
 
 binaries: $(BINARIES)
 
 libraries:
 
 doc:
+	$(TCLSH) $(srcdir)/docs/doc_gen.tcl
 
 install: all install-libraries install-doc
 
@@ -93,7 +94,7 @@ install-libraries:
 	@echo " Install pkgIndex.tcl $(DESTDIR)$(pkglibdir)"; \
 	$(INSTALL_DATA) pkgIndex.tcl $(DESTDIR)$(pkglibdir); \
 
-install-doc: doc
+install-doc:
 	@$(INSTALL_DATA_DIR) "$(DESTDIR)$(mandir)/mann"
 	@echo "Installing documentation in $(DESTDIR)$(mandir)"
 	@list='$(srcdir)/docs/*.n'; for i in $$list; do \
