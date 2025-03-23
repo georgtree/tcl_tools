@@ -12,16 +12,16 @@ namespace eval ::gnuplotutil {
     interp alias {} = {} expr
     interp alias {} dexist {} dict exists
 
-    set darkmodeStyleList [list "set border lc rgb 'white'" "set xlabel tc rgb 'white'" "set key textcolor rgb 'white'"\
-                               "set grid ytics lt 0 lw 1 lc rgb 'white'" "set grid xtics lt 0 lw 1 lc rgb 'white'"]
+    set darkmodeStyleList {{set border lc rgb 'white'} {set xlabel tc rgb 'white'} {set key textcolor rgb 'white'}\
+                                   {set grid ytics lt 0 lw 1 lc rgb 'white'} {set grid xtics lt 0 lw 1 lc rgb 'white'}}
     set darkmodeStyle [join $darkmodeStyleList "\n"]
 }
 
 proc ::gnuplotutil::initArgStr {optDict optName varName value} {
     if {[dexist $optDict $optName]} {
-        uplevel set $varName $value
+        uplevel {*}[list set $varName $value]
     } else {
-        uplevel set $varName {""}
+        uplevel {*}[list set $varName {""}]
     }
     return
 }
@@ -47,6 +47,7 @@ proc ::gnuplotutil::plotXYN {x args} {
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
     #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -inline - provides data directly in command string, without creating temporary file
     #  -nodelete - disables deleting of temporary file after end of plotting
     #  -xlabel - provides x-axis label to display, string must be provided after it
     #  -ylabel - provides y-axis label to display, string must be provided after it
@@ -54,15 +55,19 @@ proc ::gnuplotutil::plotXYN {x args} {
     #  -terminal - selects terminal, default 'x11' on Linux and 'windows' on Windows
     #  -grid - enables display of grid
     #  -darkmode - enables dark mode for graph
+    #  -output - command redirects output to the specified file or device
     #  -size - provides size of the window, must be list with two elements: width and height in pixels
     #  -path - provides location of temporary file, default is the current location
     #  -names - enables setting the column names of provided data, value must be provided as list
     #    in the same order as data columns provided, must have the length equal to the number of y data colums
+    #  -lstyles - set individual styles for each graph
+    #    in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
     #  -columns - provides the y data to plot, the number of columns is not restricted and must be provided at the end
     #    of command after all switches
     # Returns: creates gnuplot window with plotted data, and returns string contains commands sent to gnuplot
     # Synopsis: x ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string?
-    #   ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns yList1 ?yList2 ...?
+    #   ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? ?-lstyles list? ?-output string?
+    #   -columns yList1 ?yList2 ...?
     # ```
     # Example:
     # set x [list 0 1 2 3 4 5 6]
@@ -75,24 +80,29 @@ proc ::gnuplotutil::plotXYN {x args} {
         -xlog
         -ylog
         {-background -require {nodelete}}
-        -nodelete
+        -inline
+        {-nodelete -forbid inline}
         -xlabel=
         -ylabel=
         -optcmd=
         -terminal=
+        {-size= -default {800 600}}
         -grid
         -darkmode
-        {-path= -default "."}
-        {-size= -default {800 600}}
+        -output=
+        {-path= -default {}}
         -names=
+        -lstyles=
         {-columns -catchall}
     }]
-    initArgStr $arguments xlog xscaleStr {"set logscale x"}
-    initArgStr $arguments ylog yscaleStr {"set logscale y"}
-    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments xlog xscaleStr {{set logscale x}}
+    initArgStr $arguments ylog yscaleStr {{set logscale y}}
+    initArgStr $arguments grid gridStr {{set grid}}
+    initArgStr $arguments output outputStr {"set output '[dget $arguments output]'"}
     initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
     initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
     initArgStr $arguments names columnNames {[dget $arguments names]}
+    initArgStr $arguments lstyles lineStyles {[dget $arguments lstyles]}
     initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
@@ -113,11 +123,20 @@ proc ::gnuplotutil::plotXYN {x args} {
     set numCol [llength [dget $arguments columns]]
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
-            return -code error "Column names count is not the same as count of data columns"
-            set autoTitleStr ""
+            return -code error {Column names count is not the same as count of data columns}
+            set autoTitleStr {}
         } else {
             lappend outList "{ } $columnNames"
-            set autoTitleStr "set key autotitle columnheader"
+            set autoTitleStr {set key autotitle columnheader}
+        }
+    }
+    if {([dexist $arguments lstyles])} {
+        if {[llength $lineStyles]!=$numCol} {
+            return -code error {Lines styles count is not the same as count of data columns}
+        }
+    } else {
+        for {set i 0} {$i<$numCol} {incr i} {
+            lappend lineStyles {with lines}
         }
     }
     set numRow [llength $x]
@@ -128,37 +147,45 @@ proc ::gnuplotutil::plotXYN {x args} {
         }
         lappend outList $row
     }
-    # save data to temporary file
-    set counter 0
-    while {true} {
-        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
-        if {[file exists $filePath]} {
-           incr counter
-        } else {
-            set resFile [open $filePath w+]
-            break
+    # save data to temporary file or use inline data block
+    if {[dexist $arguments inline]} {
+        set inlineData "\$data << EOD\n[::csv::joinlist $outList " "]\nEOD\n"
+    } else {
+        set counter 0
+        while {true} {
+            set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
+            if {[file exists $filePath]} {
+                incr counter
+            } else {
+                set resFile [open $filePath w+]
+                break
+            }
         }
+        puts $resFile [::csv::joinlist $outList { }]
+        close $resFile
     }
-    puts $resFile [::csv::joinlist $outList " "]
-    close $resFile
     # create command strings for gnuplot
-    set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
-    for {set i 1} {$i<$numCol} {incr i} {
-        set commandStr  "${commandStr}, '' using 1:[= {$i+2}] with lines "
+    if {[dexist $arguments inline]} {
+        set commandStr "$inlineData plot \$data using 1:2 [@ $lineStyles 0] "
+    } else {
+        set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 [@ $lineStyles 0] "
     }
-    set commandList [list "set mouse" $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
-                             $yscaleStr $gridStr $commandStr "pause mouse close"]
-    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
+    for {set i 1} {$i<$numCol} {incr i} {
+        set commandStr "${commandStr}, '' using 1:[= {$i+2}] [@ $lineStyles $i] "
+    }
+    set commandList [list {set mouse} $outputStr $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
+                             $yscaleStr $gridStr $commandStr {pause mouse close}]
+    set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
         set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    if {![dexist $arguments nodelete]} {
+    if {![dexist $arguments nodelete] && ![dexist $arguments inline]} {
         file delete $filePath
-    }   
+    }  
     if {$status>0} {
-        return -code error $errorStr
+        return $errorStr
     } else {
         return $commandStr
     }
@@ -169,6 +196,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
     #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -inline - provides data directly in command string, without creating temporary file
     #  -nodelete - disables deleting of temporary file after end of plotting
     #  -xlabel - provides x-axis label to display, string must be provided after it
     #  -ylabel - provides y-axis label to display, string must be provided after it
@@ -177,15 +205,17 @@ proc ::gnuplotutil::plotXNYN {args} {
     #  -size - provides size of the window, must be list with two elements: width and height in pixels
     #  -grid - enables display of grid
     #  -darkmode - enables dark mode for graph
+    #  -output - command redirects output to the specified file or device
     #  -path - provides location of temporary file, default is the current location
     #  -names - enables setting the column names of provided data, value must be provided as list
-    #    in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+    #  -lstyles - set individual styles for each graph in the same order as data columns provided,
+    #    must have the length 2*(number of x-y data pairs)
     #  -columns -  provides the x and y data to plot, the number of columns is not restricted and must 
     #    be provided at the end of command after all switches
     # Returns: creates gnuplot window with plotted data, and returns string contains commands sent to gnuplot
     # Synopsis: ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string?
-    #   ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns xList1 yList1 
-    #   ?xList2 yList2 ...?
+    #   ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? ?-lstyles list? ?-output string?
+    #   -columns xList1 yList1 ?xList2 yList2 ...?
     # ```
     # Example:
     # set x1 [list 0 1 2 3 4 5 6]
@@ -199,7 +229,8 @@ proc ::gnuplotutil::plotXNYN {args} {
         -xlog
         -ylog
         {-background -require {nodelete}}
-        -nodelete
+        -inline
+        {-nodelete -forbid inline}
         -xlabel=
         -ylabel=
         -optcmd=
@@ -207,16 +238,20 @@ proc ::gnuplotutil::plotXNYN {args} {
         {-size= -default {800 600}}
         -grid
         -darkmode
-        {-path= -default ""}
+        -output=
+        {-path= -default {}}
         -names=
+        -lstyles=
         {-columns -catchall}
     }]
-    initArgStr $arguments xlog xscaleStr {"set logscale x"}
-    initArgStr $arguments ylog yscaleStr {"set logscale y"}
-    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments xlog xscaleStr {{set logscale x}}
+    initArgStr $arguments ylog yscaleStr {{set logscale y}}
+    initArgStr $arguments grid gridStr {{set grid}}
+    initArgStr $arguments output outputStr {"set output '[dget $arguments output]'"}
     initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
     initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
     initArgStr $arguments names columnNames {[dget $arguments names]}
+    initArgStr $arguments lstyles lineStyles {[dget $arguments lstyles]}
     initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
@@ -227,7 +262,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     }
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
-        return -code error "Number of data columns $columnsNum is odd"
+        return -code error {Number of data columns $columnsNum is odd}
     }
     set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
@@ -245,14 +280,23 @@ proc ::gnuplotutil::plotXNYN {args} {
     if {([dexist $arguments names])} {
             set headerString {}
         if {[llength $columnNames]!=[= {$dataNum}]} {
-            return -code error "Column names count is not the same as count of data columns"
-            set autoTitleStr ""
+            return -code error {Column names count is not the same as count of data columns}
+            set autoTitleStr {}
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
                 set headerString "${headerString} { } [@ $columnNames $i]"
             }
             lappend outList $headerString
-            set autoTitleStr "set key autotitle columnheader"
+            set autoTitleStr {set key autotitle columnheader}
+        }
+    }
+    if {([dexist $arguments lstyles])} {
+        if {[llength $lineStyles]!=$dataNum} {
+            return -code error {Lines styles count is not the same as count of data columns}
+        }
+    } else {
+        for {set i 0} {$i<$dataNum} {incr i} {
+            lappend lineStyles {with lines}
         }
     }
     set numRow [tcl::mathfunc::max {*}$xLengths]
@@ -270,35 +314,43 @@ proc ::gnuplotutil::plotXNYN {args} {
         }
         lappend outList $row
     }
-    # save data to temporary file
-    set counter 0
-    while {true} {
-        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
-        if {[file exists $filePath]} {
-           incr counter
-        } else {
-            set resFile [open $filePath w+]
-            break
+    # save data to temporary file or use inline data block
+    if {[dexist $arguments inline]} {
+        set inlineData "\$data << EOD\n[::csv::joinlist $outList " "]\nEOD\n"
+    } else {
+        set counter 0
+        while {true} {
+            set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
+            if {[file exists $filePath]} {
+                incr counter
+            } else {
+                set resFile [open $filePath w+]
+                break
+            }
         }
+        puts $resFile [::csv::joinlist $outList { }]
+        close $resFile
     }
-    puts $resFile [::csv::joinlist $outList " "]
-    close $resFile
     # create command strings for gnuplot
-    set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 with lines "
-    for {set i 1} {$i<$dataNum} {incr i} {
-        set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] with lines "
+    if {[dexist $arguments inline]} {
+        set commandStr "$inlineData plot \$data using 1:2 [@ $lineStyles 0] "
+    } else {
+        set commandStr "plot '[file join [dget $arguments path] gnuplotTemp${counter}.csv]' using 1:2 [@ $lineStyles 0] "
     }
-    set commandList [list "set mouse" $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
-                             $yscaleStr $gridStr $commandStr "pause mouse close"]
-    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
+    for {set i 1} {$i<$dataNum} {incr i} {
+        set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] [@ $lineStyles $i] "
+    }
+    set commandList [list {set mouse} $outputStr $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
+                             $yscaleStr $gridStr $commandStr {pause mouse close}]
+    set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
         set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    if {![dexist $arguments nodelete]} {
+    if {![dexist $arguments nodelete] && ![dexist $arguments inline]} {
         file delete $filePath
-    }   
+    }
     if {$status>0} {
         return $errorStr
     } else {
@@ -318,6 +370,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     #  -path - provides location of temporary file, default is current location
     #  -names - enables setting the column names of provided data, value must be provided as list
     #    in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+    #  -lstyles - set individual styles for each graph in the same order as data columns provided,
+    #    must have the length 2*(number of x-y data pairs)
     #  -columns -  provides the x and y data to plot, the number of columns is not restricted and must 
     #    be provided at the end of command after all switches
     # Returns: list that contains command script and name of data file
@@ -331,19 +385,21 @@ proc ::gnuplotutil::plotXNYNMp {args} {
         -grid
         {-path= -default "."}
         -names=
+        -lstyles=
         {-columns -catchall}
     }]
-    initArgStr $arguments xlog xscaleStr {"set logscale x"}
-    initArgStr $arguments xlog xscaleStrUnset {"unset logscale x"}
-    initArgStr $arguments ylog yscaleStr {"set logscale y"}
-    initArgStr $arguments ylog yscaleStrUnset {"unset logscale y"}
-    initArgStr $arguments grid gridStr {"set grid"}
-    initArgStr $arguments grid gridStrUnset {"unset grid"}
+    initArgStr $arguments xlog xscaleStr {{set logscale x}}
+    initArgStr $arguments xlog xscaleStrUnset {{unset logscale x}}
+    initArgStr $arguments ylog yscaleStr {{set logscale y}}
+    initArgStr $arguments ylog yscaleStrUnset {{unset logscale y}}
+    initArgStr $arguments grid gridStr {{set grid}}
+    initArgStr $arguments grid gridStrUnset {{unset grid}}
+    initArgStr $arguments lstyles lineStyles {[dget $arguments lstyles]}
     initArgStr $arguments names columnNames {[dget $arguments names]}
     initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
-    initArgStr $arguments xlabel xlabelStrUnset {"unset xlabel"}
+    initArgStr $arguments xlabel xlabelStrUnset {{unset xlabel}}
     initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
-    initArgStr $arguments ylabel ylabelStrUnset {"unset ylabel"}
+    initArgStr $arguments ylabel ylabelStrUnset {{unset ylabel}}
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
         return -code error "Number of data columns $columnsNum is odd"
@@ -364,14 +420,23 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     if {([dexist $arguments names])} {
             set headerString {}
         if {[llength $columnNames]!=[= {$dataNum}]} {
-            return -code error "Column names count is not the same as count of data columns"
-            set autoTitleStr ""
+            return -code error {Column names count is not the same as count of data columns}
+            set autoTitleStr {}
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
                 set headerString "${headerString} { } [@ $columnNames $i]"
             }
             lappend outList $headerString
-            set autoTitleStr "set key autotitle columnheader"
+            set autoTitleStr {set key autotitle columnheader}
+        }
+    }
+    if {([dexist $arguments lstyles])} {
+        if {[llength $lineStyles]!=$dataNum} {
+            return -code error {Lines styles count is not the same as count of data columns}
+        }
+    } else {
+        for {set i 0} {$i<$dataNum} {incr i} {
+            lappend lineStyles {with lines}
         }
     }
     set numRow [tcl::mathfunc::max {*}$xLengths]
@@ -400,16 +465,16 @@ proc ::gnuplotutil::plotXNYNMp {args} {
             break
         }
     }
-    puts $resFile [::csv::joinlist $outList " "]
+    puts $resFile [::csv::joinlist $outList { }]
     close $resFile
     # create command strings for gnuplot
-    set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2 with lines "
+    set commandStr "plot 'gnuplotTemp${counter}.csv' using 1:2 [@ $lineStyles 0] "
     for {set i 1} {$i<$dataNum} {incr i} {
-        set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] with lines "
+        set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] [@ $lineStyles $i] "
     }
     set commandList [list $autoTitleStr $xlabelStr $ylabelStr $xscaleStr $yscaleStr $gridStr $commandStr $xlabelStrUnset\
                              $ylabelStrUnset $xscaleStrUnset $yscaleStrUnset $gridStrUnset]
-    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
+    set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     return [dict create cmdString $commandStr file $filePath]
 }
 
@@ -456,7 +521,7 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
     }]
     initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     if {[llength $layout]>2} {
-        return -code error "Length of layout arguments is more than 2"
+        return -code error {Length of layout arguments is more than 2}
     } else {
         set layoutStr "set multiplot layout [@ $layout 0],[@ $layout 1]"
     }
@@ -472,8 +537,8 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
         lappend cmdStrings [dget $plotResults cmdString]
         lappend fileNames [dget $plotResults file]
     }
-    set commandList [list $optcmdStr $darkmodeStr $layoutStr [join $cmdStrings \n] "unset multiplot" "pause mouse close"]
-    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
+    set commandList [list $optcmdStr $darkmodeStr $layoutStr [join $cmdStrings \n] {unset multiplot} {pause mouse close}]
+    set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
@@ -503,10 +568,12 @@ proc ::gnuplotutil::plotHist {x args} {
     #  -fill - provides fill of columns, must be empty or solid
     #  -grid - enables grid of histogram
     #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -inline - provides data directly in command string, without creating temporary file
     #  -terminal - provides terminal, default 'x11' on linux and 'windows' on windows
     #  -size - provides size of the window, must be list with two elements: width and height in pixels
     #  -path - provides location of temporary file, default is current location
     #  -darkmode - enables dark mode for graph
+    #  -output - command redirects output to the specified file or device
     #  -transparent - enables transparency to filling of columns, -fill argument is required
     #  -density - provides density of solid filling, -fill argument is required
     #  -border - provides border of columns with particular style, -fill argument is required
@@ -528,7 +595,7 @@ proc ::gnuplotutil::plotHist {x args} {
     # -columns $y1 $y2]
     # ```
     set arguments [argparse -inline {
-        -nodelete
+        {-nodelete -forbid inline}
         -xlabel=
         -ylabel=
         {-style= -enum {clustered rowstacked columnstacked} -required}
@@ -536,10 +603,12 @@ proc ::gnuplotutil::plotHist {x args} {
         -optcmd=
         -grid
         {-background -require {nodelete}}
+        -inline
         -terminal=
         {-size= -default {800 600}}
-        {-path= -default "."}
+        {-path= -default {}}
         -darkmode
+        -output=
         -names=
         -boxwidth=
         {-fill= -enum {empty solid}}
@@ -548,9 +617,10 @@ proc ::gnuplotutil::plotHist {x args} {
         {-border= -require {fill}}
         {-columns -catchall}
     }]
-    initArgStr $arguments xlog xscaleStr {"set logscale x"}
-    initArgStr $arguments ylog yscaleStr {"set logscale y"}
-    initArgStr $arguments grid gridStr {"set grid"}
+    initArgStr $arguments xlog xscaleStr {{set logscale x}}
+    initArgStr $arguments ylog yscaleStr {{set logscale y}}
+    initArgStr $arguments grid gridStr {{set grid}}
+    initArgStr $arguments output outputStr {"set output '[dget $arguments output]'"}
     initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
     initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
     initArgStr $arguments names columnNames {[dget $arguments names]}
@@ -599,11 +669,11 @@ proc ::gnuplotutil::plotHist {x args} {
     set numCol [llength [dget $arguments columns]]
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
-            return -code error "Column names count is not the same as count of data columns"
-            set autoTitleStr ""
+            return -code error {Column names count is not the same as count of data columns}
+            set autoTitleStr {}
         } else {
             lappend outList "{ } $columnNames"
-            set autoTitleStr "set key autotitle columnheader"
+            set autoTitleStr {set key autotitle columnheader}
         }
     }
     set numRow [llength $x]
@@ -614,35 +684,43 @@ proc ::gnuplotutil::plotHist {x args} {
         }
         lappend outList $row
     }
-    # save data to temporary file
-    set counter 0
-    while {true} {
-        set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
-        if {[file exists $filePath]} {
-           incr counter
-        } else {
-            set resFile [open $filePath w+]
-            break
+    # save data to temporary file or use inline data block
+    if {[dexist $arguments inline]} {
+        set inlineData "\$data << EOD\n[::csv::joinlist $outList " "]\nEOD\n"
+    } else {
+        set counter 0
+        while {true} {
+            set filePath [file join [dget $arguments path] gnuplotTemp${counter}.csv]
+            if {[file exists $filePath]} {
+                incr counter
+            } else {
+                set resFile [open $filePath w+]
+                break
+            }
         }
+        puts $resFile [::csv::joinlist $outList { }]
+        close $resFile
     }
-    puts $resFile [::csv::joinlist $outList " "]
-    close $resFile
     # create command strings for gnuplot
-    set commandStr "plot 'gnuplotTemp${counter}.csv' using 2:xtic(1)"
+    if {[dexist $arguments inline]} {
+        set commandStr "$inlineData plot \$data using 2:xtic(1) "
+    } else {
+        set commandStr "plot 'gnuplotTemp${counter}.csv' using 2:xtic(1)"
+    }
     for {set i 1} {$i<$numCol} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i+2}]"
     }
-    set commandList [list "set mouse" $darkmodeStr "set style data histogram" $styleStr $fillStr $optcmdStr $gridStr\
-                            $autoTitleStr $xlabelStr $ylabelStr $boxwidthStr $commandStr "pause mouse close"]
-    set commandStr [join [lmap elem $commandList {= {$elem=="" ? [continue] : $elem}}] "\n"]
+    set commandList [list {set mouse} $outputStr $darkmodeStr {set style data histogram} $styleStr $fillStr $optcmdStr\
+                             $gridStr $autoTitleStr $xlabelStr $ylabelStr $boxwidthStr $commandStr {pause mouse close}]
+    set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
     } else {
         set status [catch {exec gnuplot << "\n$commandStr\n"} errorStr]
     }
-    if {![dexist $arguments nodelete]} {
+    if {![dexist $arguments nodelete] && ![dexist $arguments inline]} {
         file delete $filePath
-    }   
+    }
     if {$status>0} {
         return $errorStr
     } else {

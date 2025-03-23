@@ -13,11 +13,11 @@ gnuplotutil - Commands in namespace gnuplotutil
 .br
 \fBplotHist\fP \fIx -style ?-gap value? ?-boxwidth value? ?-fill value? ?-transparent? ?-density value? ?-border value? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns xList1 ?xList2 \&.\&.\&.?\fP
 .br
-\fBplotXNYN\fP \fI?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns xList1 yList1 ?xList2 yList2 \&.\&.\&.?\fP
+\fBplotXNYN\fP \fI?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? ?-lstyles list? ?-output string? -columns xList1 yList1 ?xList2 yList2 \&.\&.\&.?\fP
 .br
 \fBplotXNYNMp\fP \fI?-xlog? ?-ylog? ?-xlabel string? ?-ylabel string? ?-grid? ?-path string? ?-names list? -columns xList1 yList1 ?xList2 yList2 \&.\&.\&.?\fP
 .br
-\fBplotXYN\fP \fIx ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns yList1 ?yList2 \&.\&.\&.?\fP
+\fBplotXYN\fP \fIx ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? ?-lstyles list? ?-output string? -columns yList1 ?yList2 \&.\&.\&.?\fP
 .br
 .SH ::GNUPLOTUTIL
 .SH COMMANDS
@@ -165,6 +165,9 @@ Provides gap between columns in clustered style, -style argument is required\&.
 -grid
 Enables grid of histogram\&.
 .TP
+-inline
+Provides data directly in command string, without creating temporary file\&.
+.TP
 -names
 Enables setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length equal to number of y data colums\&.
 .TP
@@ -173,6 +176,9 @@ Disables deleting of temporary file after end of plotting\&.
 .TP
 -optcmd
 Provides optional string that may contain additional commands to gnuplot\&.
+.TP
+-output
+Command redirects output to the specified file or device\&.
 .TP
 -path
 Provides location of temporary file, default is current location\&.
@@ -218,7 +224,7 @@ creates gnuplot window with plotted data, and returns string contains commands s
 .RE
 .PP
 Plots 2D graphs in Gnuplot with individual x-values\&.
-.RS 4n\fBplotXNYN\fP \fI?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns xList1 yList1 ?xList2 yList2 \&.\&.\&.?\fP
+.RS 4n\fBplotXNYN\fP \fI?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? ?-lstyles list? ?-output string? -columns xList1 yList1 ?xList2 yList2 \&.\&.\&.?\fP
 .br
 .RE
 .PP
@@ -237,14 +243,23 @@ Enables dark mode for graph\&.
 -grid
 Enables display of grid\&.
 .TP
+-inline
+Provides data directly in command string, without creating temporary file\&.
+.TP
+-lstyles
+Set individual styles for each graph in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+.TP
 -names
-Enables setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+Enables setting the column names of provided data, value must be provided as list\&.
 .TP
 -nodelete
 Disables deleting of temporary file after end of plotting\&.
 .TP
 -optcmd
 Provides optional string that may contain additional commands to gnuplot\&.
+.TP
+-output
+Command redirects output to the specified file or device\&.
 .TP
 -path
 Provides location of temporary file, default is the current location\&.
@@ -305,6 +320,9 @@ Provides the x and y data to plot, the number of columns is not restricted and m
 -grid
 Enables display of grid\&.
 .TP
+-lstyles
+Set individual styles for each graph in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+.TP
 -names
 Enables setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
 .TP
@@ -333,7 +351,7 @@ list that contains command script and name of data file
 .RE
 .PP
 Plots 2D graphs in Gnuplot with the common x-values\&.
-.RS 4n\fBplotXYN\fP \fIx ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? -columns yList1 ?yList2 \&.\&.\&.?\fP
+.RS 4n\fBplotXYN\fP \fIx ?-xlog? ?-ylog? ?-background? ?-nodelete? ?-xlabel string? ?-ylabel string? ?-optcmd string? ?-terminal? ?-grid? ?-darkmode? ?-size list? ?-path string? ?-names list? ?-lstyles list? ?-output string? -columns yList1 ?yList2 \&.\&.\&.?\fP
 .br
 .RE
 .PP
@@ -355,6 +373,12 @@ Enables dark mode for graph\&.
 -grid
 Enables display of grid\&.
 .TP
+-inline
+Provides data directly in command string, without creating temporary file\&.
+.TP
+-lstyles
+Set individual styles for each graph in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
+.TP
 -names
 Enables setting the column names of provided data, value must be provided as list in the same order as data columns provided, must have the length equal to the number of y data colums\&.
 .TP
@@ -363,6 +387,9 @@ Disables deleting of temporary file after end of plotting\&.
 .TP
 -optcmd
 Provides optional string that may contain additional commands to gnuplot\&.
+.TP
+-output
+Command redirects output to the specified file or device\&.
 .TP
 -path
 Provides location of temporary file, default is the current location\&.

@@ -23,59 +23,59 @@
 <div class='ruff_synopsis'><span class='ruff_cmd'>angle</span> <span class='ruff_arg'>data ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>data</code></td><td>List with complex data in form a+i*b.</td></tr>
-<tr><td><code><font color=#463e11>-deg</font></code></td><td>Option to select angle in degrees units.</td></tr>
+<tr><td><code><font color=#b9b96e>-deg</font></code></td><td>Option to select angle in degrees units.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns list of angles</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_angle' href="javascript:toggleSource('rfutil_angle')">Show source</a></p>
-<div id='rfutil_angle' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::angle {data args} {
+<div id='rfutil_angle' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::angle {data args} {
 
-    <i><font color=#4b5d50># Calculates angle (phase) of complex number.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  data - List with complex data in form a+i*b</font></i>
-    <i><font color=#4b5d50>#  -deg - Option to select angle in degrees units</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns list of angles</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
-        {<font color=#463e11>-deg</font> <font color=#463e11>-boolean</font>} }]
-    <b><font color=#923B23>variable</font></b> radtodeg
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$data</font>]
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dget</font></b> <font color=#4A181B>$arguments</font> deg]==1} {
-        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [= {<font color=#4A181B>$radtodeg</font>*[arg [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]}]
+    <i><font color=#76a396># Calculates angle (phase) of complex number.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  data - List with complex data in form a+i*b</font></i>
+    <i><font color=#76a396>#  -deg - Option to select angle in degrees units</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns list of angles</font></i>
+    <i><font color=#76a396>#</font></i>
+    <b><font color=#ffa500>set</font></b> arguments [argparse <font color=#b9b96e>-inline</font> {
+        {<font color=#b9b96e>-deg</font> <font color=#b9b96e>-boolean</font>} }]
+    <b><font color=#ffa500>variable</font></b> radtodeg
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$data</font>]
+    <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$arguments</font> deg]==1} {
+        <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+            <b><font color=#ffa500>lappend</font></b> result [= {<font color=#f1b479>$radtodeg</font>*[arg [@ <font color=#f1b479>$data</font> <font color=#f1b479>$i</font>]]}]
         }
-    } <b><font color=#923B23>else</font></b> {
-        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [arg [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]
+    } <b><font color=#ffa500>else</font></b> {
+        <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+            <b><font color=#ffa500>lappend</font></b> result [arg [@ <font color=#f1b479>$data</font> <font color=#f1b479>$i</font>]]
         }
     }
-    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$result</font>
+    <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$result</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::compLen'>compLen</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Check the lengths of lists of each dictionary's list</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>compLen</span> <span class='ruff_arg'>dict</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code><b><font color=#923B23>dict</font></b></code></td><td>Input dictionary.</td></tr>
+<tr><td><code><b><font color=#ffa500>dict</font></b></code></td><td>Input dictionary.</td></tr>
 </table>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_compLen' href="javascript:toggleSource('rfutil_compLen')">Show source</a></p>
-<div id='rfutil_compLen' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::compLen {<b><font color=#923B23>dict</font></b>} {
+<div id='rfutil_compLen' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::compLen {<b><font color=#ffa500>dict</font></b>} {
 
-    <i><font color=#4b5d50># Check the lengths of lists of each dictionary's list</font></i>
-    <i><font color=#4b5d50>#  dict - input dictionary</font></i>
-    <b><font color=#923B23>set</font></b> keys [dkeys <font color=#4A181B>$dict</font>]
-    <b><font color=#923B23>set</font></b> values [dvalues <font color=#4A181B>$dict</font>]
-    <b><font color=#923B23>set</font></b> size [dsize <font color=#4A181B>$dict</font>]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;[= {<font color=#4A181B>$size</font>-1}]} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> keyA [@ <font color=#4A181B>$keys</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> keyB [@ <font color=#4A181B>$keys</font> [= {<font color=#4A181B>$i</font>+1}]]
-        <b><font color=#923B23>set</font></b> lenA [<b><font color=#923B23>llength</font></b> [@ <font color=#4A181B>$values</font> <font color=#4A181B>$i</font>]]
-        <b><font color=#923B23>set</font></b> lenB [<b><font color=#923B23>llength</font></b> [@ <font color=#4A181B>$values</font> [= {<font color=#4A181B>$i</font>+1}]]]
-        <b><font color=#923B23>if</font></b> {<font color=#4A181B>$lenA</font>!=<font color=#4A181B>$lenB</font>} {
-            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Length of <font color=#4A181B>$</font>keyA '<font color=#4A181B>$</font>lenA' is not equal to length of <font color=#4A181B>$</font>keyB '<font color=#4A181B>$</font>lenB'&quot;</font>
+    <i><font color=#76a396># Check the lengths of lists of each dictionary's list</font></i>
+    <i><font color=#76a396>#  dict - input dictionary</font></i>
+    <b><font color=#ffa500>set</font></b> keys [dkeys <font color=#f1b479>$dict</font>]
+    <b><font color=#ffa500>set</font></b> values [dvalues <font color=#f1b479>$dict</font>]
+    <b><font color=#ffa500>set</font></b> size [dsize <font color=#f1b479>$dict</font>]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;[= {<font color=#f1b479>$size</font>-1}]} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> keyA [@ <font color=#f1b479>$keys</font> <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> keyB [@ <font color=#f1b479>$keys</font> [= {<font color=#f1b479>$i</font>+1}]]
+        <b><font color=#ffa500>set</font></b> lenA [<b><font color=#ffa500>llength</font></b> [@ <font color=#f1b479>$values</font> <font color=#f1b479>$i</font>]]
+        <b><font color=#ffa500>set</font></b> lenB [<b><font color=#ffa500>llength</font></b> [@ <font color=#f1b479>$values</font> [= {<font color=#f1b479>$i</font>+1}]]]
+        <b><font color=#ffa500>if</font></b> {<font color=#f1b479>$lenA</font>!=<font color=#f1b479>$lenB</font>} {
+            <b><font color=#ffa500>error</font></b> <font color=#90ee90>&quot;Length of <font color=#f1b479>$</font>keyA '<font color=#f1b479>$</font>lenA' is not equal to length of <font color=#f1b479>$</font>keyB '<font color=#f1b479>$</font>lenB'&quot;</font>
         }
     }
-    <b><font color=#ca14ca>return</font></b>
+    <b><font color=#fe6efe>return</font></b>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::cxxPEq'>cxxPEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -98,44 +98,44 @@
 </pre>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements admittance</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_cxxPEq' href="javascript:toggleSource('rfutil_cxxPEq')">Show source</a></p>
-<div id='rfutil_cxxPEq' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::cxxPEq {freq yxx} {
+<div id='rfutil_cxxPEq' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::cxxPEq {freq yxx} {
 
-    <i><font color=#4b5d50># Calculates capacitive part equivalent P circuit elements values.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  freq - Frequency values list</font></i>
-    <i><font color=#4b5d50>#  yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements</font></i>
-    <i><font color=#4b5d50># admittance</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#                     C3</font></i>
-    <i><font color=#4b5d50>#                      | |</font></i>
-    <i><font color=#4b5d50>#          o-----o-----| |-----o-----o</font></i>
-    <i><font color=#4b5d50>#          .     |     | |     |     .</font></i>
-    <i><font color=#4b5d50>#          .     |             |     .</font></i>
-    <i><font color=#4b5d50>#       P1 .  C1---         C2---    . P2</font></i>
-    <i><font color=#4b5d50>#          .    ---           ---    .</font></i>
-    <i><font color=#4b5d50>#         \./    |             |    \./</font></i>
-    <i><font color=#4b5d50>#          .     |             |     .</font></i>
-    <i><font color=#4b5d50>#          o-----o-------------o-----o</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$yxx</font>]
-    <b><font color=#923B23>variable</font></b> pi
-    <b><font color=#923B23>set</font></b> yEq [::rfutil::yPEq <font color=#4A181B>$yxx</font>]
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yEq</font> y1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yEq</font> y2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y3 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yEq</font> y3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> c1 [= {[imag <font color=#4A181B>$y1</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> c2 [= {[imag <font color=#4A181B>$y2</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> c3 [= {[imag <font color=#4A181B>$y3</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+    <i><font color=#76a396># Calculates capacitive part equivalent P circuit elements values.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  freq - Frequency values list</font></i>
+    <i><font color=#76a396>#  yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements</font></i>
+    <i><font color=#76a396># admittance</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#                     C3</font></i>
+    <i><font color=#76a396>#                      | |</font></i>
+    <i><font color=#76a396>#          o-----o-----| |-----o-----o</font></i>
+    <i><font color=#76a396>#          .     |     | |     |     .</font></i>
+    <i><font color=#76a396>#          .     |             |     .</font></i>
+    <i><font color=#76a396>#       P1 .  C1---         C2---    . P2</font></i>
+    <i><font color=#76a396>#          .    ---           ---    .</font></i>
+    <i><font color=#76a396>#         \./    |             |    \./</font></i>
+    <i><font color=#76a396>#          .     |             |     .</font></i>
+    <i><font color=#76a396>#          o-----o-------------o-----o</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen [<b><font color=#ffa500>dict</font></b> merge [<b><font color=#ffa500>dict</font></b> create freq <font color=#f1b479>$freq</font>] <font color=#f1b479>$yxx</font>]
+    <b><font color=#ffa500>variable</font></b> pi
+    <b><font color=#ffa500>set</font></b> yEq [::rfutil::yPEq <font color=#f1b479>$yxx</font>]
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$freq</font>]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> freqVal [@ <font color=#f1b479>$freq</font> <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> y1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yEq</font> y1] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> y2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yEq</font> y2] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> y3 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yEq</font> y3] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> c1 [= {[imag <font color=#f1b479>$y1</font>]/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>)}]
+        <b><font color=#ffa500>lappend</font></b> c2 [= {[imag <font color=#f1b479>$y2</font>]/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>)}]
+        <b><font color=#ffa500>lappend</font></b> c3 [= {[imag <font color=#f1b479>$y3</font>]/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>)}]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create c1 <font color=#4A181B>$c1</font> c2 <font color=#4A181B>$c2</font> c3 <font color=#4A181B>$c3</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create c1 <font color=#f1b479>$c1</font> c2 <font color=#f1b479>$c2</font> c3 <font color=#f1b479>$c3</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::cxxTEq'>cxxTEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -158,45 +158,45 @@
 </pre>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements impedance</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_cxxTEq' href="javascript:toggleSource('rfutil_cxxTEq')">Show source</a></p>
-<div id='rfutil_cxxTEq' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::cxxTEq {freq zxx} {
+<div id='rfutil_cxxTEq' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::cxxTEq {freq zxx} {
 
-    <i><font color=#4b5d50># Calculates capacitive part equivalent T circuit elements values.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  freq - Frequency values list</font></i>
-    <i><font color=#4b5d50>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements</font></i>
-    <i><font color=#4b5d50># impedance</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#             C1           C2</font></i>
-    <i><font color=#4b5d50>#              | |           | |</font></i>
-    <i><font color=#4b5d50>#         o----| |-----o-----| |----o</font></i>
-    <i><font color=#4b5d50>#         .    | |     |     | |    .</font></i>
-    <i><font color=#4b5d50>#         .            |            .</font></i>
-    <i><font color=#4b5d50>#      P1 .         C3---           . P2</font></i>
-    <i><font color=#4b5d50>#         .           ---           .</font></i>
-    <i><font color=#4b5d50>#        \./           |           \./</font></i>
-    <i><font color=#4b5d50>#         .            |            .</font></i>
-    <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$zxx</font>]
-    <b><font color=#923B23>variable</font></b> pi
-    <b><font color=#923B23>set</font></b> zEq [::rfutil::zTEq <font color=#4A181B>$zxx</font>]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zEq</font> z1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zEq</font> z2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z3 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zEq</font> z3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> c1 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z1</font>])}]
-        <b><font color=#923B23>lappend</font></b> c2 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z2</font>])}]
-        <b><font color=#923B23>lappend</font></b> c3 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$z3</font>])}]
+    <i><font color=#76a396># Calculates capacitive part equivalent T circuit elements values.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  freq - Frequency values list</font></i>
+    <i><font color=#76a396>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the form {c1 {list} c2 {list} c3 {list}} with capacitive part of equivalent elements</font></i>
+    <i><font color=#76a396># impedance</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#             C1           C2</font></i>
+    <i><font color=#76a396>#              | |           | |</font></i>
+    <i><font color=#76a396>#         o----| |-----o-----| |----o</font></i>
+    <i><font color=#76a396>#         .    | |     |     | |    .</font></i>
+    <i><font color=#76a396>#         .            |            .</font></i>
+    <i><font color=#76a396>#      P1 .         C3---           . P2</font></i>
+    <i><font color=#76a396>#         .           ---           .</font></i>
+    <i><font color=#76a396>#        \./           |           \./</font></i>
+    <i><font color=#76a396>#         .            |            .</font></i>
+    <i><font color=#76a396>#         o----------- o -----------o</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen [<b><font color=#ffa500>dict</font></b> merge [<b><font color=#ffa500>dict</font></b> create freq <font color=#f1b479>$freq</font>] <font color=#f1b479>$zxx</font>]
+    <b><font color=#ffa500>variable</font></b> pi
+    <b><font color=#ffa500>set</font></b> zEq [::rfutil::zTEq <font color=#f1b479>$zxx</font>]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$freq</font>]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> freqVal [@ <font color=#f1b479>$freq</font> <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> z1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zEq</font> z1] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> z2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zEq</font> z2] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> z3 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zEq</font> z3] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> c1 [= {-1/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>*[imag <font color=#f1b479>$z1</font>])}]
+        <b><font color=#ffa500>lappend</font></b> c2 [= {-1/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>*[imag <font color=#f1b479>$z2</font>])}]
+        <b><font color=#ffa500>lappend</font></b> c3 [= {-1/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>*[imag <font color=#f1b479>$z3</font>])}]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create c1 <font color=#4A181B>$c1</font> c2 <font color=#4A181B>$c2</font> c3 <font color=#4A181B>$c3</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create c1 <font color=#f1b479>$c1</font> c2 <font color=#f1b479>$c2</font> c3 <font color=#f1b479>$c3</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::deemb'>deemb</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -215,27 +215,27 @@
 
 </figure><h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionaries with deembedded DUT s-matrix</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_deemb' href="javascript:toggleSource('rfutil_deemb')">Show source</a></p>
-<div id='rfutil_deemb' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::deemb {sMeas sFixtL sFixtR} {
+<div id='rfutil_deemb' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::deemb {sMeas sFixtL sFixtR} {
 
-    <i><font color=#4b5d50># Procedure for deembedding of DUT from test fixture.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  sMeas - Measured s-parameters matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#  sFixtL - s-parameters matrix of left fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#  sFixtR - s-parameters matrix of right fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionaries with deembedded DUT s-matrix</font></i>
-    <i><font color=#4b5d50>#```</font></i>
-    <i><font color=#4b5d50>#    ┌      ┐   ┌        ┐-1   ┌       ┐     ┌        ┐-1</font></i>
-    <i><font color=#4b5d50>#    │ Tdut │ = │ Tfixtl │  x  │ Tmeas │  x  │ Tfixtr │</font></i>
-    <i><font color=#4b5d50>#    └      ┘   └        ┘     └       ┘     └        ┘</font></i>
-    <i><font color=#4b5d50>#```</font></i>
-    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge <font color=#4A181B>$sMeas</font> <font color=#4A181B>$sFixtL</font> <font color=#4A181B>$sFixtR</font>]
-    <b><font color=#923B23>set</font></b> tMeas [s2t <font color=#4A181B>$sMeas</font>]
-    <b><font color=#923B23>set</font></b> tFixtL [inv2x2 [s2t <font color=#4A181B>$sFixtL</font>]]
-    <b><font color=#923B23>set</font></b> tFixtR [inv2x2 [s2t <font color=#4A181B>$sFixtR</font>]]
-    <b><font color=#923B23>set</font></b> tDut [matMul2x2 [matMul2x2 <font color=#4A181B>$tFixtL</font> <font color=#4A181B>$tMeas</font>] <font color=#4A181B>$tFixtR</font>]
-    <b><font color=#923B23>set</font></b> sDut [t2s <font color=#4A181B>$tDut</font>]
-    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$sDut</font>
+    <i><font color=#76a396># Procedure for deembedding of DUT from test fixture.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  sMeas - Measured s-parameters matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#  sFixtL - s-parameters matrix of left fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#  sFixtR - s-parameters matrix of right fixture in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionaries with deembedded DUT s-matrix</font></i>
+    <i><font color=#76a396>#```</font></i>
+    <i><font color=#76a396>#    ┌      ┐   ┌        ┐-1   ┌       ┐     ┌        ┐-1</font></i>
+    <i><font color=#76a396>#    │ Tdut │ = │ Tfixtl │  x  │ Tmeas │  x  │ Tfixtr │</font></i>
+    <i><font color=#76a396>#    └      ┘   └        ┘     └       ┘     └        ┘</font></i>
+    <i><font color=#76a396>#```</font></i>
+    ::rfutil::compLen [<b><font color=#ffa500>dict</font></b> merge <font color=#f1b479>$sMeas</font> <font color=#f1b479>$sFixtL</font> <font color=#f1b479>$sFixtR</font>]
+    <b><font color=#ffa500>set</font></b> tMeas [s2t <font color=#f1b479>$sMeas</font>]
+    <b><font color=#ffa500>set</font></b> tFixtL [inv2x2 [s2t <font color=#f1b479>$sFixtL</font>]]
+    <b><font color=#ffa500>set</font></b> tFixtR [inv2x2 [s2t <font color=#f1b479>$sFixtR</font>]]
+    <b><font color=#ffa500>set</font></b> tDut [matMul2x2 [matMul2x2 <font color=#f1b479>$tFixtL</font> <font color=#f1b479>$tMeas</font>] <font color=#f1b479>$tFixtR</font>]
+    <b><font color=#ffa500>set</font></b> sDut [t2s <font color=#f1b479>$tDut</font>]
+    <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$sDut</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::inv2x2'>inv2x2</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -246,37 +246,37 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with resulted matrix</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_inv2x2' href="javascript:toggleSource('rfutil_inv2x2')">Show source</a></p>
-<div id='rfutil_inv2x2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::inv2x2 {mat} {
+<div id='rfutil_inv2x2' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::inv2x2 {mat} {
 
-    <i><font color=#4b5d50># Calculates inverse matrix of input matrix with size 2x2.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  mat - Dictionary that contains 2-port matrix,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with resulted matrix</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$mat</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> m1c [complex -1 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> a [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> b [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> c [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> d [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> det [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$a</font> <font color=#4A181B>$d</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$b</font> <font color=#4A181B>$c</font>]]
-        <b><font color=#923B23>if</font></b> {([real <font color=#4A181B>$det</font>]==0.0) && ([imag <font color=#4A181B>$det</font>]==0.0)} {
-            <b><font color=#923B23>error</font></b> <font color=#035103>&quot;Matrix can't be inverted&quot;</font>
+    <i><font color=#76a396># Calculates inverse matrix of input matrix with size 2x2.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  mat - Dictionary that contains 2-port matrix,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with resulted matrix</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$mat</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> m1c [complex -1 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> a [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> b [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> c [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> d [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> det [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$a</font> <font color=#f1b479>$d</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$b</font> <font color=#f1b479>$c</font>]]
+        <b><font color=#ffa500>if</font></b> {([real <font color=#f1b479>$det</font>]==0.0) && ([imag <font color=#f1b479>$det</font>]==0.0)} {
+            <b><font color=#ffa500>error</font></b> <font color=#90ee90>&quot;Matrix can't be inverted&quot;</font>
         }
-        <b><font color=#923B23>set</font></b> rec [/ <font color=#4A181B>$1c</font> <font color=#4A181B>$det</font>]
-        <b><font color=#923B23>lappend</font></b> 11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$rec</font> <font color=#4A181B>$d</font>]
-        <b><font color=#923B23>lappend</font></b> 12 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$rec</font> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> <font color=#4A181B>$b</font>]]
-        <b><font color=#923B23>lappend</font></b> 21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$rec</font> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> <font color=#4A181B>$c</font>]]
-        <b><font color=#923B23>lappend</font></b> 22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$rec</font> <font color=#4A181B>$a</font>]
+        <b><font color=#ffa500>set</font></b> rec [/ <font color=#f1b479>$1c</font> <font color=#f1b479>$det</font>]
+        <b><font color=#ffa500>lappend</font></b> 11 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$rec</font> <font color=#f1b479>$d</font>]
+        <b><font color=#ffa500>lappend</font></b> 12 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$rec</font> [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m1c</font> <font color=#f1b479>$b</font>]]
+        <b><font color=#ffa500>lappend</font></b> 21 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$rec</font> [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m1c</font> <font color=#f1b479>$c</font>]]
+        <b><font color=#ffa500>lappend</font></b> 22 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$rec</font> <font color=#f1b479>$a</font>]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$11</font> 21 <font color=#4A181B>$21</font> 12 <font color=#4A181B>$12</font> 22 <font color=#4A181B>$22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$11</font> 21 <font color=#f1b479>$21</font> 12 <font color=#f1b479>$12</font> 22 <font color=#f1b479>$22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::lxxPEq'>lxxPEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -299,44 +299,44 @@
 </pre>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements impedance</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_lxxPEq' href="javascript:toggleSource('rfutil_lxxPEq')">Show source</a></p>
-<div id='rfutil_lxxPEq' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::lxxPEq {freq yxx} {
+<div id='rfutil_lxxPEq' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::lxxPEq {freq yxx} {
 
-    <i><font color=#4b5d50># Calculates inductive part equivalent P circuit elements values.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  freq - Frequency values list</font></i>
-    <i><font color=#4b5d50>#  yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements</font></i>
-    <i><font color=#4b5d50># impedance</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#                       L3</font></i>
-    <i><font color=#4b5d50>#                       ___</font></i>
-    <i><font color=#4b5d50>#           o-----o-----UUU-----o-----o</font></i>
-    <i><font color=#4b5d50>#           .     |             |     .</font></i>
-    <i><font color=#4b5d50>#           .  L1 C|         L2 C|    .</font></i>
-    <i><font color=#4b5d50>#        P1 .     C|            C|    . P2</font></i>
-    <i><font color=#4b5d50>#           .     C|            C|    .</font></i>
-    <i><font color=#4b5d50>#          \./    |             |    \./</font></i>
-    <i><font color=#4b5d50>#           .     |             |     .</font></i>
-    <i><font color=#4b5d50>#           o-----o-------------o-----o</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$yxx</font>]
-    <b><font color=#923B23>variable</font></b> pi
-    <b><font color=#923B23>set</font></b> yEq [::rfutil::yPEq <font color=#4A181B>$yxx</font>]
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yEq</font> y1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yEq</font> y2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> y3 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yEq</font> y3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> l1 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y1</font>])}]
-        <b><font color=#923B23>lappend</font></b> l2 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y2</font>])}]
-        <b><font color=#923B23>lappend</font></b> l3 [= {-1/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>*[imag <font color=#4A181B>$y3</font>])}]
+    <i><font color=#76a396># Calculates inductive part equivalent P circuit elements values.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  freq - Frequency values list</font></i>
+    <i><font color=#76a396>#  yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements</font></i>
+    <i><font color=#76a396># impedance</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#                       L3</font></i>
+    <i><font color=#76a396>#                       ___</font></i>
+    <i><font color=#76a396>#           o-----o-----UUU-----o-----o</font></i>
+    <i><font color=#76a396>#           .     |             |     .</font></i>
+    <i><font color=#76a396>#           .  L1 C|         L2 C|    .</font></i>
+    <i><font color=#76a396>#        P1 .     C|            C|    . P2</font></i>
+    <i><font color=#76a396>#           .     C|            C|    .</font></i>
+    <i><font color=#76a396>#          \./    |             |    \./</font></i>
+    <i><font color=#76a396>#           .     |             |     .</font></i>
+    <i><font color=#76a396>#           o-----o-------------o-----o</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen [<b><font color=#ffa500>dict</font></b> merge [<b><font color=#ffa500>dict</font></b> create freq <font color=#f1b479>$freq</font>] <font color=#f1b479>$yxx</font>]
+    <b><font color=#ffa500>variable</font></b> pi
+    <b><font color=#ffa500>set</font></b> yEq [::rfutil::yPEq <font color=#f1b479>$yxx</font>]
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$freq</font>]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> freqVal [@ <font color=#f1b479>$freq</font> <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> y1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yEq</font> y1] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> y2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yEq</font> y2] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> y3 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yEq</font> y3] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> l1 [= {-1/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>*[imag <font color=#f1b479>$y1</font>])}]
+        <b><font color=#ffa500>lappend</font></b> l2 [= {-1/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>*[imag <font color=#f1b479>$y2</font>])}]
+        <b><font color=#ffa500>lappend</font></b> l3 [= {-1/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>*[imag <font color=#f1b479>$y3</font>])}]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create l1 <font color=#4A181B>$l1</font> l2 <font color=#4A181B>$l2</font> l3 <font color=#4A181B>$l3</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create l1 <font color=#f1b479>$l1</font> l2 <font color=#f1b479>$l2</font> l3 <font color=#f1b479>$l3</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::lxxTEq'>lxxTEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -359,44 +359,44 @@
 </pre>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements impedance</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_lxxTEq' href="javascript:toggleSource('rfutil_lxxTEq')">Show source</a></p>
-<div id='rfutil_lxxTEq' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::lxxTEq {freq zxx} {
+<div id='rfutil_lxxTEq' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::lxxTEq {freq zxx} {
 
-    <i><font color=#4b5d50># Calculates inductive part equivalent T circuit elements values.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  freq - Frequency values list</font></i>
-    <i><font color=#4b5d50>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements</font></i>
-    <i><font color=#4b5d50># impedance</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#             L1            L2</font></i>
-    <i><font color=#4b5d50>#              ___           ___</font></i>
-    <i><font color=#4b5d50>#         o----UUU-----o-----UUU----o</font></i>
-    <i><font color=#4b5d50>#         .            |            .</font></i>
-    <i><font color=#4b5d50>#         .         L3 C|           .</font></i>
-    <i><font color=#4b5d50>#      P1 .            C|           . P2</font></i>
-    <i><font color=#4b5d50>#         .            C|           .</font></i>
-    <i><font color=#4b5d50>#        \./           |           \./</font></i>
-    <i><font color=#4b5d50>#         .            |            .</font></i>
-    <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge [<b><font color=#923B23>dict</font></b> create freq <font color=#4A181B>$freq</font>] <font color=#4A181B>$zxx</font>]
-    <b><font color=#923B23>variable</font></b> pi
-    <b><font color=#923B23>set</font></b> zEq [::rfutil::zTEq <font color=#4A181B>$zxx</font>]
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$freq</font>]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> freqVal [@ <font color=#4A181B>$freq</font> <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zEq</font> z1] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zEq</font> z2] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> z3 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zEq</font> z3] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> l1 [= {[imag <font color=#4A181B>$z1</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> l2 [= {[imag <font color=#4A181B>$z2</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
-        <b><font color=#923B23>lappend</font></b> l3 [= {[imag <font color=#4A181B>$z3</font>]/(2*<font color=#4A181B>$pi</font>*<font color=#4A181B>$freqVal</font>)}]
+    <i><font color=#76a396># Calculates inductive part equivalent T circuit elements values.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  freq - Frequency values list</font></i>
+    <i><font color=#76a396>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the form {l1 {list} l2 {list} l3 {list}} with inductive part of equivalent elements</font></i>
+    <i><font color=#76a396># impedance</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#             L1            L2</font></i>
+    <i><font color=#76a396>#              ___           ___</font></i>
+    <i><font color=#76a396>#         o----UUU-----o-----UUU----o</font></i>
+    <i><font color=#76a396>#         .            |            .</font></i>
+    <i><font color=#76a396>#         .         L3 C|           .</font></i>
+    <i><font color=#76a396>#      P1 .            C|           . P2</font></i>
+    <i><font color=#76a396>#         .            C|           .</font></i>
+    <i><font color=#76a396>#        \./           |           \./</font></i>
+    <i><font color=#76a396>#         .            |            .</font></i>
+    <i><font color=#76a396>#         o----------- o -----------o</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen [<b><font color=#ffa500>dict</font></b> merge [<b><font color=#ffa500>dict</font></b> create freq <font color=#f1b479>$freq</font>] <font color=#f1b479>$zxx</font>]
+    <b><font color=#ffa500>variable</font></b> pi
+    <b><font color=#ffa500>set</font></b> zEq [::rfutil::zTEq <font color=#f1b479>$zxx</font>]
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$freq</font>]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> freqVal [@ <font color=#f1b479>$freq</font> <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> z1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zEq</font> z1] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> z2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zEq</font> z2] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> z3 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zEq</font> z3] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> l1 [= {[imag <font color=#f1b479>$z1</font>]/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>)}]
+        <b><font color=#ffa500>lappend</font></b> l2 [= {[imag <font color=#f1b479>$z2</font>]/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>)}]
+        <b><font color=#ffa500>lappend</font></b> l3 [= {[imag <font color=#f1b479>$z3</font>]/(2*<font color=#f1b479>$pi</font>*<font color=#f1b479>$freqVal</font>)}]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create l1 <font color=#4A181B>$l1</font> l2 <font color=#4A181B>$l2</font> l3 <font color=#4A181B>$l3</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create l1 <font color=#f1b479>$l1</font> l2 <font color=#f1b479>$l2</font> l3 <font color=#f1b479>$l3</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::mag'>mag</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -404,32 +404,32 @@
 <div class='ruff_synopsis'><span class='ruff_cmd'>mag</span> <span class='ruff_arg'>data ?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code>data</code></td><td>List with complex data in form a+i*b.</td></tr>
-<tr><td><code><font color=#463e11>-db</font></code></td><td>Option to select magnitude in db scale.</td></tr>
+<tr><td><code><font color=#b9b96e>-db</font></code></td><td>Option to select magnitude in db scale.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns list of magnitudes</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_mag' href="javascript:toggleSource('rfutil_mag')">Show source</a></p>
-<div id='rfutil_mag' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::mag {data args} {
+<div id='rfutil_mag' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::mag {data args} {
 
-    <i><font color=#4b5d50># Calculates magnitude of complex number.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  data - List with complex data in form a+i*b</font></i>
-    <i><font color=#4b5d50>#  -db - Option to select magnitude in db scale</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns list of magnitudes</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <b><font color=#923B23>set</font></b> arguments [argparse <font color=#463e11>-inline</font> {
-        {<font color=#463e11>-db</font> <font color=#463e11>-boolean</font>} }]
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> <font color=#4A181B>$data</font>]
-    <b><font color=#923B23>if</font></b> {[<b><font color=#923B23>dget</font></b> <font color=#4A181B>$arguments</font> db]==1} {
-        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [= {20*log10([mod [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]])}]
+    <i><font color=#76a396># Calculates magnitude of complex number.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  data - List with complex data in form a+i*b</font></i>
+    <i><font color=#76a396>#  -db - Option to select magnitude in db scale</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns list of magnitudes</font></i>
+    <i><font color=#76a396>#</font></i>
+    <b><font color=#ffa500>set</font></b> arguments [argparse <font color=#b9b96e>-inline</font> {
+        {<font color=#b9b96e>-db</font> <font color=#b9b96e>-boolean</font>} }]
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$data</font>]
+    <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$arguments</font> db]==1} {
+        <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+            <b><font color=#ffa500>lappend</font></b> result [= {20*log10([mod [@ <font color=#f1b479>$data</font> <font color=#f1b479>$i</font>]])}]
         }
-    } <b><font color=#923B23>else</font></b> {
-        <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-            <b><font color=#923B23>lappend</font></b> result [mod [@ <font color=#4A181B>$data</font> <font color=#4A181B>$i</font>]]
+    } <b><font color=#ffa500>else</font></b> {
+        <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+            <b><font color=#ffa500>lappend</font></b> result [mod [@ <font color=#f1b479>$data</font> <font color=#f1b479>$i</font>]]
         }
     }
-    <b><font color=#ca14ca>return</font></b> <font color=#4A181B>$result</font>
+    <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$result</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::matMul2x2'>matMul2x2</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -441,34 +441,34 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionaries with resulted matrix</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_matMul2x2' href="javascript:toggleSource('rfutil_matMul2x2')">Show source</a></p>
-<div id='rfutil_matMul2x2' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::matMul2x2 {mat1 mat2} {
+<div id='rfutil_matMul2x2' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::matMul2x2 {mat1 mat2} {
 
-    <i><font color=#4b5d50># Calculates multiply matrices with 2x2 size.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  mat1 - First matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#  mat2 - Second matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionaries with resulted matrix</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen [<b><font color=#923B23>dict</font></b> merge <font color=#4A181B>$mat1</font> <font color=#4A181B>$mat2</font>]
-    <b><font color=#923B23>set</font></b> len1 [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat1</font> 11]]
-    ::rfutil::compLen <font color=#4A181B>$mat1</font>
-    ::rfutil::compLen <font color=#4A181B>$mat2</font>
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len1</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> a1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat1</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> b1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat1</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> c1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat1</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> d1 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat1</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> a2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat2</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> b2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat2</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> c2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat2</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> d2 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$mat2</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> 11 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$a1</font> <font color=#4A181B>$a2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$b1</font> <font color=#4A181B>$c2</font>]]
-        <b><font color=#923B23>lappend</font></b> 12 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$a1</font> <font color=#4A181B>$b2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$b1</font> <font color=#4A181B>$d2</font>]]
-        <b><font color=#923B23>lappend</font></b> 21 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$c1</font> <font color=#4A181B>$a2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$d1</font> <font color=#4A181B>$c2</font>]]
-        <b><font color=#923B23>lappend</font></b> 22 [+ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$c1</font> <font color=#4A181B>$b2</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$d1</font> <font color=#4A181B>$d2</font>]]
+    <i><font color=#76a396># Calculates multiply matrices with 2x2 size.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  mat1 - First matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#  mat2 - Second matrix in dictionary form {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionaries with resulted matrix</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen [<b><font color=#ffa500>dict</font></b> merge <font color=#f1b479>$mat1</font> <font color=#f1b479>$mat2</font>]
+    <b><font color=#ffa500>set</font></b> len1 [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat1</font> 11]]
+    ::rfutil::compLen <font color=#f1b479>$mat1</font>
+    ::rfutil::compLen <font color=#f1b479>$mat2</font>
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len1</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> a1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat1</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> b1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat1</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> c1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat1</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> d1 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat1</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> a2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat2</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> b2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat2</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> c2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat2</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> d2 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$mat2</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> 11 [+ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$a1</font> <font color=#f1b479>$a2</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$b1</font> <font color=#f1b479>$c2</font>]]
+        <b><font color=#ffa500>lappend</font></b> 12 [+ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$a1</font> <font color=#f1b479>$b2</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$b1</font> <font color=#f1b479>$d2</font>]]
+        <b><font color=#ffa500>lappend</font></b> 21 [+ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$c1</font> <font color=#f1b479>$a2</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$d1</font> <font color=#f1b479>$c2</font>]]
+        <b><font color=#ffa500>lappend</font></b> 22 [+ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$c1</font> <font color=#f1b479>$b2</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$d1</font> <font color=#f1b479>$d2</font>]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$11</font> 21 <font color=#4A181B>$21</font> 12 <font color=#4A181B>$12</font> 22 <font color=#4A181B>$22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$11</font> 21 <font color=#f1b479>$21</font> 12 <font color=#f1b479>$12</font> 22 <font color=#f1b479>$22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::s2t'>s2t</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -479,32 +479,32 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with transfer parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_s2t' href="javascript:toggleSource('rfutil_s2t')">Show source</a></p>
-<div id='rfutil_s2t' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::s2t {sxx} {
+<div id='rfutil_s2t' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::s2t {sxx} {
 
-    <i><font color=#4b5d50># Converts 2-port s-parameters to transfer parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  sxx - Dictionary that contains 2-port matrix of s-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with transfer parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$sxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> m1c [complex -1 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> t11 [- <font color=#4A181B>$12</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] <font color=#4A181B>$21</font>]]
-        <b><font color=#923B23>lappend</font></b> t12 [/ <font color=#4A181B>$11</font> <font color=#4A181B>$21</font>]
-        <b><font color=#923B23>lappend</font></b> t21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> [/ <font color=#4A181B>$22</font> <font color=#4A181B>$21</font>]]
-        <b><font color=#923B23>lappend</font></b> t22 [/ <font color=#4A181B>$1c</font> <font color=#4A181B>$21</font>]
+    <i><font color=#76a396># Converts 2-port s-parameters to transfer parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  sxx - Dictionary that contains 2-port matrix of s-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with transfer parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$sxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> m1c [complex -1 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> t11 [- <font color=#f1b479>$12</font> [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] <font color=#f1b479>$21</font>]]
+        <b><font color=#ffa500>lappend</font></b> t12 [/ <font color=#f1b479>$11</font> <font color=#f1b479>$21</font>]
+        <b><font color=#ffa500>lappend</font></b> t21 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m1c</font> [/ <font color=#f1b479>$22</font> <font color=#f1b479>$21</font>]]
+        <b><font color=#ffa500>lappend</font></b> t22 [/ <font color=#f1b479>$1c</font> <font color=#f1b479>$21</font>]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$t11</font> 21 <font color=#4A181B>$t21</font> 12 <font color=#4A181B>$t12</font> 22 <font color=#4A181B>$t22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$t11</font> 21 <font color=#f1b479>$t21</font> 12 <font color=#f1b479>$t12</font> 22 <font color=#f1b479>$t22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::s2y'>s2y</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -516,35 +516,35 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with y-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_s2y' href="javascript:toggleSource('rfutil_s2y')">Show source</a></p>
-<div id='rfutil_s2y' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::s2y {sxx z0} {
+<div id='rfutil_s2y' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::s2y {sxx z0} {
 
-    <i><font color=#4b5d50># Converts 2-port s-parameters to y-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  sxx - Dictionary that contains 2-port matrix of s-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#  z0 - Reference impedance in form of {real imag}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$sxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> 2c [complex 2 0]
-    <b><font color=#923B23>set</font></b> m2c [complex -2 0]
-    <b><font color=#923B23>set</font></b> y0 [pow <font color=#4A181B>$z0</font> [complex -1 0]]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> y11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
-        <b><font color=#923B23>lappend</font></b> y12 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$12</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
-        <b><font color=#923B23>lappend</font></b> y21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$21</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
-        <b><font color=#923B23>lappend</font></b> y22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$y0</font> [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
+    <i><font color=#76a396># Converts 2-port s-parameters to y-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  sxx - Dictionary that contains 2-port matrix of s-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#  z0 - Reference impedance in form of {real imag}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$sxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> 2c [complex 2 0]
+    <b><font color=#ffa500>set</font></b> m2c [complex -2 0]
+    <b><font color=#ffa500>set</font></b> y0 [pow <font color=#f1b479>$z0</font> [complex -1 0]]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> y11 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$y0</font> [/ [+ [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]]
+        <b><font color=#ffa500>lappend</font></b> y12 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$y0</font> [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m2c</font> <font color=#f1b479>$12</font>] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>] ]]]
+        <b><font color=#ffa500>lappend</font></b> y21 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$y0</font> [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m2c</font> <font color=#f1b479>$21</font>] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>] ]]]
+        <b><font color=#ffa500>lappend</font></b> y22 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$y0</font> [/ [+ [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [- <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]]
     }
-    <b><font color=#ca14ca>return</font></b>  [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$y11</font> 21 <font color=#4A181B>$y21</font> 12 <font color=#4A181B>$y12</font> 22 <font color=#4A181B>$y22</font>]
+    <b><font color=#fe6efe>return</font></b>  [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$y11</font> 21 <font color=#f1b479>$y21</font> 12 <font color=#f1b479>$y12</font> 22 <font color=#f1b479>$y22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::s2z'>s2z</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -556,33 +556,33 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with z-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_s2z' href="javascript:toggleSource('rfutil_s2z')">Show source</a></p>
-<div id='rfutil_s2z' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::s2z {sxx z0} {
+<div id='rfutil_s2z' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::s2z {sxx z0} {
 
-    <i><font color=#4b5d50># Converts 2-port s-parameters to z-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  sxx - Dictionary that contains 2-port matrix of s-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#  z0 - Reference impedance in form of {real imag}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$sxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> 2c [complex 2 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$sxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> z11 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
-        <b><font color=#923B23>lappend</font></b> z12 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$12</font>] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
-        <b><font color=#923B23>lappend</font></b> z21 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$21</font>] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] ]]]
-        <b><font color=#923B23>lappend</font></b> z22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$z0</font> [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$1c</font> <font color=#4A181B>$11</font>] [- <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]]
+    <i><font color=#76a396># Converts 2-port s-parameters to z-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  sxx - Dictionary that contains 2-port matrix of s-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#  z0 - Reference impedance in form of {real imag}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$sxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> 2c [complex 2 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$sxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> z11 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$z0</font> [/ [+ [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [- <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [- <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]]
+        <b><font color=#ffa500>lappend</font></b> z12 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$z0</font> [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$2c</font> <font color=#f1b479>$12</font>] [- [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [- <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>] ]]]
+        <b><font color=#ffa500>lappend</font></b> z21 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$z0</font> [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$2c</font> <font color=#f1b479>$21</font>] [- [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [- <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>] ]]]
+        <b><font color=#ffa500>lappend</font></b> z22 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$z0</font> [/ [+ [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$1c</font> <font color=#f1b479>$11</font>] [- <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$z11</font> 21 <font color=#4A181B>$z21</font> 12 <font color=#4A181B>$z12</font> 22 <font color=#4A181B>$z22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$z11</font> 21 <font color=#f1b479>$z21</font> 12 <font color=#f1b479>$z12</font> 22 <font color=#f1b479>$z22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::t2s'>t2s</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -593,31 +593,31 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with s-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_t2s' href="javascript:toggleSource('rfutil_t2s')">Show source</a></p>
-<div id='rfutil_t2s' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::t2s {txx} {
+<div id='rfutil_t2s' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::t2s {txx} {
 
-    <i><font color=#4b5d50># Converts 2-port transfer parameters to s-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  txx - Dictionary that contains 2-port matrix of transfer parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$txx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$txx</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> m1c [complex -1 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$txx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$txx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$txx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$txx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> s11 [/ <font color=#4A181B>$12</font> <font color=#4A181B>$22</font>]
-        <b><font color=#923B23>lappend</font></b> s12 [- <font color=#4A181B>$11</font> [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>] <font color=#4A181B>$22</font>]]
-        <b><font color=#923B23>lappend</font></b> s21 [/ <font color=#4A181B>$1c</font> <font color=#4A181B>$22</font>]
-        <b><font color=#923B23>lappend</font></b> s22 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> [/ <font color=#4A181B>$21</font> <font color=#4A181B>$22</font>]]
+    <i><font color=#76a396># Converts 2-port transfer parameters to s-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  txx - Dictionary that contains 2-port matrix of transfer parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$txx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$txx</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> m1c [complex -1 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$txx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$txx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$txx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$txx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> s11 [/ <font color=#f1b479>$12</font> <font color=#f1b479>$22</font>]
+        <b><font color=#ffa500>lappend</font></b> s12 [- <font color=#f1b479>$11</font> [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>] <font color=#f1b479>$22</font>]]
+        <b><font color=#ffa500>lappend</font></b> s21 [/ <font color=#f1b479>$1c</font> <font color=#f1b479>$22</font>]
+        <b><font color=#ffa500>lappend</font></b> s22 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m1c</font> [/ <font color=#f1b479>$21</font> <font color=#f1b479>$22</font>]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$s11</font> 21 <font color=#4A181B>$s21</font> 12 <font color=#4A181B>$s12</font> 22 <font color=#4A181B>$s22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$s11</font> 21 <font color=#f1b479>$s21</font> 12 <font color=#f1b479>$s12</font> 22 <font color=#f1b479>$s22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::y2s'>y2s</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -629,35 +629,35 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with s-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_y2s' href="javascript:toggleSource('rfutil_y2s')">Show source</a></p>
-<div id='rfutil_y2s' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::y2s {yxx z0} {
+<div id='rfutil_y2s' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::y2s {yxx z0} {
 
-    <i><font color=#4b5d50># Converts 2-port y-parameters to s-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#   yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
-    <i><font color=#4b5d50>#    each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#    frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#    The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#   z0 - Reference impedance in form of {real imag}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$yxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> 2c [complex 2 0]
-    <b><font color=#923B23>set</font></b> m2c [complex -2 0]
-    <b><font color=#923B23>set</font></b> y0 [pow <font color=#4A181B>$z0</font> [complex -1 0]]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> s11 [/ [+ [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font> ] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> s12 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$12</font>] <font color=#4A181B>$y0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> s21 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m2c</font> <font color=#4A181B>$21</font>] <font color=#4A181B>$y0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> s22 [/ [+ [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font> ] [- <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$11</font>] [+ <font color=#4A181B>$y0</font> <font color=#4A181B>$22</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
+    <i><font color=#76a396># Converts 2-port y-parameters to s-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#   yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
+    <i><font color=#76a396>#    each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#    frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#    The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#   z0 - Reference impedance in form of {real imag}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$yxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> 2c [complex 2 0]
+    <b><font color=#ffa500>set</font></b> m2c [complex -2 0]
+    <b><font color=#ffa500>set</font></b> y0 [pow <font color=#f1b479>$z0</font> [complex -1 0]]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> s11 [/ [+ [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$y0</font> <font color=#f1b479>$11</font> ] [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> s12 [/ [<b><font color=#ffa500>*</font></b> [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m2c</font> <font color=#f1b479>$12</font>] <font color=#f1b479>$y0</font>] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> s21 [/ [<b><font color=#ffa500>*</font></b> [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m2c</font> <font color=#f1b479>$21</font>] <font color=#f1b479>$y0</font>] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> s22 [/ [+ [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$11</font> ] [- <font color=#f1b479>$y0</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$11</font>] [+ <font color=#f1b479>$y0</font> <font color=#f1b479>$22</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$s11</font> 21 <font color=#4A181B>$s21</font> 12 <font color=#4A181B>$s12</font> 22 <font color=#4A181B>$s22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$s11</font> 21 <font color=#f1b479>$s21</font> 12 <font color=#f1b479>$s12</font> 22 <font color=#f1b479>$s22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::y2z'>y2z</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -668,32 +668,32 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with z-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_y2z' href="javascript:toggleSource('rfutil_y2z')">Show source</a></p>
-<div id='rfutil_y2z' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::y2z {yxx} {
+<div id='rfutil_y2z' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::y2z {yxx} {
 
-    <i><font color=#4b5d50># Converts 2-port y-parameters to z-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#   yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
-    <i><font color=#4b5d50>#    each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#    frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#    The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$yxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 11]]
-    <b><font color=#923B23>set</font></b> m1c [complex -1 0]
-    <b><font color=#923B23>set</font></b> 2c [complex 2 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> z11 [/ <font color=#4A181B>$22</font> [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> z12 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> z21 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$21</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> z22 [/ <font color=#4A181B>$11</font> [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
+    <i><font color=#76a396># Converts 2-port y-parameters to z-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#   yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
+    <i><font color=#76a396>#    each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#    frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#    The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with z-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$yxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> m1c [complex -1 0]
+    <b><font color=#ffa500>set</font></b> 2c [complex 2 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> z11 [/ <font color=#f1b479>$22</font> [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> z12 [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$m1c</font>] [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> z21 [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$21</font> <font color=#f1b479>$m1c</font>] [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> z22 [/ <font color=#f1b479>$11</font> [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$z11</font> 21 <font color=#4A181B>$z21</font> 12 <font color=#4A181B>$z12</font> 22 <font color=#4A181B>$z22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$z11</font> 21 <font color=#f1b479>$z21</font> 12 <font color=#f1b479>$z12</font> 22 <font color=#f1b479>$z22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::yPEq'>yPEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -715,40 +715,40 @@
 </pre>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the form {y1 {list} y2 {list} y3 {list}} with impedances of equivalent elements</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_yPEq' href="javascript:toggleSource('rfutil_yPEq')">Show source</a></p>
-<div id='rfutil_yPEq' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::yPEq {yxx} {
+<div id='rfutil_yPEq' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::yPEq {yxx} {
 
-    <i><font color=#4b5d50># Calculates equivalent P circuit elements values.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {y1 {list} y2 {list} y3 {list}} with impedances of equivalent elements</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#                      Y3</font></i>
-    <i><font color=#4b5d50>#                      ___</font></i>
-    <i><font color=#4b5d50>#          o-----o----|___|----o-----o</font></i>
-    <i><font color=#4b5d50>#          .     |             |     .</font></i>
-    <i><font color=#4b5d50>#          .    .-.           .-.    .</font></i>
-    <i><font color=#4b5d50>#       P1 .    | |           | |    . P2</font></i>
-    <i><font color=#4b5d50>#          .  Y1| |         Y2| |    .</font></i>
-    <i><font color=#4b5d50>#          .    '-'           '-'    .</font></i>
-    <i><font color=#4b5d50>#         \./    |             |    \./</font></i>
-    <i><font color=#4b5d50>#          o-----o-------------o-----o</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$yxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 11]]
-    <b><font color=#923B23>set</font></b> m1c [complex -1 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$yxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> y1 [+ <font color=#4A181B>$11</font> <font color=#4A181B>$21</font>]
-        <b><font color=#923B23>lappend</font></b> y2 [+ <font color=#4A181B>$22</font> <font color=#4A181B>$21</font>]
-        <b><font color=#923B23>lappend</font></b> y3 [<b><font color=#923B23>*</font></b> <font color=#4A181B>$m1c</font> <font color=#4A181B>$21</font>]
+    <i><font color=#76a396># Calculates equivalent P circuit elements values.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  yxx - Dictionary that contains 2-port matrix of y-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the form {y1 {list} y2 {list} y3 {list}} with impedances of equivalent elements</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#                      Y3</font></i>
+    <i><font color=#76a396>#                      ___</font></i>
+    <i><font color=#76a396>#          o-----o----|___|----o-----o</font></i>
+    <i><font color=#76a396>#          .     |             |     .</font></i>
+    <i><font color=#76a396>#          .    .-.           .-.    .</font></i>
+    <i><font color=#76a396>#       P1 .    | |           | |    . P2</font></i>
+    <i><font color=#76a396>#          .  Y1| |         Y2| |    .</font></i>
+    <i><font color=#76a396>#          .    '-'           '-'    .</font></i>
+    <i><font color=#76a396>#         \./    |             |    \./</font></i>
+    <i><font color=#76a396>#          o-----o-------------o-----o</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$yxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> m1c [complex -1 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$yxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> y1 [+ <font color=#f1b479>$11</font> <font color=#f1b479>$21</font>]
+        <b><font color=#ffa500>lappend</font></b> y2 [+ <font color=#f1b479>$22</font> <font color=#f1b479>$21</font>]
+        <b><font color=#ffa500>lappend</font></b> y3 [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$m1c</font> <font color=#f1b479>$21</font>]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create y1 <font color=#4A181B>$y1</font> y2 <font color=#4A181B>$y2</font> y3 <font color=#4A181B>$y3</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create y1 <font color=#f1b479>$y1</font> y2 <font color=#f1b479>$y2</font> y3 <font color=#f1b479>$y3</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::z2s'>z2s</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -760,33 +760,33 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with s-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_z2s' href="javascript:toggleSource('rfutil_z2s')">Show source</a></p>
-<div id='rfutil_z2s' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::z2s {zxx z0} {
+<div id='rfutil_z2s' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::z2s {zxx z0} {
 
-    <i><font color=#4b5d50># Converts 2-port z-parameters to s-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#  z0 - Reference impedance in form of {real imag}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$zxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 11]]
-    <b><font color=#923B23>set</font></b> 1c [complex 1 0]
-    <b><font color=#923B23>set</font></b> 2c [complex 2 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> s11 [/ [- [<b><font color=#923B23>*</font></b> [- <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> s12 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$12</font>] <font color=#4A181B>$z0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> s21 [/ [<b><font color=#923B23>*</font></b> [<b><font color=#923B23>*</font></b> <font color=#4A181B>$2c</font> <font color=#4A181B>$21</font>] <font color=#4A181B>$z0</font>] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> s22 [/ [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [- <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]] [- [<b><font color=#923B23>*</font></b> [+ <font color=#4A181B>$11</font> <font color=#4A181B>$z0</font>] [+ <font color=#4A181B>$22</font> <font color=#4A181B>$z0</font>]] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
+    <i><font color=#76a396># Converts 2-port z-parameters to s-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#  z0 - Reference impedance in form of {real imag}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with s-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$zxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> 1c [complex 1 0]
+    <b><font color=#ffa500>set</font></b> 2c [complex 2 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> s11 [/ [- [<b><font color=#ffa500>*</font></b> [- <font color=#f1b479>$11</font> <font color=#f1b479>$z0</font>] [+ <font color=#f1b479>$22</font> <font color=#f1b479>$z0</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$11</font> <font color=#f1b479>$z0</font>] [+ <font color=#f1b479>$22</font> <font color=#f1b479>$z0</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> s12 [/ [<b><font color=#ffa500>*</font></b> [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$2c</font> <font color=#f1b479>$12</font>] <font color=#f1b479>$z0</font>] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$11</font> <font color=#f1b479>$z0</font>] [+ <font color=#f1b479>$22</font> <font color=#f1b479>$z0</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> s21 [/ [<b><font color=#ffa500>*</font></b> [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$2c</font> <font color=#f1b479>$21</font>] <font color=#f1b479>$z0</font>] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$11</font> <font color=#f1b479>$z0</font>] [+ <font color=#f1b479>$22</font> <font color=#f1b479>$z0</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> s22 [/ [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$11</font> <font color=#f1b479>$z0</font>] [- <font color=#f1b479>$22</font> <font color=#f1b479>$z0</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]] [- [<b><font color=#ffa500>*</font></b> [+ <font color=#f1b479>$11</font> <font color=#f1b479>$z0</font>] [+ <font color=#f1b479>$22</font> <font color=#f1b479>$z0</font>]] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$s11</font> 21 <font color=#4A181B>$s21</font> 12 <font color=#4A181B>$s12</font> 22 <font color=#4A181B>$s22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$s11</font> 21 <font color=#f1b479>$s21</font> 12 <font color=#f1b479>$s12</font> 22 <font color=#f1b479>$s22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::z2y'>z2y</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -797,32 +797,32 @@
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the same form as input dictionary with y-parameters</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_z2y' href="javascript:toggleSource('rfutil_z2y')">Show source</a></p>
-<div id='rfutil_z2y' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::z2y {zxx} {
+<div id='rfutil_z2y' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::z2y {zxx} {
 
-    <i><font color=#4b5d50># Converts 2-port z-parameters to y-parameters.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#   zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
-    <i><font color=#4b5d50>#    each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#    frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#    The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$zxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 11]]
-    <b><font color=#923B23>set</font></b> m1c [complex -1 0]
-    <b><font color=#923B23>set</font></b> 2c [complex 2 0]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 12 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 12] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> y11 [/ <font color=#4A181B>$22</font> [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> y12 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> y21 [/ [<b><font color=#923B23>*</font></b> <font color=#4A181B>$21</font> <font color=#4A181B>$m1c</font>] [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
-        <b><font color=#923B23>lappend</font></b> y22 [/ <font color=#4A181B>$11</font> [- [<b><font color=#923B23>*</font></b> <font color=#4A181B>$11</font> <font color=#4A181B>$22</font>] [<b><font color=#923B23>*</font></b> <font color=#4A181B>$12</font> <font color=#4A181B>$21</font>]]]
+    <i><font color=#76a396># Converts 2-port z-parameters to y-parameters.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#   zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
+    <i><font color=#76a396>#    each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#    frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#    The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the same form as input dictionary with y-parameters</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$zxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 11]]
+    <b><font color=#ffa500>set</font></b> m1c [complex -1 0]
+    <b><font color=#ffa500>set</font></b> 2c [complex 2 0]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 12 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 12] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> y11 [/ <font color=#f1b479>$22</font> [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> y12 [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$m1c</font>] [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> y21 [/ [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$21</font> <font color=#f1b479>$m1c</font>] [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
+        <b><font color=#ffa500>lappend</font></b> y22 [/ <font color=#f1b479>$11</font> [- [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$11</font> <font color=#f1b479>$22</font>] [<b><font color=#ffa500>*</font></b> <font color=#f1b479>$12</font> <font color=#f1b479>$21</font>]]]
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create 11 <font color=#4A181B>$y11</font> 21 <font color=#4A181B>$y21</font> 12 <font color=#4A181B>$y12</font> 22 <font color=#4A181B>$y22</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create 11 <font color=#f1b479>$y11</font> 21 <font color=#f1b479>$y21</font> 12 <font color=#f1b479>$y12</font> 22 <font color=#f1b479>$y22</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::rfutil::zTEq'>zTEq</a><span class='ns_scope'> [<a href="index-rfutil.html#::rfutil" title="::rfutil" class='ruff_cmd'>::rfutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
@@ -844,39 +844,39 @@
 </pre>
 <h5 class='ruff'>Return value</h5><p class='ruff'>Returns dictionary of the form {z1 {list} z2 {list} z3 {list}} with impedances of equivalent elements</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_rfutil_zTEq' href="javascript:toggleSource('rfutil_zTEq')">Show source</a></p>
-<div id='rfutil_zTEq' class='ruff_dyn_src'><pre><b><font color=#ca14ca>proc</font></b> ::rfutil::zTEq {zxx} {
+<div id='rfutil_zTEq' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::rfutil::zTEq {zxx} {
 
-    <i><font color=#4b5d50># Calculates equivalent T circuit elements values.</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
-    <i><font color=#4b5d50>#   each matrix element is the list of values at different</font></i>
-    <i><font color=#4b5d50>#   frequencies (or other parameter) in form of {real imag}.</font></i>
-    <i><font color=#4b5d50>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50># Returns dictionary of the form {z1 {list} z2 {list} z3 {list}} with impedances of equivalent elements</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    <i><font color=#4b5d50>#               Z1            Z2</font></i>
-    <i><font color=#4b5d50>#              ___           ___</font></i>
-    <i><font color=#4b5d50>#         o---|___|----o----|___|---o</font></i>
-    <i><font color=#4b5d50>#         .            |            .</font></i>
-    <i><font color=#4b5d50>#         .           .-.           .</font></i>
-    <i><font color=#4b5d50>#      P1 .           | |           . P2</font></i>
-    <i><font color=#4b5d50>#         .         Z3| |           .</font></i>
-    <i><font color=#4b5d50>#         .           '-'           .</font></i>
-    <i><font color=#4b5d50>#        \./           |           \./</font></i>
-    <i><font color=#4b5d50>#         o----------- o -----------o</font></i>
-    <i><font color=#4b5d50>#</font></i>
-    ::rfutil::compLen <font color=#4A181B>$zxx</font>
-    <b><font color=#923B23>set</font></b> len [<b><font color=#923B23>llength</font></b> [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 11]]
-    <b><font color=#923B23>for</font></b> {<b><font color=#923B23>set</font></b> i 0} {<font color=#4A181B>$i</font>&lt;<font color=#4A181B>$len</font>} {<b><font color=#923B23>incr</font></b> i} {
-        <b><font color=#923B23>set</font></b> 11 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 11] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 21 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 21] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>set</font></b> 22 [@ [<b><font color=#923B23>dget</font></b> <font color=#4A181B>$zxx</font> 22] <font color=#4A181B>$i</font>]
-        <b><font color=#923B23>lappend</font></b> z1 [- <font color=#4A181B>$11</font> <font color=#4A181B>$21</font>]
-        <b><font color=#923B23>lappend</font></b> z2 [- <font color=#4A181B>$22</font> <font color=#4A181B>$21</font>]
-        <b><font color=#923B23>lappend</font></b> z3 <font color=#4A181B>$21</font>
+    <i><font color=#76a396># Calculates equivalent T circuit elements values.</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#  zxx - Dictionary that contains 2-port matrix of z-parameters,</font></i>
+    <i><font color=#76a396>#   each matrix element is the list of values at different</font></i>
+    <i><font color=#76a396>#   frequencies (or other parameter) in form of {real imag}.</font></i>
+    <i><font color=#76a396>#   The form of dictionary is: {11 {list} 12 {list} 21 {list} 22 {list}}</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396># Returns dictionary of the form {z1 {list} z2 {list} z3 {list}} with impedances of equivalent elements</font></i>
+    <i><font color=#76a396>#</font></i>
+    <i><font color=#76a396>#               Z1            Z2</font></i>
+    <i><font color=#76a396>#              ___           ___</font></i>
+    <i><font color=#76a396>#         o---|___|----o----|___|---o</font></i>
+    <i><font color=#76a396>#         .            |            .</font></i>
+    <i><font color=#76a396>#         .           .-.           .</font></i>
+    <i><font color=#76a396>#      P1 .           | |           . P2</font></i>
+    <i><font color=#76a396>#         .         Z3| |           .</font></i>
+    <i><font color=#76a396>#         .           '-'           .</font></i>
+    <i><font color=#76a396>#        \./           |           \./</font></i>
+    <i><font color=#76a396>#         o----------- o -----------o</font></i>
+    <i><font color=#76a396>#</font></i>
+    ::rfutil::compLen <font color=#f1b479>$zxx</font>
+    <b><font color=#ffa500>set</font></b> len [<b><font color=#ffa500>llength</font></b> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 11]]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$len</font>} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> 11 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 11] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 21 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 21] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>set</font></b> 22 [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$zxx</font> 22] <font color=#f1b479>$i</font>]
+        <b><font color=#ffa500>lappend</font></b> z1 [- <font color=#f1b479>$11</font> <font color=#f1b479>$21</font>]
+        <b><font color=#ffa500>lappend</font></b> z2 [- <font color=#f1b479>$22</font> <font color=#f1b479>$21</font>]
+        <b><font color=#ffa500>lappend</font></b> z3 <font color=#f1b479>$21</font>
     }
-    <b><font color=#ca14ca>return</font></b> [<b><font color=#923B23>dict</font></b> create z1 <font color=#4A181B>$z1</font> z2 <font color=#4A181B>$z2</font> z3 <font color=#4A181B>$z3</font>]
+    <b><font color=#fe6efe>return</font></b> [<b><font color=#ffa500>dict</font></b> create z1 <font color=#f1b479>$z1</font> z2 <font color=#f1b479>$z2</font> z3 <font color=#f1b479>$z3</font>]
 }</pre></div>
 </div></main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a style='padding-top:2px;' href='index.html'>Start page</a></li>
 <li class='ruff-toc1'><a href='index-docindex.html' accesskey='i'>Index</a></li>
@@ -886,7 +886,7 @@
 <li class='ruff-toc1'><a class='ruff-highlight' href='index-rfutil.html'>rfutil</a></li>
 <li class='ruff-toc1'><a href='index-touchstoneutil.html'>touchstoneutil</a></li>
 <hr><li class='ruff-toc2'><a href='#::rfutil-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::angle'>angle</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;angle&lt;/span&gt; &lt;span class='ruff_arg'&gt;data ?args?&lt;/span&gt;</pre>Calculates angle (phase) of complex number.
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::compLen'>compLen</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;compLen&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#923B23>dict</font></b>&lt;/span&gt;</pre>Check the lengths of lists of each dictionary's list
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::compLen'>compLen</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;compLen&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>dict</font></b>&lt;/span&gt;</pre>Check the lengths of lists of each dictionary's list
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::cxxPEq'>cxxPEq</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cxxPEq&lt;/span&gt; &lt;span class='ruff_arg'&gt;freq yxx&lt;/span&gt;</pre>Calculates capacitive part equivalent P circuit elements values.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::cxxTEq'>cxxTEq</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;cxxTEq&lt;/span&gt; &lt;span class='ruff_arg'&gt;freq zxx&lt;/span&gt;</pre>Calculates capacitive part equivalent T circuit elements values.
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-rfutil.html#::rfutil::deemb'>deemb</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;deemb&lt;/span&gt; &lt;span class='ruff_arg'&gt;sMeas sFixtL sFixtR&lt;/span&gt;</pre>Procedure for deembedding of DUT from test fixture.
