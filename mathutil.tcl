@@ -20,7 +20,7 @@ proc ::mathutil::trapz {x y} {
     set xLen [llength $x]
     set yLen [llength $y]
     if {$xLen != $yLen} {
-        error "Length of x '$xLen' is not equal to length of y '$yLen'"
+        return -code error "Length of x '$xLen' is not equal to length of y '$yLen'"
     }
     set result 0.0
     for {set i 0} {$i<[- $xLen 1]} {incr i} {
@@ -38,7 +38,7 @@ proc ::mathutil::cumtrapz {x y {init 0}} {
     set xLen [llength $x]
     set yLen [llength $y]
     if {$xLen != $yLen} {
-        error "Length of x '$xLen' is not equal to length of y '$yLen'"
+        return -code error "Length of x '$xLen' is not equal to length of y '$yLen'"
     }
     set result $init
     for {set i 0} {$i<[- $xLen 1]} {incr i} {
@@ -49,18 +49,18 @@ proc ::mathutil::cumtrapz {x y {init 0}} {
 }
 
 proc ::mathutil::findApprox {list value {epsilon 1}} {
-    # Finds index of firts matched value in list with epsilon tolerance
+    # Finds index of first matched value in list with epsilon tolerance
     #  list - list of values
     #  value - value to match
     #  epsilon - tolerance
     # Returns: value from the list
-    if {[string is double $epsilon]!=1} {
-        error "Epsilon must be a number"
+    if {![string is double $epsilon]} {
+        return -code error "Epsilon must be a number"
     } elseif {$epsilon<=0} {
-        error "Epsilon must be larger than zero"
+        return -code error "Epsilon must be larger than zero"
     }
-    if {[string is double $value]!=1} {
-        error "Value must be a number"
+    if {![string is double $value]} {
+        return -code error "Value must be a number"
     }
     set idx 0
     foreach x $list {
@@ -82,21 +82,21 @@ proc ::mathutil::movAvg {y winSize args} {
         -x=
     }]
     # input verification
-    if {[string is integer $winSize]!=1} {
-        error "Window size must be an integer"
+    if {![string is integer $winSize]} {
+        return -code error "Window size must be an integer"
     } elseif {$winSize<2} {
-        error "Window size must be larger than one"
+        return -code error "Window size must be larger than one"
     } elseif {$winSize%2==0} {
-        error "Size of window must be odd"
+        return -code error "Size of window must be odd"
     }
     set yLen [llength $y]
     if {$yLen < [+ $winSize 1]} {
-        error "Length of y '$yLen' must be not less than size of window + 1  '$winSize + 1 = [+ $winSize 1]'"
+        return -code error "Length of y '$yLen' must be not less than size of window + 1  '$winSize + 1 = [+ $winSize 1]'"
     }
     if {[info exists x]} {
         set xLen [llength $x]
         if {$xLen != $yLen} {
-            error "Length of x '$xLen' is not equal to length of y '$yLen'"
+            return -code error "Length of x '$xLen' is not equal to length of y '$yLen'"
         }
     }
     # actual calculations
