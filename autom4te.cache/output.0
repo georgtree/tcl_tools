@@ -3789,7 +3789,7 @@ printf "%s\n" "$as_me: --exec-prefix defaulting to ${prefix}" >&6;}
     
 
 
-    vars="gnuplotutil.tcl mathutil.tcl rfutil.tcl touchstoneutil.tcl"
+    vars="gnuplotutil.tcl mathutil.tcl measure.tcl rfutil.tcl touchstoneutil.tcl"
     for i in $vars; do
 	# check for existence, be strict because it is installed
 	if test ! -f "${srcdir}/$i" ; then

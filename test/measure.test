@@ -1,0 +1,100 @@
+package require tcltest
+namespace import ::tcltest::*
+package require gnuplotutil
+namespace import ::gnuplotutil::*
+package require measure
+namespace import ::measure::*
+
+for {set i 0} {$i<=1000} {incr i} {
+    set xi [= {$i*0.05}]
+    lappend x $xi
+    lappend y1 [= {sin($xi)}]
+    lappend y2 [= {cos($xi)}]
+}
+
+### TrigTarg tests
+test TrigTargTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-vec y1 -val 0.1 -rise 3}\
+                  -targ {-vec y2 -val 0.5 -fall 5}]
+} -result {xtrig 12.666567432668222 xtarg 26.17976390163929 xdelta 13.513196468971069}
+
+test TrigTargTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-vec y1 -val 0.7 -rise 2}\
+                  -targ {-at 20.0}]
+} -result {xtrig 7.058761869929844 xtarg 20.0 xdelta 12.941238130070156}
+
+test TrigTargTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-at 5.01}\
+                    -targ {-vec y2 -val 0.5 -cross 2}]
+} -result {xtrig 5.01 xtarg 5.236130584737532 xdelta 0.22613058473753256}
+
+test TrigTargTest-4 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-vec x -val 5.01 -rise 1}\
+                  -targ {-vec y2 -val 0.5 -fall last}]
+} -result {xtrig 5.01 xtarg 39.80747332313816 xdelta 34.79747332313816}
+
+test TrigTargTest-5 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-vec y1 -val 0.1 -rise last}\
+                  -targ {-vec y2 -val 0.5 -fall last}]
+} -result {xtrig 44.08249174375871 xtarg 45.49245358701009 xdelta 1.4099618432513807}
+
+test TrigTargTest-6 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-vec y1 -val 0.1 -rise last}\
+                   -targ {-vec y2 -val 2.0 -fall last}} errorStr
+    return $errorStr
+} -result {Targ value '2.0' with conditions 'fall last delay=0.0' was not found}
+
+test TrigTargTest-7 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -trig {-vec y1 -val 0.1 -rise last}\
+                   -targ {-vec y2 -val -0.1 -fall 20}} errorStr
+    return $errorStr
+} -result {Targ value '-0.1' with conditions 'fall 20 delay=0.0' was not found}
+
+### FindWhen tests
+test FindWhenTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 0.5 -fall 5}]
+} -result {xwhen 26.17976390163929 yfind 0.8656776653169641}
+
+test FindWhenTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec y2 -val 0.5 -fall 5}]
+} -result {xwhen 26.17976390163929}
+
+test FindWhenTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec1 y1 -vec2 y2 -fall 5}]
+} -result {xwhen 29.059734040425376 yfind -0.706968221057803}
+
+test FindWhenTest-4 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 5}]
+} -result {xwhen 29.059734040425376}
+
+test FindWhenTest-5 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 5 -from 1 -to 30}]
+} -result {xwhen 29.059734040425376}
+
+test FindWhenTest-6 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 5 -from 10 -to 20}} errorStr
+    return $errorStr
+} -result {Cross between vectors with conditions 'fall 5 delay=0.0 from=10 to=20' was not found}
+
+test FindWhenTest-7 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall last -from 1 -to 30}]
+} -result {xwhen 29.059734040425376}
+
+test FindWhenTest-8 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 0.5 -fall last}]
+} -result {xwhen 45.029318738629485 yfind 0.8656753304879521}
+
+test FindWhenTest-9 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall last}]
+} -result {xwhen 47.90928994793005}
+
+test FindWhenTest-10 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 2 -from 10 -to 20}]
+} -result {xwhen 16.493359669208044}
+
+### FindAt tests
+test FindAtTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5]
+} -result -0.9589242746631385
+
+cleanupTests

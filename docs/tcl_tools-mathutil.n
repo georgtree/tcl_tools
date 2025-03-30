@@ -108,7 +108,7 @@ value of second derivative
 \fBfindApprox\fR (::mathutil)
 .RE
 .PP
-Finds index of firts matched value in list with epsilon tolerance
+Finds index of first matched value in list with epsilon tolerance
 .RS 4n\fBfindApprox\fP \fIlist value ?epsilon?\fP
 .br
 .RE

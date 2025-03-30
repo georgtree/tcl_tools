@@ -8,6 +8,7 @@ set sourceDir "${docDir}/.."
 source [file join $docDir startPage.ruff]
 source [file join $sourceDir gnuplotutil.tcl]
 source [file join $sourceDir mathutil.tcl]
+source [file join $sourceDir measure.tcl]
 source [file join $sourceDir rfutil.tcl]
 source [file join $sourceDir touchstoneutil.tcl]
 
@@ -15,13 +16,14 @@ set packageVersion [package versions gnuplotutil]
 set title "Collection of Tcl tools"
 set commonHtml [list -title $title -sortnamespaces false -preamble $startPage -pagesplit namespace -recurse false\
                         -includesource true -pagesplit namespace -autopunctuate true -compact false\
-                        -includeprivate true -product tcl_tools -diagrammer "ditaa --border-width 1"\
-                        -version $packageVersion -copyright "George Yashin" {*}$::argv]
+                        -includeprivate true -product tcl_tools -excludeprocs {^[A-Z].*}\
+                        -diagrammer "ditaa --border-width 1" -version $packageVersion -copyright "George Yashin"\
+                        {*}$::argv]
 set commonNroff [list -title $title -sortnamespaces false -preamble $startPage -pagesplit namespace -recurse false\
                          -pagesplit namespace -autopunctuate true -compact false -includeprivate true -product tcl_tools\
-                         -diagrammer "ditaa --border-width 1" -version $packageVersion\
+                         -excludeprocs {^[A-Z].*} -diagrammer "ditaa --border-width 1" -version $packageVersion\
                          -copyright "George Yashin" {*}$::argv]
-set namespaces [list ::gnuplotutil ::mathutil ::rfutil ::touchstoneutil]
+set namespaces [list ::gnuplotutil ::mathutil ::measure ::rfutil ::touchstoneutil]
 
 if {[llength $argv] == 0 || "html" in $argv} {
     ruff::document $namespaces -format html -outdir $docDir -outfile index.html {*}$commonHtml

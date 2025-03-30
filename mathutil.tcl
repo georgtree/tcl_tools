@@ -1,5 +1,4 @@
 package require argparse
-package require math::interpolate
 package provide mathutil 0.1
 
 namespace eval ::mathutil {
