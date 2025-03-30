@@ -137,15 +137,22 @@ proc ::measure::measure {args} {
     #   ?-to value? -cross|rise|fall value\}
     # Synopsis: -xname value -data value ?-find value? -when \{-vec1 value -vec2 value ?-td value? ?-from value? 
     #   ?-to value? -cross|rise|fall value\}
+    #  ###### **Find-At**
+    #  In this mode it finds value of the vector at specified time.
+    # Examples of usages:
+    # ```
+    # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5
+    # ```
+    # Synopsis: -xname value -data value -find value -at value
     set keysList {trig targ find when at integ deriv avg min max pp rms minat maxat}
-    argparse -pass rest "
+    argparse "
         {-xname= -required}
         {-data= -required}
         \{-trig= -require targ -forbid \{[Allow {trig targ} $keysList]\}\}
         \{-targ= -require trig -forbid \{[Allow {trig targ} $keysList]\}\}
         \{-find= -forbid \{[Allow {find when at} $keysList]\}\}
         \{-when= -forbid \{[Allow {find when} $keysList]\}\}
-        \{-at= -require find -forbid \{[Allow {find at} $keysList]\}\}
+        \{-at= -require find -validate {\[string is double \$arg\]} -forbid \{[Allow {find at} $keysList]\}\}
         \{-integ= -forbid \{[Allow integ $keysList]\}\}
         \{-deriv= -forbid \{[Allow deriv $keysList]\}\}
         \{-avg= -forbid \{[Allow avg $keysList]\}\}
@@ -157,10 +164,10 @@ proc ::measure::measure {args} {
         \{-maxat= -forbid \{[Allow maxat $keysList]\}\}"
     if {[info exists trig]} {
         set definition {
-            {-at= -forbid {vec val delay cross rise fall}}
+            {-at= -forbid {vec val delay cross rise fall} -validate {[string is double $arg]}}
             {-vec= -forbid at -require val}
-            {-val= -forbid at}
-            {-td|delay= -default 0.0 -forbid at -require {vec val}}
+            {-val= -forbid at -validate {[string is double $arg]}}
+            {-td|delay= -default 0.0 -forbid at -require {vec val} -validate {[string is double $arg]}}
             {-cross= -forbid {rise fall} -forbid at -require {vec val}}
             {-rise= -forbid {cross fall} -forbid at -require {vec val}}
             {-fall= -forbid {cross rise} -forbid at -require {vec val}}
@@ -172,6 +179,13 @@ proc ::measure::measure {args} {
         if {![dexist $trigArgs at]} {
             set trigVecCond [AliasesKeysCheck $trigArgs {cross rise fall}]
             set trigVecCondCount [dget $trigArgs $trigVecCond]
+            if {[string is integer $trigVecCondCount]} {
+                if {$trigVecCondCount<=0} {
+                    return -code error "Trig count '$trigVecCondCount' must be more than 0"
+                }
+            } elseif {$trigVecCondCount ne {last}} {
+                return -code error "Trig count '$trigVecCondCount' must be an integer or 'last' string"
+            }
             set trigData [dget $data [dget $trigArgs vec]]
             set trigVal [dget $trigArgs val]
         } else {
@@ -183,6 +197,13 @@ proc ::measure::measure {args} {
         if {![dexist $targArgs at]} {
             set targVecCond [AliasesKeysCheck $targArgs {cross rise fall}]
             set targVecCondCount [dget $targArgs $targVecCond]
+            if {[string is integer $targVecCondCount]} {
+                if {$targVecCondCount<=0} {
+                    return -code error "Targ count '$targVecCondCount' must be more than 0"
+                }
+            } elseif {$targVecCondCount ne {last}} {
+                return -code error "Targ count '$targVecCondCount' must be an integer or 'last' string"
+            }
             set targData [dget $data [dget $targArgs vec]]
             set targVal [dget $targArgs val]
         } else {
@@ -199,15 +220,22 @@ proc ::measure::measure {args} {
             {-val= -require vec -forbid {vec1 vec2}}
             {-vec1= -require vec2 -forbid {vec val}}
             {-vec2= -require vec1 -forbid {vec val}}
-            {-td|delay= -default 0.0}
-            {-from= -default 0.0}
-            -to=
+            {-td|delay= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
             {-cross= -forbid {rise fall}}
             {-rise= -forbid {cross fall}}
             {-fall= -forbid {cross rise}}
         } $when]
         AliasesKeysCheck $whenArgs {vec vec1}
         set whenVecCond [AliasesKeysCheck $whenArgs {cross rise fall}]
+        if {[string is integer [dget $whenArgs $whenVecCond]]} {
+            if {[dget $whenArgs $whenVecCond]<=0} {
+                return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be more than 0"
+            }
+        } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
+            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
+        }
         if {![dexist $whenArgs to]} {
             set to [@ [dget $data $xname] end]
         } else {
@@ -231,15 +259,22 @@ proc ::measure::measure {args} {
             {-val= -require vec -forbid {vec1 vec2}}
             {-vec1= -require vec2 -forbid {vec val}}
             {-vec2= -require vec1 -forbid {vec val}}
-            {-td|delay= -default 0.0}
-            {-from= -default 0.0}
-            -to=
+            {-td|delay= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
             {-cross= -forbid {rise fall}}
             {-rise= -forbid {cross fall}}
             {-fall= -forbid {cross rise}}
         } $when]
         AliasesKeysCheck $whenArgs {vec vec1}
         set whenVecCond [AliasesKeysCheck $whenArgs {cross rise fall}]
+        if {[string is integer [dget $whenArgs $whenVecCond]]} {
+            if {[dget $whenArgs $whenVecCond]<=0} {
+                return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be more than 0"
+            }
+        } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
+            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
+        }
         if {![dexist $whenArgs to]} {
             set to [@ [dget $data $xname] end]
         } else {

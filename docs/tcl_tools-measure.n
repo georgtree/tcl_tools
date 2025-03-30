@@ -15,6 +15,8 @@ measure - Commands in namespace measure
 .br
 \fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
 .br
+\fBmeasure\fP \fI-xname value -data value -find value -at value\fP
+.br
 .SH ::MEASURE
 .SH COMMANDS
 .PP
@@ -32,6 +34,8 @@ Does different measurements of inpu data lists\&.
 \fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
 .br
 \fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
+.br
+\fBmeasure\fP \fI-xname value -data value -find value -at value\fP
 .br
 .RE
 .PP
@@ -213,4 +217,15 @@ Here we use x key value as x axis, point is when vector y1 crosses y2, last fall
 \fI1,30\fP\&.
 In this mode procedure returns dictionary with keys xwhen, and yfind if -find switch is specified, and
 corresponding values\&.
+.PP
+\fB\fBFind-At\fP\fR
+.PP
+In this mode it finds value of the vector at specified time\&.
+Examples of usages:
+.PP
+.RS 4n
+.nf
+::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5
+.fi
+.RE
 

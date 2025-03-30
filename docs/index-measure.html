@@ -20,7 +20,7 @@
 <h3 class='ruffproc'><a name='::measure::measure'>measure</a><span class='ns_scope'> [<a href="index-measure.html#::measure" title="::measure" class='ruff_cmd'>::measure</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Does different measurements of inpu data lists.</p>
-<div class='ruff_synopsis'><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-at value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span></div>
+<div class='ruff_synopsis'><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-at value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -find value -at value</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><font color=#b9b96e>-at</font></code></td><td>Time for find.</td></tr>
 <tr><td><code><font color=#b9b96e>-data</font></code></td><td>Dictionary that contains lists with names as the keys and lists as the values.</td></tr>
@@ -94,7 +94,12 @@
 </pre>
 
 </figure><p class='ruff'>Here we use x key value as x axis, point is when vector y1 crosses y2, last fall of y1 vector, searching range is [1,30]. In this mode procedure returns dictionary with keys <code>xwhen</code>, and <code>yfind</code> if <code><font color=#b9b96e>-find</font></code> switch is specified, and corresponding values.</p>
-<div class='ruff_source'><p class='ruff_source_link'><a id='l_measure_measure' href="javascript:toggleSource('measure_measure')">Show source</a></p>
+<h6 class='ruff'><strong>Find-At</strong></h6><p class='ruff'>In this mode it finds value of the vector at specified time. Examples of usages:</p>
+
+<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>::measure::measure <font color=#b9b96e>-xname</font> x <font color=#b9b96e>-data</font> [<b><font color=#ffa500>dcreate</font></b> x <font color=#f1b479>$x</font> y1 <font color=#f1b479>$y1</font> y2 <font color=#f1b479>$y2</font>] <font color=#b9b96e>-find</font> y1 <font color=#b9b96e>-at</font> 5
+</pre>
+
+</figure><div class='ruff_source'><p class='ruff_source_link'><a id='l_measure_measure' href="javascript:toggleSource('measure_measure')">Show source</a></p>
 <div id='measure_measure' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::measure::measure {args} {
 
     <i><font color=#76a396># Does different measurements of inpu data lists.</font></i>
@@ -204,15 +209,22 @@
     <i><font color=#76a396>#   ?-to value? -cross|rise|fall value\}</font></i>
     <i><font color=#76a396># Synopsis: -xname value -data value ?-find value? -when \{-vec1 value -vec2 value ?-td value? ?-from value?</font></i>
     <i><font color=#76a396>#   ?-to value? -cross|rise|fall value\}</font></i>
+    <i><font color=#76a396>#  ###### **Find-At**</font></i>
+    <i><font color=#76a396>#  In this mode it finds value of the vector at specified time.</font></i>
+    <i><font color=#76a396># Examples of usages:</font></i>
+    <i><font color=#76a396># ```</font></i>
+    <i><font color=#76a396># ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5</font></i>
+    <i><font color=#76a396># ```</font></i>
+    <i><font color=#76a396># Synopsis: -xname value -data value -find value -at value</font></i>
     <b><font color=#ffa500>set</font></b> keysList {trig targ find when at integ deriv avg min max pp rms minat maxat}
-    argparse <font color=#b9b96e>-pass</font> rest <font color=#90ee90>&quot;</font>
+    argparse <font color=#90ee90>&quot;</font>
 <font color=#90ee90>        <font color=#f1b479>{</font>-xname= -required<font color=#f1b479>}</font></font>
 <font color=#90ee90>        <font color=#f1b479>{</font>-data= -required<font color=#f1b479>}</font></font>
 <font color=#90ee90>        \{-trig= -require targ -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>trig targ<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-targ= -require trig -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>trig targ<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-find= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-when= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-at= -require find -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
+<font color=#90ee90>        \{-at= -require find -validate <font color=#f1b479>{</font>\[string is double \$arg\]<font color=#f1b479>}</font> -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-integ= -forbid \{<font color=#f1b479>[</font>Allow integ <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-deriv= -forbid \{<font color=#f1b479>[</font>Allow deriv <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-avg= -forbid \{<font color=#f1b479>[</font>Allow avg <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
@@ -224,10 +236,10 @@
 <font color=#90ee90>        \{-maxat= -forbid \{<font color=#f1b479>[</font>Allow maxat <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}&quot;</font>
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists trig]} {
         <b><font color=#ffa500>set</font></b> definition {
-            {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-forbid</font> {vec val delay cross rise fall}}
+            {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-forbid</font> {vec val delay cross rise fall} <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
             {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> val}
-            {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-forbid</font> at}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
+            {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val} <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall} <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall} <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise} <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
@@ -239,6 +251,13 @@
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$trigArgs</font> at]} {
             <b><font color=#ffa500>set</font></b> trigVecCond [AliasesKeysCheck <font color=#f1b479>$trigArgs</font> {cross rise fall}]
             <b><font color=#ffa500>set</font></b> trigVecCondCount [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$trigArgs</font> <font color=#f1b479>$trigVecCond</font>]
+            <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>string</font></b> is integer <font color=#f1b479>$trigVecCondCount</font>]} {
+                <b><font color=#ffa500>if</font></b> {<font color=#f1b479>$trigVecCondCount</font>&lt;=0} {
+                    <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>$</font>trigVecCondCount' must be more than 0&quot;</font>
+                }
+            } <b><font color=#ffa500>elseif</font></b> {<font color=#f1b479>$trigVecCondCount</font> ne {last}} {
+                <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>$</font>trigVecCondCount' must be an integer or 'last' string&quot;</font>
+            }
             <b><font color=#ffa500>set</font></b> trigData [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$trigArgs</font> vec]]
             <b><font color=#ffa500>set</font></b> trigVal [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$trigArgs</font> val]
         } <b><font color=#ffa500>else</font></b> {
@@ -250,6 +269,13 @@
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$targArgs</font> at]} {
             <b><font color=#ffa500>set</font></b> targVecCond [AliasesKeysCheck <font color=#f1b479>$targArgs</font> {cross rise fall}]
             <b><font color=#ffa500>set</font></b> targVecCondCount [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$targArgs</font> <font color=#f1b479>$targVecCond</font>]
+            <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>string</font></b> is integer <font color=#f1b479>$targVecCondCount</font>]} {
+                <b><font color=#ffa500>if</font></b> {<font color=#f1b479>$targVecCondCount</font>&lt;=0} {
+                    <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Targ count '<font color=#f1b479>$</font>targVecCondCount' must be more than 0&quot;</font>
+                }
+            } <b><font color=#ffa500>elseif</font></b> {<font color=#f1b479>$targVecCondCount</font> ne {last}} {
+                <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Targ count '<font color=#f1b479>$</font>targVecCondCount' must be an integer or 'last' string&quot;</font>
+            }
             <b><font color=#ffa500>set</font></b> targData [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$targArgs</font> vec]]
             <b><font color=#ffa500>set</font></b> targVal [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$targArgs</font> val]
         } <b><font color=#ffa500>else</font></b> {
@@ -265,15 +291,22 @@
             {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-require</font> vec <font color=#b9b96e>-forbid</font> {vec1 vec2}}
             {<font color=#b9b96e>-vec1</font>= <font color=#b9b96e>-require</font> vec2 <font color=#b9b96e>-forbid</font> {vec val}}
             {<font color=#b9b96e>-vec2</font>= <font color=#b9b96e>-require</font> vec1 <font color=#b9b96e>-forbid</font> {vec val}}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-default</font> 0.0}
-            <font color=#b9b96e>-to</font>=
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise}}
         } <font color=#f1b479>$when</font>]
         AliasesKeysCheck <font color=#f1b479>$whenArgs</font> {vec vec1}
         <b><font color=#ffa500>set</font></b> whenVecCond [AliasesKeysCheck <font color=#f1b479>$whenArgs</font> {cross rise fall}]
+        <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>string</font></b> is integer [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]]} {
+            <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]&lt;=0} {
+                <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be more than 0&quot;</font>
+            }
+        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
+        }
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> to]} {
             <b><font color=#ffa500>set</font></b> to [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] end]
         } <b><font color=#ffa500>else</font></b> {
@@ -293,15 +326,22 @@
             {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-require</font> vec <font color=#b9b96e>-forbid</font> {vec1 vec2}}
             {<font color=#b9b96e>-vec1</font>= <font color=#b9b96e>-require</font> vec2 <font color=#b9b96e>-forbid</font> {vec val}}
             {<font color=#b9b96e>-vec2</font>= <font color=#b9b96e>-require</font> vec1 <font color=#b9b96e>-forbid</font> {vec val}}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-default</font> 0.0}
-            <font color=#b9b96e>-to</font>=
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise}}
         } <font color=#f1b479>$when</font>]
         AliasesKeysCheck <font color=#f1b479>$whenArgs</font> {vec vec1}
         <b><font color=#ffa500>set</font></b> whenVecCond [AliasesKeysCheck <font color=#f1b479>$whenArgs</font> {cross rise fall}]
+        <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>string</font></b> is integer [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]]} {
+            <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]&lt;=0} {
+                <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be more than 0&quot;</font>
+            }
+        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
+        }
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> to]} {
             <b><font color=#ffa500>set</font></b> to [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] end]
         } <b><font color=#ffa500>else</font></b> {
@@ -328,6 +368,7 @@
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-trig</font> {<font color=#b9b96e>-at</font> value} <font color=#b9b96e>-targ</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-trig</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? <font color=#b9b96e>-cross</font>|rise|fall value} <font color=#b9b96e>-targ</font> {<font color=#b9b96e>-at</font> value}&lt;/span&gt;
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
-&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec1</font> value <font color=#b9b96e>-vec2</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;</pre>Does different measurements of inpu data lists.
+&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec1</font> value <font color=#b9b96e>-vec2</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
+&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-find</font> value <font color=#b9b96e>-at</font> value&lt;/span&gt;</pre>Does different measurements of inpu data lists.
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>
