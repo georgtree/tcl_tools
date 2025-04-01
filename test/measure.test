@@ -97,4 +97,38 @@ test FindAtTest-1 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5]
 } -result -0.9589242746631385
 
+### Integ tests
+test IntegTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from 4 -to 25}]
+} -result -1.6182724249608407
+
+test IntegTest-2 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -integ {-vec y -from 0.5 -to 4.5}]
+} -result 31.0 -cleanup {
+    unset xloc yloc
+}
+
+test IntegTest-3 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from -1 -to 25}} errorStr
+    return $errorStr
+} -result {Start of integration interval '-1' is outside the x values range} -cleanup {
+    unset errorStr
+}
+
+test IntegTest-4 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from 1 -to 250}} errorStr
+    return $errorStr
+} -result {End of integration interval '250' is outside the x values range} -cleanup {
+    unset errorStr
+}
+
+test IntegTest-5 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from 6 -to 1}} errorStr
+    return $errorStr
+} -result {Start of the integration should be lower than the end of the integration} -cleanup {
+    unset errorStr
+}
+
 cleanupTests

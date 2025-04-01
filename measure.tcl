@@ -291,6 +291,18 @@ proc ::measure::measure {args} {
         }
     } elseif {[info exists at]} {
         return [FindAt [dget $data $xname] $at [dget $data $find]]
+    } elseif {[info exists integ]} {
+        set integArgs [argparse -inline {
+            {-vec= -required}
+            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
+         } $integ]
+        if {![dexist $integArgs to]} {
+            set to [@ [dget $data $xname] end]
+        } else {
+            set to [dget $integArgs to]
+        }
+        return [Integ [dget $data $xname] [dget $data [dget $integArgs vec]] [dget $integArgs from] $to]
     }
 }
 
@@ -603,6 +615,52 @@ proc ::measure::FindAt {x val findVec} {
         }
     }
     return $yFind
+}
+
+proc ::measure::Integ {x y xstart xend} {
+    set xLen [llength $x]
+    set yLen [llength $y]
+    if {$xLen != $yLen} {
+        return -code error "Length of x '$xLen' is not equal to length of y '$yLen'"
+    }
+    if {$xstart<[@ $x 0]} {
+        return -code error "Start of integration interval '$xstart' is outside the x values range"
+    } elseif {$xend>[@ $x end]} {
+        return -code error "End of integration interval '$xend' is outside the x values range"
+    } elseif {$xstart>=$xend} {
+        return -code error "Start of the integration should be lower than the end of the integration"
+    }
+    set result 0.0
+    set startFlagFound false
+    set endFlagFound false
+    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+        set xi [@ $x $i]
+        set xip1 [@ $x [= {$i+1}]]
+        set yi [@ $y $i]
+        set yip1 [@ $y [= {$i+1}]]
+        if {($xi<=$xstart) && ($xip1>=$xstart) && !$startFlagFound} {
+            set ystart [CalcYBetween $xi $yi $xip1 $yip1 $xstart]
+            set istart $i
+            set startFlagFound true
+        } elseif {($xi<=$xend) && ($xip1>=$xend) && !$endFlagFound} {
+            set yend [CalcYBetween $xi $yi $xip1 $yip1 $xend]
+            set iend $i
+            set endFlagFound true
+        }
+        if {$startFlagFound} {
+            if {$i==$istart} {
+                set xi $xstart
+                set yi $ystart
+            } elseif {$endFlagFound} {
+                if {$i==$iend} {
+                    set xip1 $xend
+                    set yip1 $yend
+                }
+            }
+            set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
+        }
+    }
+    return $result
 }
 
 proc ::measure::CalcXBetween {x1 y1 x2 y2 yBetween} {
