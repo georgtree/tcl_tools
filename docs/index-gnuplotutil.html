@@ -320,11 +320,12 @@ gnuplotutil::plotHist <font color=#f1b479>$x1</font> <font color=#b9b96e>-style<
     <b><font color=#ffa500>if</font></b> {([<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> names])} {
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$columnNames</font>]!=[= {<font color=#f1b479>$numCol</font>}]} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error {Column names count is not the same as count of data columns}
-            <b><font color=#ffa500>set</font></b> autoTitleStr {}
-        } <b><font color=#ffa500>else</font></b> {
+          } <b><font color=#ffa500>else</font></b> {
             <b><font color=#ffa500>lappend</font></b> outList <font color=#90ee90>&quot;<font color=#f1b479>{</font> <font color=#f1b479>}</font> <font color=#f1b479>$</font>columnNames&quot;</font>
             <b><font color=#ffa500>set</font></b> autoTitleStr {<b><font color=#ffa500>set</font></b> key autotitle columnheader}
         }
+    } <b><font color=#ffa500>else</font></b> {
+        <b><font color=#ffa500>set</font></b> autoTitleStr {}
     }
     <b><font color=#ffa500>set</font></b> numRow [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$x</font>]
     <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$numRow</font>} {<b><font color=#ffa500>incr</font></b> i} {
@@ -501,7 +502,6 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
             <b><font color=#ffa500>set</font></b> headerString {}
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$columnNames</font>]!=[= {<font color=#f1b479>$dataNum</font>}]} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error {Column names count is not the same as count of data columns}
-            <b><font color=#ffa500>set</font></b> autoTitleStr {}
         } <b><font color=#ffa500>else</font></b> {
             <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;=<font color=#f1b479>$dataNum</font>} {<b><font color=#ffa500>incr</font></b> i} {
                 <b><font color=#ffa500>set</font></b> headerString <font color=#90ee90>&quot;<font color=#f1b479>${</font>headerString<font color=#f1b479>}</font> <font color=#f1b479>{</font> <font color=#f1b479>}</font> <font color=#f1b479>[</font>@ <font color=#f1b479>$</font>columnNames <font color=#f1b479>$</font>i<font color=#f1b479>]</font>&quot;</font>
@@ -509,6 +509,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
             <b><font color=#ffa500>lappend</font></b> outList <font color=#f1b479>$headerString</font>
             <b><font color=#ffa500>set</font></b> autoTitleStr {<b><font color=#ffa500>set</font></b> key autotitle columnheader}
         }
+    } <b><font color=#ffa500>else</font></b> {
+        <b><font color=#ffa500>set</font></b> autoTitleStr {}
     }
     <b><font color=#ffa500>if</font></b> {([<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> lstyles])} {
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$lineStyles</font>]!=<font color=#f1b479>$dataNum</font>} {
@@ -655,7 +657,6 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
             <b><font color=#ffa500>set</font></b> headerString {}
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$columnNames</font>]!=[= {<font color=#f1b479>$dataNum</font>}]} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error {Column names count is not the same as count of data columns}
-            <b><font color=#ffa500>set</font></b> autoTitleStr {}
         } <b><font color=#ffa500>else</font></b> {
             <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;=<font color=#f1b479>$dataNum</font>} {<b><font color=#ffa500>incr</font></b> i} {
                 <b><font color=#ffa500>set</font></b> headerString <font color=#90ee90>&quot;<font color=#f1b479>${</font>headerString<font color=#f1b479>}</font> <font color=#f1b479>{</font> <font color=#f1b479>}</font> <font color=#f1b479>[</font>@ <font color=#f1b479>$</font>columnNames <font color=#f1b479>$</font>i<font color=#f1b479>]</font>&quot;</font>
@@ -663,6 +664,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
             <b><font color=#ffa500>lappend</font></b> outList <font color=#f1b479>$headerString</font>
             <b><font color=#ffa500>set</font></b> autoTitleStr {<b><font color=#ffa500>set</font></b> key autotitle columnheader}
         }
+    } <b><font color=#ffa500>else</font></b> {
+        <b><font color=#ffa500>set</font></b> autoTitleStr {}
     }
     <b><font color=#ffa500>if</font></b> {([<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> lstyles])} {
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$lineStyles</font>]!=<font color=#f1b479>$dataNum</font>} {
@@ -828,11 +831,12 @@ gnuplotutil::plotXYN <font color=#f1b479>$x</font> <font color=#b9b96e>-xlog</fo
     <b><font color=#ffa500>if</font></b> {([<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> names])} {
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$columnNames</font>]!=[= {<font color=#f1b479>$numCol</font>}]} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error {Column names count is not the same as count of data columns}
-            <b><font color=#ffa500>set</font></b> autoTitleStr {}
         } <b><font color=#ffa500>else</font></b> {
             <b><font color=#ffa500>lappend</font></b> outList <font color=#90ee90>&quot;<font color=#f1b479>{</font> <font color=#f1b479>}</font> <font color=#f1b479>$</font>columnNames&quot;</font>
             <b><font color=#ffa500>set</font></b> autoTitleStr {<b><font color=#ffa500>set</font></b> key autotitle columnheader}
         }
+    } <b><font color=#ffa500>else</font></b> {
+        <b><font color=#ffa500>set</font></b> autoTitleStr {}
     }
     <b><font color=#ffa500>if</font></b> {([<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> lstyles])} {
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$lineStyles</font>]!=<font color=#f1b479>$numCol</font>} {

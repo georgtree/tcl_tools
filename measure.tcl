@@ -1,6 +1,9 @@
 package require argparse
 package provide measure 0.1
 
+# TODO - taking into the account situation when the match esists only for the last element of the array.
+# in current inmplementation such match is not possible, but implementing this check increase number of checks and code 
+# branches significantly while such situation occurs very rare in typical application with floating-point numbers.
 namespace eval ::measure {
 
     namespace import ::tcl::mathop::*
@@ -36,6 +39,7 @@ proc ::measure::measure {args} {
     #  -trig - contains conditions for trigger (see below), selects Trigger-Target measurement, requires -targ
     #  -targ - contains conditions for target (see below), requires -trig
     #  -find - contains conditions for find (see below)
+    #  -deriv - contains conditions for deriv (see below)
     #  -when - contains conditions for when (see below)
     #  -at - time for find
     # This procedure imitates the .meas command from SPICE3 and Ngspice in particular. It has mutiple modes, and each mod
@@ -81,8 +85,8 @@ proc ::measure::measure {args} {
     # Synopsis: -xname value -data value -trig \{-at value\} -targ \{-vec value -val value ?-td value? -cross|rise|fall value\}
     # Synopsis: -xname value -data value -trig \{-vec value -val value ?-td value? -cross|rise|fall value\} -targ \{-at value\}
     #
-    #  ###### **Find-When**
-    #  In this mode it measures any vector, when two signals cross each other or a signal crosses a given value. 
+    #  ###### **Find-When** or **Deriv-When**
+    #  In this mode it measures any vector (or its derivative), when two signals cross each other or a signal crosses a given value. 
     #  Measurements start after a delay `-td` and may be restricted to a range between `-from` and `-to`. Possible
     #  combinations of switches are `-when {...}` or `-find {...} -when {...}`. For `-when` the possible switches are:
     #   -vec - name of vector in data dictionary
@@ -115,7 +119,8 @@ proc ::measure::measure {args} {
     #     (falling slope), and saves only n-th crossing the value. The possible values are positive integers, or `last` 
     #     string.
     #
-    #  For `-find` we specify the vector name in data dictionary for which values should be found at `when` point.
+    #  For `-find` and `-deriv` we specify the vector name in data dictionary for which values (or derivative) should be
+    #  found at `when` point.
     # Examples of usages:
     # ```
     # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 0.5 -fall 5}
@@ -133,9 +138,9 @@ proc ::measure::measure {args} {
     # [1,30].
     # In this mode procedure returns dictionary with keys `xwhen`, and `yfind` if `-find` switch is specified, and 
     # corresponding values.
-    # Synopsis: -xname value -data value ?-find value? -when \{-vec value -val value ?-td value? ?-from value? 
+    # Synopsis: -xname value -data value ?-find|deriv value? -when \{-vec value -val value ?-td value? ?-from value? 
     #   ?-to value? -cross|rise|fall value\}
-    # Synopsis: -xname value -data value ?-find value? -when \{-vec1 value -vec2 value ?-td value? ?-from value? 
+    # Synopsis: -xname value -data value ?-find|deriv value? -when \{-vec1 value -vec2 value ?-td value? ?-from value? 
     #   ?-to value? -cross|rise|fall value\}
     #  ###### **Find-At**
     #  In this mode it finds value of the vector at specified time.
@@ -143,6 +148,13 @@ proc ::measure::measure {args} {
     # ```
     # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5
     # ```
+    #  ###### **Deriv-At**
+    #  In this mode it finds value of the vector's derivative at specified time.
+    # Examples of usages:
+    # ```
+    # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5
+    # ```
+
     # Synopsis: -xname value -data value -find value -at value
     set keysList {trig targ find when at integ deriv avg min max pp rms minat maxat}
     argparse "
@@ -151,10 +163,10 @@ proc ::measure::measure {args} {
         \{-trig= -require targ -forbid \{[Allow {trig targ} $keysList]\}\}
         \{-targ= -require trig -forbid \{[Allow {trig targ} $keysList]\}\}
         \{-find= -forbid \{[Allow {find when at} $keysList]\}\}
-        \{-when= -forbid \{[Allow {find when} $keysList]\}\}
-        \{-at= -require find -validate {\[string is double \$arg\]} -forbid \{[Allow {find at} $keysList]\}\}
+        \{-when= -forbid \{[Allow {find when deriv} $keysList]\}\}
+        \{-at= -validate {\[string is double \$arg\]} -forbid \{[Allow {find deriv at} $keysList]\}\}
         \{-integ= -forbid \{[Allow integ $keysList]\}\}
-        \{-deriv= -forbid \{[Allow deriv $keysList]\}\}
+        \{-deriv= -forbid \{[Allow {deriv when at} $keysList]\}\}
         \{-avg= -forbid \{[Allow avg $keysList]\}\}
         \{-min= -forbid \{[Allow min $keysList]\}\}
         \{-max= -forbid \{[Allow max $keysList]\}\}
@@ -162,6 +174,16 @@ proc ::measure::measure {args} {
         \{-rms= -forbid \{[Allow rms $keysList]\}\}
         \{-minat= -forbid \{[Allow minat $keysList]\}\}
         \{-maxat= -forbid \{[Allow maxat $keysList]\}\}"
+    if {[info exists at]} {
+        if {![info exists find] && ![info exists deriv]} {
+            return -code error "When -at switch is presented, -find switch or -deriv switch is required"
+        }
+    }
+    if {[info exists find]} {
+        if {![info exists when] && ![info exists at]} {
+            return -code error "When -find switch is presented, -when switch or -at switch is required"
+        }
+    }
     if {[info exists trig]} {
         set definition {
             {-at= -forbid {vec val delay cross rise fall} -validate {[string is double $arg]}}
@@ -212,8 +234,8 @@ proc ::measure::measure {args} {
             set targData [dget $data $xname]
             set targVal [dget $targArgs at]
         }
-        return [TrigTarg [dget $data $xname] $trigData $trigVal $targData $targVal $trigVecCond\
-                        $trigVecCondCount $targVecCond $targVecCondCount [dget $trigArgs delay] [dget $targArgs delay]]
+        return [TrigTarg [dget $data $xname] $trigData $trigVal $targData $targVal $trigVecCond $trigVecCondCount\
+                        $targVecCond $targVecCondCount [dget $trigArgs delay] [dget $targArgs delay]]
     } elseif {[info exists find] && [info exists when]} {
         set whenArgs [argparse -inline {
             {-vec= -require val -forbid {vec1 vec2}}
@@ -236,6 +258,11 @@ proc ::measure::measure {args} {
         } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
             return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
         }
+        if {![dexist $whenArgs from]} {
+            set from [@ [dget $data $xname] 0]
+        } else {
+            set from [dget $whenArgs from]
+        }
         if {![dexist $whenArgs to]} {
             set to [@ [dget $data $xname] end]
         } else {
@@ -245,13 +272,57 @@ proc ::measure::measure {args} {
             if {[dget $whenArgs vec1] eq [dget $whenArgs vec2]} {
                 return -code error "vec1 must be different to vec2"
             }
-            return [FindWhen [dget $data $xname] findwheneq [dget $data $find]\
-                            [dget $data [dget $whenArgs vec1]] {} [dget $data [dget $whenArgs vec2]] $whenVecCond\
-                            [dget $whenArgs $whenVecCond] [dget $whenArgs delay] [dget $whenArgs from] $to]
+            return [FindDerivWhen [dget $data $xname] findwheneq [dget $data $find] [dget $data [dget $whenArgs vec1]]\
+                            {} [dget $data [dget $whenArgs vec2]] $whenVecCond [dget $whenArgs $whenVecCond]\
+                            [dget $whenArgs delay] $from $to]
         } else {
-            return [FindWhen [dget $data $xname] findwhen [dget $data $find]\
-                            [dget $data [dget $whenArgs vec]] [dget $whenArgs val] {} $whenVecCond\
-                            [dget $whenArgs $whenVecCond] [dget $whenArgs delay] [dget $whenArgs from] $to]
+            return [FindDerivWhen [dget $data $xname] findwhen [dget $data $find] [dget $data [dget $whenArgs vec]]\
+                            [dget $whenArgs val] {} $whenVecCond [dget $whenArgs $whenVecCond] [dget $whenArgs delay]\
+                            $from $to]
+        }
+    } elseif {[info exists deriv] && [info exists when]} {
+        set whenArgs [argparse -inline {
+            {-vec= -require val -forbid {vec1 vec2}}
+            {-val= -require vec -forbid {vec1 vec2}}
+            {-vec1= -require vec2 -forbid {vec val}}
+            {-vec2= -require vec1 -forbid {vec val}}
+            {-td|delay= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
+            {-cross= -forbid {rise fall}}
+            {-rise= -forbid {cross fall}}
+            {-fall= -forbid {cross rise}}
+        } $when]
+        AliasesKeysCheck $whenArgs {vec vec1}
+        set whenVecCond [AliasesKeysCheck $whenArgs {cross rise fall}]
+        if {[string is integer [dget $whenArgs $whenVecCond]]} {
+            if {[dget $whenArgs $whenVecCond]<=0} {
+                return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be more than 0"
+            }
+        } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
+            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
+        }
+        if {![dexist $whenArgs from]} {
+            set from [@ [dget $data $xname] 0]
+        } else {
+            set from [dget $whenArgs from]
+        }
+        if {![dexist $whenArgs to]} {
+            set to [@ [dget $data $xname] end]
+        } else {
+            set to [dget $whenArgs to]
+        }
+        if {[dexist $whenArgs vec1]} {
+            if {[dget $whenArgs vec1] eq [dget $whenArgs vec2]} {
+                return -code error "vec1 must be different to vec2"
+            }
+            return [FindDerivWhen [dget $data $xname] derivwheneq [dget $data $deriv] [dget $data [dget $whenArgs vec1]]\
+                            {} [dget $data [dget $whenArgs vec2]] $whenVecCond [dget $whenArgs $whenVecCond]\
+                            [dget $whenArgs delay] $from $to]
+        } else {
+            return [FindDerivWhen [dget $data $xname] derivwhen [dget $data $deriv] [dget $data [dget $whenArgs vec]]\
+                            [dget $whenArgs val] {} $whenVecCond [dget $whenArgs $whenVecCond] [dget $whenArgs delay]\
+                            $from $to]
         }
     } elseif {[info exists when]} {
         set whenArgs [argparse -inline {
@@ -275,34 +346,45 @@ proc ::measure::measure {args} {
         } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
             return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
         }
+        if {![dexist $whenArgs from]} {
+            set from [@ [dget $data $xname] 0]
+        } else {
+            set from [dget $whenArgs from]
+        }
         if {![dexist $whenArgs to]} {
             set to [@ [dget $data $xname] end]
         } else {
             set to [dget $whenArgs to]
         }
         if {[dexist $whenArgs vec1]} {
-            return [FindWhen [dget $data $xname] wheneq {} [dget $data [dget $whenArgs vec1]] {}\
+            return [FindDerivWhen [dget $data $xname] wheneq {} [dget $data [dget $whenArgs vec1]] {}\
                             [dget $data [dget $whenArgs vec2]] $whenVecCond [dget $whenArgs $whenVecCond]\
-                            [dget $whenArgs delay] [dget $whenArgs from] $to]
+                            [dget $whenArgs delay] $from $to]
         } else {
-            return [FindWhen [dget $data $xname] when {} [dget $data [dget $whenArgs vec]]\
-                            [dget $whenArgs val] {} $whenVecCond [dget $whenArgs $whenVecCond] [dget $whenArgs delay]\
-                            [dget $whenArgs from] $to]
+            return [FindDerivWhen [dget $data $xname] when {} [dget $data [dget $whenArgs vec]] [dget $whenArgs val] {}\
+                            $whenVecCond [dget $whenArgs $whenVecCond] [dget $whenArgs delay] $from $to]
         }
-    } elseif {[info exists at]} {
+    } elseif {[info exists find] && [info exists at]} {
         return [FindAt [dget $data $xname] $at [dget $data $find]]
+    } elseif {[info exists deriv] && [info exists at]} {
+        return [DerivAt [dget $data $xname] $at [dget $data $deriv]]
     } elseif {[info exists integ]} {
         set integArgs [argparse -inline {
             {-vec= -required}
-            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -validate {[string is double $arg]}}
             {-to= -validate {[string is double $arg]}}
-         } $integ]
+        } $integ]
+        if {![dexist $integArgs from]} {
+            set from [@ [dget $data $xname] 0]
+        } else {
+            set from [dget $integArgs from]
+        }
         if {![dexist $integArgs to]} {
             set to [@ [dget $data $xname] end]
         } else {
             set to [dget $integArgs to]
         }
-        return [Integ [dget $data $xname] [dget $data [dget $integArgs vec]] [dget $integArgs from] $to]
+        return [Integ [dget $data $xname] [dget $data [dget $integArgs vec]] $from $to]
     }
 }
 
@@ -333,21 +415,21 @@ proc ::measure::TrigTarg {x trigVec val1 targVec val2 trigVecCond trigVecCondCou
         if {!$trigVecFoundFlag && ($xi>=$trigVecDelay)} {
             switch $trigVecCond {
                 rise {
-                    if {($trigVecI<=$val1) && ($trigVecIp1>=$val1)} {
+                    if {($trigVecI<=$val1) && ($trigVecIp1>$val1)} {
                         set result true
                     } else {
                         set result false
                     }
                 }
                 fall {
-                    if {($trigVecI>=$val1) && ($trigVecIp1<=$val1)} {
+                    if {($trigVecI>=$val1) && ($trigVecIp1<$val1)} {
                         set result true
                     } else {
                         set result false
                     }
                 }
                 cross {
-                    if {(($trigVecI<=$val1) && ($trigVecIp1>=$val1)) || (($trigVecI>=$val1) && ($trigVecIp1<=$val1))} {
+                    if {(($trigVecI<=$val1) && ($trigVecIp1>$val1)) || (($trigVecI>=$val1) && ($trigVecIp1<$val1))} {
                         set result true
                     } else {
                         set result false
@@ -364,21 +446,21 @@ proc ::measure::TrigTarg {x trigVec val1 targVec val2 trigVecCond trigVecCondCou
         if {!$targVecFoundFlag  && ($xi>=$targVecDelay)} {
             switch $targVecCond {
                 rise {
-                    if {($targVecI<=$val2) && ($targVecIp1>=$val2)} {
+                    if {($targVecI<=$val2) && ($targVecIp1>$val2)} {
                         set result true
                     } else {
                         set result false
                     }
                 }
                 fall {
-                    if {($targVecI>=$val2) && ($targVecIp1<=$val2)} {
+                    if {($targVecI>=$val2) && ($targVecIp1<$val2)} {
                         set result true
                     } else {
                         set result false
                     }
                 }
                 cross {
-                    if {(($targVecI<=$val2) && ($targVecIp1>=$val2)) || (($targVecI>=$val2) && ($targVecIp1<=$val2))} {
+                    if {(($targVecI<=$val2) && ($targVecIp1>$val2)) || (($targVecI>=$val2) && ($targVecIp1<$val2))} {
                         set result true
                     } else {
                         set result false
@@ -426,8 +508,8 @@ proc ::measure::TrigTarg {x trigVec val1 targVec val2 trigVecCond trigVecCondCou
     return [dcreate xtrig $xTrig xtarg $xTarg xdelta [= {$xTarg-$xTrig}]]
 }
 
-proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whenVecCondCount delay from to} {
-    if {$mode ni {find when wheneq findwhen findwheneq}} {
+proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whenVecCondCount delay from to} {
+    if {$mode ni {find when wheneq findwhen derivwhen findwheneq derivwheneq}} {
         return -code error "Mode with name '$mode' in not in the list of supported modes"
     }
     set xLen [llength $x]
@@ -439,22 +521,19 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
             return -code error "Length of x '$xLen' is not equal to length of whenVecLS '$whenVecLSLen'"
         }
     }
-    if {$mode in {wheneq findwheneq}} {
+    if {$mode in {wheneq findwheneq derivwheneq}} {
         if {$xLen != $whenVecRSLen} {
             return -code error "Length of x '$xLen' is not equal to length of whenVecRS '$whenVecRSLen'"
         }
     }
-    if {$mode in {find findwhen}} {
+    if {$mode in {find findwhen derivwhen}} {
         if {$xLen != $whenVecLSLen} {
             return -code error "Length of x '$xLen' is not equal to length of findVec '$findVecLen'"
         }
     }
-    set procsDict [dcreate rise CheckRise fall CheckFall cross CheckCross]
-    set procsDictEq [dcreate rise {::tcl::mathop::<=} fall {::tcl::mathop::>=} cross no-op]
-    set whenVecProc [dget $procsDict $whenVecCond]
     set whenVecCount 0
     set whenVecFoundFlag false
-    if {$mode in {when findwhen}} {
+    if {$mode in {when findwhen derivwhen}} {
         for {set i 0} {$i<[= {$whenVecLSLen-1}]} {incr i} {
             set xi [@ $x $i]
             if {($xi<$delay) || ($xi<$from) || ($xi>$to)} {
@@ -491,9 +570,13 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
                 if {$result} {
                     incr whenVecCount
                     if {$whenVecCondCount eq {last}} {
+                        set xWhen [CalcXBetween $xi $whenVecLSI $xip1 $whenVecLSIp1 $val]
                         set lastWhenHit [list $xi $whenVecLSI $xip1 $whenVecLSIp1]
                         if {$mode eq {findwhen}} {
                             set lastFindWhenHit [list $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]]]
+                        } elseif {$mode eq {derivwhen}} {
+                            set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
+                            set lastDerYWhenHit [DerivSelect $i $xi $xWhen $xip1 $x $findVec $yDeriv]
                         }
                     }
                 }
@@ -504,13 +587,15 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
                     set xWhen [CalcXBetween $xi $whenVecLSI $xip1 $whenVecLSIp1 $val]
                     if {$mode eq {findwhen}} {
                         set yFind [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
+                    } elseif {$mode eq {derivwhen}} {
+                        set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
+                        set derY [Deriv {*}[DerivSelect $i $xi $xWhen $xip1 $x $findVec $yDeriv]]
                     }
                     break
                 }
             }
         }
-    } elseif {$mode in {wheneq findwheneq}} {
-        set whenVecProc [dget $procsDictEq $whenVecCond]
+    } elseif {$mode in {wheneq findwheneq derivwheneq}} {
         for {set i 0} {$i<[= {$whenVecLSLen-1}]} {incr i} {
             set xi [@ $x $i]
             if {($xi<$delay) || ($xi<$from) || ($xi>$to)} {
@@ -547,10 +632,15 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
                     if {$result} {
                         incr whenVecCount
                         if {$whenVecCondCount eq {last}} {
+                            set xWhen [@ [CalcCrossPoint $xi $whenVecLSI $xip1 $whenVecLSIp1 $xi $whenVecRSI\
+                                          $xip1 $whenVecRSIp1] 0]
                             set lastWhenHit [list $xi $whenVecLSI $xip1 $whenVecLSIp1 $xi $whenVecRSI $xip1\
                                                      $whenVecRSIp1]
                             if {$mode eq {findwheneq}} {
                                 set lastFindWhenHit [list $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]]]
+                            } elseif {$mode eq {derivwheneq}} {
+                                set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
+                                set lastDerYWhenHit [DerivSelect $i $xi $xWhen $xip1 $x $findVec $yDeriv]
                             }
                         }
                     }
@@ -563,6 +653,9 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
                                           $xip1 $whenVecRSIp1] 0]
                     if {$mode eq {findwheneq}} {
                         set yFind [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
+                    } elseif {$mode eq {derivwheneq}} {
+                        set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
+                        set derY [Deriv {*}[DerivSelect $i $xi $xWhen $xip1 $x $findVec $yDeriv]]
                     }
                     break
                 }
@@ -570,24 +663,27 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
         }
     }
     if {($whenVecCondCount eq {last}) && [info exists lastWhenHit]} {
-        set whenVecFoundFlag true
-        if {$mode in {when findwhen}} {
+        if {$mode in {when findwhen derivwhen}} {
             set xWhen [CalcXBetween {*}$lastWhenHit $val]
             if {$mode in {findwhen}} {
                 set yFind [CalcYBetween {*}$lastFindWhenHit $xWhen]
+            } elseif {$mode in {derivwhen}} {
+                set derY [Deriv {*}$lastDerYWhenHit]
             }
         }
-        if {$mode in {wheneq findwheneq}} {
+        if {$mode in {wheneq findwheneq derivwheneq}} {
             set xWhen [@ [CalcCrossPoint {*}$lastWhenHit] 0]
             if {$mode in {findwhen}} {
                 set yFind [CalcYBetween {*}$lastFindWhenHit $xWhen]
+            } elseif {$mode in {derivwhen}} {
+                set derY [Deriv {*}$lastDerYWhenHit]
             }
         }
     }
-    if {($mode in {when findwhen}) && ![info exists xWhen]} {
+    if {($mode in {when findwhen derivwhen}) && ![info exists xWhen]} {
         return -code error "When value '$val' with conditions '$whenVecCond $whenVecCondCount delay=$delay from=$from\
                 to=$to' was not found"
-    } elseif {($mode in {wheneq findwheneq}) && ![info exists xWhen]} {
+    } elseif {($mode in {wheneq findwheneq derivwheneq}) && ![info exists xWhen]} {
         return -code error "Cross between vectors with conditions '$whenVecCond $whenVecCondCount delay=$delay\
                 from=$from to=$to' was not found"
     }
@@ -595,6 +691,8 @@ proc ::measure::FindWhen {x mode findVec whenVecLS val whenVecRS whenVecCond whe
         return [dcreate xwhen $xWhen]
     } elseif {$mode in {findwhen findwheneq}} {
         return [dcreate xwhen $xWhen yfind $yFind]
+    } elseif {$mode in {derivwhen derivwheneq}} {
+        return [dcreate xwhen $xWhen dery $derY]
     }
 }
 
@@ -615,6 +713,24 @@ proc ::measure::FindAt {x val findVec} {
         }
     }
     return $yFind
+}
+
+proc ::measure::DerivAt {x val derivVec} {
+    set xLen [llength $x]
+    set derivVecLen [llength $derivVec]
+    if {$xLen != $derivVecLen} {
+        return -code error "Length of x '$xLen' is not equal to length of derivVec '$derivVec'"
+    }
+    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+        set xi [@ $x $i]
+        set xip1 [@ $x [= {$i+1}]]
+        set derivVecLSI [@ $derivVec $i]
+        set derivVecLSIp1 [@ $derivVec [= {$i+1}]]
+        if {($xi<=$val) && ($xip1>=$val)} {
+            set yDeriv [CalcYBetween $xi $derivVecLSI $xip1 $derivVecLSIp1 $val]
+            return [Deriv {*}[DerivSelect $i $xi $val $xip1 $x $derivVec $yDeriv]]
+        }
+    }
 }
 
 proc ::measure::Integ {x y xstart xend} {
@@ -651,17 +767,79 @@ proc ::measure::Integ {x y xstart xend} {
             if {$i==$istart} {
                 set xi $xstart
                 set yi $ystart
+                set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
+                continue
             } elseif {$endFlagFound} {
                 if {$i==$iend} {
                     set xip1 $xend
                     set yip1 $yend
+                    set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
+                    break
                 }
+            } else {
+                set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
             }
-            set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
         }
     }
     return $result
 }
+
+# proc ::measure::DerivInterval {x y xstart xend} {
+#     set xLen [llength $x]
+#     set yLen [llength $y]
+#     if {$xLen != $yLen} {
+#         return -code error "Length of x '$xLen' is not equal to length of y '$yLen'"
+#     }
+#     if {$xstart<[@ $x 0]} {
+#         return -code error "Start of differentiation interval '$xstart' is outside the x values range"
+#     } elseif {$xend>[@ $x end]} {
+#         return -code error "End of differentiation interval '$xend' is outside the x values range"
+#     } elseif {$xstart>=$xend} {
+#         return -code error "Start of the differentiation should be lower than the end of the differentiation"
+#     }
+#     set result 0.0
+#     set startFlagFound false
+#     for {set i 0} {$i<[= {$xLen-2}]} {incr i} {
+#         set xi [@ $x $i]
+#         set xip1 [@ $x [= {$i+1}]]
+#         set xip2 [@ $x [= {$i+2}]]
+#         set yi [@ $y $i]
+#         set yip1 [@ $y [= {$i+1}]]
+#         set yip2 [@ $y [= {$i+2}]]
+#         if {($xi<=$xstart) && ($xip1>$xstart) && !$startFlagFound} {
+#             set ystart [CalcYBetween $xi $yi $xip1 $yip1 $xstart]
+#             set istart $i
+#             set startFlagFound true
+#         }
+#         if {$startFlagFound} {
+#             if {$i==$istart} {
+#                 set h1 [- $xip1 $xstart]
+#                 set h2 [- $xip2 $xip1]
+#                 lappend xList $xstart
+#                 lappend yDeriv [= {-(2*$h1+$h2)/($h1*($h1+$h2))*$ystart+($h1+$h2)/($h1*$h2)*$yip1-\
+#                                            $h1/($h2*($h1+$h2))*$yip2}]
+                
+#             } else {
+#                 set h1 [- [@ $x $i] [@ $x [- $i 1]]]
+#                 set h2 [- [@ $x [+ $i 1]] [@ $x $i]]
+#                 lappend xList $xi
+#                 lappend yDeriv [= {-$h2/($h1*($h1+$h2))*[@ $y [- $i 1]]-($h1-$h2)/($h1*$h2)*[@ $y $i]+\
+#                                            $h1/($h2*($h1+$h2))*[@ $y [+ $i 1]]}]
+#             }
+#         }
+#         if {($xip1<=$xend) && ($xip2>=$xend)} {
+#             set yend [CalcYBetween $xip1 $yip1 $xip2 $yip2 $xend]
+#             set iend $i
+#             break
+#         }
+#     }
+#     set h1 [- $xip1 $xi]
+#     set h2 [- $xend $xip1]
+#     lappend xList $xip1 $xend
+#     lappend yDeriv [= {-$h2/($h1*($h1+$h2))*$yi-($h1-$h2)/($h1*$h2)*$yip1+$h1/($h2*($h1+$h2))*$yend}]
+#     lappend yDeriv [= {$h2/($h1*($h1+$h2))*$yi-($h1+$h2)/($h1*$h2)*$yip1+($h1+2*$h2)/($h2*($h1+$h2))*$yend}]
+#     return [dict create x $xList yDer $yDeriv]
+# }
 
 proc ::measure::CalcXBetween {x1 y1 x2 y2 yBetween} {
     return [= {($yBetween-$y1)*($x2-$x1)/($y2-$y1)+$x1}]
@@ -677,4 +855,50 @@ proc ::measure::CalcCrossPoint {x11 y11 x21 y21 x12 y12 x22 y22} {
     set x0 [= {($b2-$b1)/($a1-$a2)}]
     set y0 [= {$a1*($b2-$b1)/($a1-$a2)+$b1}]
     return [list $x0 $y0]
+}
+
+proc ::measure::Deriv {xim1 xi xip1 yim1 yi yip1 {type mid}} {
+    set h1 [= {$xi-$xim1}]
+    set h2 [= {$xip1-$xi}]
+    if {$type eq {mid}} {
+        return [= {-$h2/($h1*($h1+$h2))*$yim1-($h1-$h2)/($h1*$h2)*$yi+$h1/($h2*($h1+$h2))*$yip1}]
+    } elseif {$type eq {start}} {
+        return [= {-(2*$h1+$h2)/($h1*($h1+$h2))*$yim1+($h1+$h2)/($h1*$h2)*$yi-$h1/($h2*($h1+$h2))*$yip1}]
+    } elseif {$type eq {end}} {
+        return [= {$h2/($h1*($h1+$h2))*$yim1-($h1+$h2)/($h1*$h2)*$yi+($h1+2*$h2)/($h2*($h1+$h2))*$yip1}]
+    }
+    return
+}
+
+proc ::measure::DerivSelect {i xi xwhen xip1 x vec ywhen} {
+    # Selects derivative argument and formula depending on the current positions in vector (list)
+    set xLen [llength $x]
+    if {$i==0} {
+        # if we got match with first element, we need to use different formula for derivative
+        if {$xi==$xwhen} {
+            # check to avoid division by zero
+            return [list $xwhen $xip1 [@ $x [= {$i+2}]] $ywhen [@ $vec [= {$i+1}]] [@ $vec [= {$i+2}]] start]
+        } elseif {$xwhen==$xip1} {
+            # check to avoid division by zero
+            return [list $xi $xwhen [@ $x [= {$i+2}]] [@ $vec $i] $ywhen [@ $vec [= {$i+2}]] mid]
+        } else {
+            return [list $xi $xwhen $xip1 [@ $vec $i] $ywhen [@ $vec [= {$i+1}]] start]
+        }
+    } elseif {$i==[= {$xLen-2}]} {
+        # if we got match with previous to last element, we need to use different formula for derivative
+        if {$xwhen==$xip1} {
+            return [list [@ $x [= {$i-1}]] $xi $xwhen [@ $vec [= {$i-1}]] [@ $vec $i] $ywhen end]
+        } else {
+            return [list $xi $xwhen $xip1 [@ $vec $i] $ywhen [@ $vec [= {$i+1}]] end]
+        }
+    } else {
+        if {$xi==$xwhen} {
+            return [list [@ $x [= {$i-1}]] $xwhen $xip1 [@ $vec [= {$i-1}]] $ywhen [@ $vec [= {$i+1}]] mid]
+        } elseif {$xwhen==$xip1} {
+            return [list $xi $xwhen [@ $x [= {$i+2}]] [@ $vec $i] $ywhen [@ $vec [= {$i+2}]] mid]
+        } else {
+            return [list $xi $xwhen $xip1 [@ $vec $i] $ywhen [@ $vec [= {$i+1}]] mid]
+        }
+    }
+    return
 }

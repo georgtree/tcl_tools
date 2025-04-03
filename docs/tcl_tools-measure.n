@@ -11,11 +11,9 @@ measure - Commands in namespace measure
 .br
 \fBmeasure\fP \fI-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}\fP
 .br
-\fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
+\fBmeasure\fP \fI-xname value -data value ?-find|deriv value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
 .br
-\fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
-.br
-\fBmeasure\fP \fI-xname value -data value -find value -at value\fP
+\fBmeasure\fP \fI-xname value -data value ?-find|deriv value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
 .br
 .SH ::MEASURE
 .SH COMMANDS
@@ -31,11 +29,9 @@ Does different measurements of inpu data lists\&.
 .br
 \fBmeasure\fP \fI-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}\fP
 .br
-\fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
+\fBmeasure\fP \fI-xname value -data value ?-find|deriv value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
 .br
-\fBmeasure\fP \fI-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
-.br
-\fBmeasure\fP \fI-xname value -data value -find value -at value\fP
+\fBmeasure\fP \fI-xname value -data value ?-find|deriv value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}\fP
 .br
 .RE
 .PP
@@ -47,6 +43,9 @@ Time for find\&.
 .TP
 -data
 Dictionary that contains lists with names as the keys and lists as the values\&.
+.TP
+-deriv
+Contains conditions for deriv (see below)
 .TP
 -find
 Contains conditions for find (see below)
@@ -127,9 +126,9 @@ is value 20\&.0 at x axis\&.
 .PP
 In this mode procedure returns dictionary with keys xtrig, xtarg, xdelta and corresponding values\&.
 .PP
-\fB\fBFind-When\fP\fR
+\fB\fBFind-When\fP or \fBDeriv-When\fP\fR
 .PP
-In this mode it measures any vector, when two signals cross each other or a signal crosses a given value\&.
+In this mode it measures any vector (or its derivative), when two signals cross each other or a signal crosses a given value\&.
 Measurements start after a delay -td and may be restricted to a range between -from and -to\&. Possible
 combinations of switches are -when {\&.\&.\&.} or -find {\&.\&.\&.} -when {\&.\&.\&.}\&. For -when the possible switches are:
 .RS 4n
@@ -187,7 +186,8 @@ Condition's count, rise conditions counts every time -vec1 vector crosses value 
 Condition's count, fall conditions counts every time -vec1 vector crosses value from higher to lower (falling slope), and saves only n-th crossing the value\&. The possible values are positive integers, or last string\&.
 .RE
 .PP
-For -find we specify the vector name in data dictionary for which values should be found at when point\&.
+For -find and -deriv we specify the vector name in data dictionary for which values (or derivative) should be
+found at when point\&.
 Examples of usages:
 .PP
 .RS 4n
@@ -226,6 +226,17 @@ Examples of usages:
 .RS 4n
 .nf
 ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5
+.fi
+.RE
+.PP
+\fB\fBDeriv-At\fP\fR
+.PP
+In this mode it finds value of the vector's derivative at specified time\&.
+Examples of usages:
+.PP
+.RS 4n
+.nf
+::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5
 .fi
 .RE
 

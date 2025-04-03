@@ -20,10 +20,11 @@
 <h3 class='ruffproc'><a name='::measure::measure'>measure</a><span class='ns_scope'> [<a href="index-measure.html#::measure" title="::measure" class='ruff_cmd'>::measure</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
 <p class='ruff'>Does different measurements of inpu data lists.</p>
-<div class='ruff_synopsis'><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-at value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -find value -at value</span></div>
+<div class='ruff_synopsis'><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-at value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find|deriv value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find|deriv value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><font color=#b9b96e>-at</font></code></td><td>Time for find.</td></tr>
 <tr><td><code><font color=#b9b96e>-data</font></code></td><td>Dictionary that contains lists with names as the keys and lists as the values.</td></tr>
+<tr><td><code><font color=#b9b96e>-deriv</font></code></td><td>Contains conditions for deriv (see below)</td></tr>
 <tr><td><code><font color=#b9b96e>-find</font></code></td><td>Contains conditions for find (see below)</td></tr>
 <tr><td><code><font color=#b9b96e>-targ</font></code></td><td>Contains conditions for target (see below), requires -trig.</td></tr>
 <tr><td><code><font color=#b9b96e>-trig</font></code></td><td>Contains conditions for trigger (see below), selects Trigger-Target measurement, requires -targ.</td></tr>
@@ -56,7 +57,7 @@
 
 </figure><p class='ruff'>Here we use x key value as x axis, trigger vector point is when y1 crosses value 0.7, second rise, and target point is value 20.0 at x axis.</p>
 <p class='ruff'>In this mode procedure returns dictionary with keys <code>xtrig</code>, <code>xtarg</code>, <code>xdelta</code> and corresponding values.</p>
-<h6 class='ruff'><strong>Find-When</strong></h6><p class='ruff'>In this mode it measures any vector, when two signals cross each other or a signal crosses a given value. Measurements start after a delay <code><font color=#b9b96e>-td</font></code> and may be restricted to a range between <code><font color=#b9b96e>-from</font></code> and <code><font color=#b9b96e>-to</font></code>. Possible combinations of switches are <code><font color=#b9b96e>-when</font> {...}</code> or <code><font color=#b9b96e>-find</font> {...} <font color=#b9b96e>-when</font> {...}</code>. For <code><font color=#b9b96e>-when</font></code> the possible switches are:</p>
+<h6 class='ruff'><strong>Find-When</strong> or <strong>Deriv-When</strong></h6><p class='ruff'>In this mode it measures any vector (or its derivative), when two signals cross each other or a signal crosses a given value. Measurements start after a delay <code><font color=#b9b96e>-td</font></code> and may be restricted to a range between <code><font color=#b9b96e>-from</font></code> and <code><font color=#b9b96e>-to</font></code>. Possible combinations of switches are <code><font color=#b9b96e>-when</font> {...}</code> or <code><font color=#b9b96e>-find</font> {...} <font color=#b9b96e>-when</font> {...}</code>. For <code><font color=#b9b96e>-when</font></code> the possible switches are:</p>
 <table class='ruff_deflist'>
 <tr><td>-vec</td><td>Name of vector in data dictionary.</td></tr>
 <tr><td>-val</td><td>Value to match.</td></tr>
@@ -78,7 +79,7 @@
 <tr><td>-rise</td><td>Condition's count, rise conditions counts every time <code><font color=#b9b96e>-vec1</font></code> vector crosses value from lower to higher (rising slope), and saves only n-th crossing the value. The possible values are positive integers, or <code>last</code> string.</td></tr>
 <tr><td>-fall</td><td>Condition's count, fall conditions counts every time <code><font color=#b9b96e>-vec1</font></code> vector crosses value from higher to lower (falling slope), and saves only n-th crossing the value. The possible values are positive integers, or <code>last</code> string.</td></tr>
 </table>
-<p class='ruff'>For <code><font color=#b9b96e>-find</font></code> we specify the vector name in data dictionary for which values should be found at <code>when</code> point. Examples of usages:</p>
+<p class='ruff'>For <code><font color=#b9b96e>-find</font></code> and <code><font color=#b9b96e>-deriv</font></code> we specify the vector name in data dictionary for which values (or derivative) should be found at <code>when</code> point. Examples of usages:</p>
 
 <figure  class='ruff-snippet ruff-figure'><pre class='ruff'>::measure::measure <font color=#b9b96e>-xname</font> x <font color=#b9b96e>-data</font> [<b><font color=#ffa500>dcreate</font></b> x <font color=#f1b479>$x</font> y1 <font color=#f1b479>$y1</font> y2 <font color=#f1b479>$y2</font>] <font color=#b9b96e>-find</font> y1 <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec</font> y2 <font color=#b9b96e>-val</font> 0.5 <font color=#b9b96e>-fall</font> 5}
 </pre>
@@ -99,6 +100,11 @@
 <figure  class='ruff-snippet ruff-figure'><pre class='ruff'>::measure::measure <font color=#b9b96e>-xname</font> x <font color=#b9b96e>-data</font> [<b><font color=#ffa500>dcreate</font></b> x <font color=#f1b479>$x</font> y1 <font color=#f1b479>$y1</font> y2 <font color=#f1b479>$y2</font>] <font color=#b9b96e>-find</font> y1 <font color=#b9b96e>-at</font> 5
 </pre>
 
+</figure><h6 class='ruff'><strong>Deriv-At</strong></h6><p class='ruff'>In this mode it finds value of the vector's derivative at specified time. Examples of usages:</p>
+
+<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>::measure::measure <font color=#b9b96e>-xname</font> x <font color=#b9b96e>-data</font> [<b><font color=#ffa500>dcreate</font></b> x <font color=#f1b479>$x</font> y1 <font color=#f1b479>$y1</font> y2 <font color=#f1b479>$y2</font>] <font color=#b9b96e>-deriv</font> y1 <font color=#b9b96e>-at</font> 5
+</pre>
+
 </figure><div class='ruff_source'><p class='ruff_source_link'><a id='l_measure_measure' href="javascript:toggleSource('measure_measure')">Show source</a></p>
 <div id='measure_measure' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::measure::measure {args} {
 
@@ -108,6 +114,7 @@
     <i><font color=#76a396>#  -trig - contains conditions for trigger (see below), selects Trigger-Target measurement, requires -targ</font></i>
     <i><font color=#76a396>#  -targ - contains conditions for target (see below), requires -trig</font></i>
     <i><font color=#76a396>#  -find - contains conditions for find (see below)</font></i>
+    <i><font color=#76a396>#  -deriv - contains conditions for deriv (see below)</font></i>
     <i><font color=#76a396>#  -when - contains conditions for when (see below)</font></i>
     <i><font color=#76a396>#  -at - time for find</font></i>
     <i><font color=#76a396># This procedure imitates the .meas command from SPICE3 and Ngspice in particular. It has mutiple modes, and each mod</font></i>
@@ -153,8 +160,8 @@
     <i><font color=#76a396># Synopsis: -xname value -data value -trig \{-at value\} -targ \{-vec value -val value ?-td value? -cross|rise|fall value\}</font></i>
     <i><font color=#76a396># Synopsis: -xname value -data value -trig \{-vec value -val value ?-td value? -cross|rise|fall value\} -targ \{-at value\}</font></i>
     <i><font color=#76a396>#</font></i>
-    <i><font color=#76a396>#  ###### **Find-When**</font></i>
-    <i><font color=#76a396>#  In this mode it measures any vector, when two signals cross each other or a signal crosses a given value.</font></i>
+    <i><font color=#76a396>#  ###### **Find-When** or **Deriv-When**</font></i>
+    <i><font color=#76a396>#  In this mode it measures any vector (or its derivative), when two signals cross each other or a signal crosses a given value.</font></i>
     <i><font color=#76a396>#  Measurements start after a delay `-td` and may be restricted to a range between `-from` and `-to`. Possible</font></i>
     <i><font color=#76a396>#  combinations of switches are `-when {...}` or `-find {...} -when {...}`. For `-when` the possible switches are:</font></i>
     <i><font color=#76a396>#   -vec - name of vector in data dictionary</font></i>
@@ -187,7 +194,8 @@
     <i><font color=#76a396>#     (falling slope), and saves only n-th crossing the value. The possible values are positive integers, or `last`</font></i>
     <i><font color=#76a396>#     string.</font></i>
     <i><font color=#76a396>#</font></i>
-    <i><font color=#76a396>#  For `-find` we specify the vector name in data dictionary for which values should be found at `when` point.</font></i>
+    <i><font color=#76a396>#  For `-find` and `-deriv` we specify the vector name in data dictionary for which values (or derivative) should be</font></i>
+    <i><font color=#76a396>#  found at `when` point.</font></i>
     <i><font color=#76a396># Examples of usages:</font></i>
     <i><font color=#76a396># ```</font></i>
     <i><font color=#76a396># ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 0.5 -fall 5}</font></i>
@@ -205,9 +213,9 @@
     <i><font color=#76a396># [1,30].</font></i>
     <i><font color=#76a396># In this mode procedure returns dictionary with keys `xwhen`, and `yfind` if `-find` switch is specified, and</font></i>
     <i><font color=#76a396># corresponding values.</font></i>
-    <i><font color=#76a396># Synopsis: -xname value -data value ?-find value? -when \{-vec value -val value ?-td value? ?-from value?</font></i>
+    <i><font color=#76a396># Synopsis: -xname value -data value ?-find|deriv value? -when \{-vec value -val value ?-td value? ?-from value?</font></i>
     <i><font color=#76a396>#   ?-to value? -cross|rise|fall value\}</font></i>
-    <i><font color=#76a396># Synopsis: -xname value -data value ?-find value? -when \{-vec1 value -vec2 value ?-td value? ?-from value?</font></i>
+    <i><font color=#76a396># Synopsis: -xname value -data value ?-find|deriv value? -when \{-vec1 value -vec2 value ?-td value? ?-from value?</font></i>
     <i><font color=#76a396>#   ?-to value? -cross|rise|fall value\}</font></i>
     <i><font color=#76a396>#  ###### **Find-At**</font></i>
     <i><font color=#76a396>#  In this mode it finds value of the vector at specified time.</font></i>
@@ -215,6 +223,13 @@
     <i><font color=#76a396># ```</font></i>
     <i><font color=#76a396># ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5</font></i>
     <i><font color=#76a396># ```</font></i>
+    <i><font color=#76a396>#  ###### **Deriv-At**</font></i>
+    <i><font color=#76a396>#  In this mode it finds value of the vector's derivative at specified time.</font></i>
+    <i><font color=#76a396># Examples of usages:</font></i>
+    <i><font color=#76a396># ```</font></i>
+    <i><font color=#76a396># ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5</font></i>
+    <i><font color=#76a396># ```</font></i>
+
     <i><font color=#76a396># Synopsis: -xname value -data value -find value -at value</font></i>
     <b><font color=#ffa500>set</font></b> keysList {trig targ find when at integ deriv avg min max pp rms minat maxat}
     argparse <font color=#90ee90>&quot;</font>
@@ -223,10 +238,10 @@
 <font color=#90ee90>        \{-trig= -require targ -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>trig targ<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-targ= -require trig -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>trig targ<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-find= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-when= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-at= -require find -validate <font color=#f1b479>{</font>\[string is double \$arg\]<font color=#f1b479>}</font> -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
+<font color=#90ee90>        \{-when= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when deriv<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
+<font color=#90ee90>        \{-at= -validate <font color=#f1b479>{</font>\[string is double \$arg\]<font color=#f1b479>}</font> -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find deriv at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-integ= -forbid \{<font color=#f1b479>[</font>Allow integ <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-deriv= -forbid \{<font color=#f1b479>[</font>Allow deriv <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
+<font color=#90ee90>        \{-deriv= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>deriv when at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-avg= -forbid \{<font color=#f1b479>[</font>Allow avg <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-min= -forbid \{<font color=#f1b479>[</font>Allow min <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-max= -forbid \{<font color=#f1b479>[</font>Allow max <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
@@ -234,6 +249,16 @@
 <font color=#90ee90>        \{-rms= -forbid \{<font color=#f1b479>[</font>Allow rms <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-minat= -forbid \{<font color=#f1b479>[</font>Allow minat <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
 <font color=#90ee90>        \{-maxat= -forbid \{<font color=#f1b479>[</font>Allow maxat <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}&quot;</font>
+    <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists at]} {
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>info</font></b> exists find] && ![<b><font color=#ffa500>info</font></b> exists deriv]} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;When -at switch is presented, -find switch or -deriv switch is required&quot;</font>
+        }
+    }
+    <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists find]} {
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>info</font></b> exists when] && ![<b><font color=#ffa500>info</font></b> exists at]} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;When -find switch is presented, -when switch or -at switch is required&quot;</font>
+        }
+    }
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists trig]} {
         <b><font color=#ffa500>set</font></b> definition {
             {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-forbid</font> {vec val delay cross rise fall} <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
@@ -307,6 +332,11 @@
         } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
         }
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> from]} {
+            <b><font color=#ffa500>set</font></b> from [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] 0]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#ffa500>set</font></b> from [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from]
+        }
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> to]} {
             <b><font color=#ffa500>set</font></b> to [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] end]
         } <b><font color=#ffa500>else</font></b> {
@@ -316,9 +346,49 @@
             <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1] eq [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]} {
                 <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;vec1 must be different to vec2&quot;</font>
             }
-            <b><font color=#fe6efe>return</font></b> [FindWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] findwheneq [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$find</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1]] {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]] <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from] <font color=#f1b479>$to</font>]
+            <b><font color=#fe6efe>return</font></b> [FindDerivWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] findwheneq [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$find</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1]] {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]] <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
         } <b><font color=#ffa500>else</font></b> {
-            <b><font color=#fe6efe>return</font></b> [FindWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] findwhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$find</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec]] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> val] {} <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from] <font color=#f1b479>$to</font>]
+            <b><font color=#fe6efe>return</font></b> [FindDerivWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] findwhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$find</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec]] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> val] {} <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
+        }
+    } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists deriv] && [<b><font color=#ffa500>info</font></b> exists when]} {
+        <b><font color=#ffa500>set</font></b> whenArgs [argparse <font color=#b9b96e>-inline</font> {
+            {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-require</font> val <font color=#b9b96e>-forbid</font> {vec1 vec2}}
+            {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-require</font> vec <font color=#b9b96e>-forbid</font> {vec1 vec2}}
+            {<font color=#b9b96e>-vec1</font>= <font color=#b9b96e>-require</font> vec2 <font color=#b9b96e>-forbid</font> {vec val}}
+            {<font color=#b9b96e>-vec2</font>= <font color=#b9b96e>-require</font> vec1 <font color=#b9b96e>-forbid</font> {vec val}}
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall}}
+            {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall}}
+            {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise}}
+        } <font color=#f1b479>$when</font>]
+        AliasesKeysCheck <font color=#f1b479>$whenArgs</font> {vec vec1}
+        <b><font color=#ffa500>set</font></b> whenVecCond [AliasesKeysCheck <font color=#f1b479>$whenArgs</font> {cross rise fall}]
+        <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>string</font></b> is integer [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]]} {
+            <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]&lt;=0} {
+                <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be more than 0&quot;</font>
+            }
+        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
+        }
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> from]} {
+            <b><font color=#ffa500>set</font></b> from [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] 0]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#ffa500>set</font></b> from [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from]
+        }
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> to]} {
+            <b><font color=#ffa500>set</font></b> to [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] end]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#ffa500>set</font></b> to [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> to]
+        }
+        <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> vec1]} {
+            <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1] eq [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]} {
+                <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;vec1 must be different to vec2&quot;</font>
+            }
+            <b><font color=#fe6efe>return</font></b> [FindDerivWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] derivwheneq [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$deriv</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1]] {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]] <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#fe6efe>return</font></b> [FindDerivWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] derivwhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$deriv</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec]] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> val] {} <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
         }
     } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists when]} {
         <b><font color=#ffa500>set</font></b> whenArgs [argparse <font color=#b9b96e>-inline</font> {
@@ -342,18 +412,42 @@
         } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
         }
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> from]} {
+            <b><font color=#ffa500>set</font></b> from [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] 0]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#ffa500>set</font></b> from [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from]
+        }
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> to]} {
             <b><font color=#ffa500>set</font></b> to [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] end]
         } <b><font color=#ffa500>else</font></b> {
             <b><font color=#ffa500>set</font></b> to [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> to]
         }
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> vec1]} {
-            <b><font color=#fe6efe>return</font></b> [FindWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] wheneq {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1]] {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]] <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from] <font color=#f1b479>$to</font>]
+            <b><font color=#fe6efe>return</font></b> [FindDerivWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] wheneq {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec1]] {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec2]] <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
         } <b><font color=#ffa500>else</font></b> {
-            <b><font color=#fe6efe>return</font></b> [FindWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] when {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec]] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> val] {} <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> from] <font color=#f1b479>$to</font>]
+            <b><font color=#fe6efe>return</font></b> [FindDerivWhen [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] when {} [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> vec]] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> val] {} <font color=#f1b479>$whenVecCond</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> delay] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
         }
-    } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists at]} {
+    } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists find] && [<b><font color=#ffa500>info</font></b> exists at]} {
         <b><font color=#fe6efe>return</font></b> [FindAt [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] <font color=#f1b479>$at</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$find</font>]]
+    } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists deriv] && [<b><font color=#ffa500>info</font></b> exists at]} {
+        <b><font color=#fe6efe>return</font></b> [DerivAt [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] <font color=#f1b479>$at</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$deriv</font>]]
+    } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists integ]} {
+        <b><font color=#ffa500>set</font></b> integArgs [argparse <font color=#b9b96e>-inline</font> {
+            {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-required</font>}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+        } <font color=#f1b479>$integ</font>]
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$integArgs</font> from]} {
+            <b><font color=#ffa500>set</font></b> from [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] 0]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#ffa500>set</font></b> from [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$integArgs</font> from]
+        }
+        <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$integArgs</font> to]} {
+            <b><font color=#ffa500>set</font></b> to [@ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] end]
+        } <b><font color=#ffa500>else</font></b> {
+            <b><font color=#ffa500>set</font></b> to [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$integArgs</font> to]
+        }
+        <b><font color=#fe6efe>return</font></b> [Integ [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$integArgs</font> vec]] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
     }
 }</pre></div>
 </div></main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a style='padding-top:2px;' href='index.html'>Start page</a></li>
@@ -367,8 +461,7 @@
 <hr><li class='ruff-toc2'><a href='#::measure-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-measure.html#::measure::measure'>measure</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-trig</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? <font color=#b9b96e>-cross</font>|rise|fall value} <font color=#b9b96e>-targ</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-trig</font> {<font color=#b9b96e>-at</font> value} <font color=#b9b96e>-targ</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-trig</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? <font color=#b9b96e>-cross</font>|rise|fall value} <font color=#b9b96e>-targ</font> {<font color=#b9b96e>-at</font> value}&lt;/span&gt;
-&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
-&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec1</font> value <font color=#b9b96e>-vec2</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
-&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-find</font> value <font color=#b9b96e>-at</font> value&lt;/span&gt;</pre>Does different measurements of inpu data lists.
+&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find|deriv value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec</font> value <font color=#b9b96e>-val</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;
+&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value ?-find|deriv value? <font color=#b9b96e>-when</font> {<font color=#b9b96e>-vec1</font> value <font color=#b9b96e>-vec2</font> value ?-td value? ?-from value? ?-to value? <font color=#b9b96e>-cross</font>|rise|fall value}&lt;/span&gt;</pre>Does different measurements of inpu data lists.
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>

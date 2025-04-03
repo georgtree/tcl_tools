@@ -124,11 +124,12 @@ proc ::gnuplotutil::plotXYN {x args} {
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
             return -code error {Column names count is not the same as count of data columns}
-            set autoTitleStr {}
         } else {
             lappend outList "{ } $columnNames"
             set autoTitleStr {set key autotitle columnheader}
         }
+    } else {
+        set autoTitleStr {}
     }
     if {([dexist $arguments lstyles])} {
         if {[llength $lineStyles]!=$numCol} {
@@ -281,7 +282,6 @@ proc ::gnuplotutil::plotXNYN {args} {
             set headerString {}
         if {[llength $columnNames]!=[= {$dataNum}]} {
             return -code error {Column names count is not the same as count of data columns}
-            set autoTitleStr {}
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
                 set headerString "${headerString} { } [@ $columnNames $i]"
@@ -289,6 +289,8 @@ proc ::gnuplotutil::plotXNYN {args} {
             lappend outList $headerString
             set autoTitleStr {set key autotitle columnheader}
         }
+    } else {
+        set autoTitleStr {}
     }
     if {([dexist $arguments lstyles])} {
         if {[llength $lineStyles]!=$dataNum} {
@@ -421,7 +423,6 @@ proc ::gnuplotutil::plotXNYNMp {args} {
             set headerString {}
         if {[llength $columnNames]!=[= {$dataNum}]} {
             return -code error {Column names count is not the same as count of data columns}
-            set autoTitleStr {}
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
                 set headerString "${headerString} { } [@ $columnNames $i]"
@@ -429,6 +430,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
             lappend outList $headerString
             set autoTitleStr {set key autotitle columnheader}
         }
+    } else {
+        set autoTitleStr {}
     }
     if {([dexist $arguments lstyles])} {
         if {[llength $lineStyles]!=$dataNum} {
@@ -670,11 +673,12 @@ proc ::gnuplotutil::plotHist {x args} {
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
             return -code error {Column names count is not the same as count of data columns}
-            set autoTitleStr {}
-        } else {
+          } else {
             lappend outList "{ } $columnNames"
             set autoTitleStr {set key autotitle columnheader}
         }
+    } else {
+        set autoTitleStr {}
     }
     set numRow [llength $x]
     for {set i 0} {$i<$numRow} {incr i} {

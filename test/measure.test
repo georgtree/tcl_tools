@@ -4,6 +4,8 @@ package require gnuplotutil
 namespace import ::gnuplotutil::*
 package require measure
 namespace import ::measure::*
+package require mathutil
+namespace import ::mathutil::*
 
 for {set i 0} {$i<=1000} {incr i} {
     set xi [= {$i*0.05}]
@@ -92,15 +94,31 @@ test FindWhenTest-10 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 2 -from 10 -to 20}]
 } -result {xwhen 16.493359669208044}
 
+test FindWhenTest-11 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 1 -fall 1}]
+} -result {xwhen 0.0 yfind 0.0}
+
 ### FindAt tests
 test FindAtTest-1 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5]
 } -result -0.9589242746631385
 
+test FindAtTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at [@ $x end]]
+} -result -0.26237485370392877
+
+test FindAtTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at [@ $x 0]]
+} -result 0.0
+
+test FindAtTest-4 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5.81946]
+} -result -0.44715116692919593
+
 ### Integ tests
 test IntegTest-1 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from 4 -to 25}]
-} -result -1.6182724249608407
+} -result -1.6445037421079023
 
 test IntegTest-2 {} -body {
     set xloc {0 1 2 3 4 5}
@@ -111,23 +129,147 @@ test IntegTest-2 {} -body {
 }
 
 test IntegTest-3 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -integ {-vec y -from 0.0 -to 4}]
+} -result 22.0 -cleanup {
+    unset xloc yloc
+}
+
+test IntegTest-4 {} -body {
     catch {::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from -1 -to 25}} errorStr
     return $errorStr
 } -result {Start of integration interval '-1' is outside the x values range} -cleanup {
     unset errorStr
 }
 
-test IntegTest-4 {} -body {
+test IntegTest-5 {} -body {
     catch {::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from 1 -to 250}} errorStr
     return $errorStr
 } -result {End of integration interval '250' is outside the x values range} -cleanup {
     unset errorStr
 }
 
-test IntegTest-5 {} -body {
+test IntegTest-6 {} -body {
     catch {::measure::measure -xname x -data [dcreate x $x y1 $y1] -integ {-vec y1 -from 6 -to 1}} errorStr
     return $errorStr
 } -result {Start of the integration should be lower than the end of the integration} -cleanup {
+    unset errorStr
+}
+
+### DerivWhen tests
+test DerivWhenTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec y2 -val 1 -cross 1}]
+} -result {xwhen 0.0 dery 1.0008326043588514}
+
+test DerivWhenTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec y2 -val 1 -cross last}]
+} -result {xwhen 0.0 dery 1.0008326043588514}
+
+test DerivWhenTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec1 y1 -vec2 y2 -fall 5}]
+} -result {xwhen 29.059734040425376 dery -0.6961561896724078}
+# plotXNYN  -names {y1 y2} -columns $x $y1 $x $y2
+
+test DerivWhenTest-4 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y2 -when {-vec y1 -val 0.1 -rise 2}]
+} -result {xwhen 6.383379063618874 dery -0.09167619818982331}
+
+test DerivAtTest-5 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    #puts [::mathutil::deriv1 $xloc $yloc]
+    return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -when {-vec y1 -val 25 -rise 1}]
+} -result {xwhen 5 dery -7} -cleanup {
+    unset xloc yloc
+}
+
+test DerivAtTest-6 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    #puts [::mathutil::deriv1 $xloc $yloc]
+    return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -when {-vec y1 -val 1 -rise 1}]
+} -result {xwhen 1 dery 0} -cleanup {
+    unset xloc yloc
+}
+
+### DerivAt tests
+test DerivAtTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5]
+} -result 0.2835440076591418
+
+test DerivAtTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at [@ $x end]]
+} -result 0.9657612676151004
+
+test DerivAtTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at [@ $x 0]]
+} -result 1.0008326043588514
+
+test DerivAtTest-4 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5.81946]
+} -result 0.8967632314779559
+
+test DerivAtTest-5 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    #puts [::mathutil::deriv1 $xloc $yloc]
+    return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -at 0]
+} -result 2 -cleanup {
+    unset xloc yloc
+}
+
+test DerivAtTest-6 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -at 1]
+} -result 0 -cleanup {
+    unset xloc yloc
+}
+
+test DerivAtTest-7 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -at 5]
+} -result -7 -cleanup {
+    unset xloc yloc
+}
+
+test DerivAtTest-8 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -at 4]
+} -result -9 -cleanup {
+    unset xloc yloc
+}
+
+### Check handling of wrong switches combinations
+
+test CheckTest-1 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -at 5} errorStr
+    return $errorStr
+} -result {When -at switch is presented, -find switch or -deriv switch is required} -cleanup {
+    unset errorStr
+}
+
+test CheckTest-2 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find 5} errorStr
+    return $errorStr
+} -result {When -find switch is presented, -when switch or -at switch is required} -cleanup {
+    unset errorStr
+}
+
+test CheckTest-3 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when 5 -at 1} errorStr
+    return $errorStr
+} -result {-when conflicts with -at} -cleanup {
+    unset errorStr
+}
+
+test CheckTest-4 {} -body {
+    catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv 5 -find 1} errorStr
+    return $errorStr
+} -result {-find conflicts with -deriv} -cleanup {
     unset errorStr
 }
 
