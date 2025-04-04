@@ -6,6 +6,8 @@ package require measure
 namespace import ::measure::*
 package require mathutil
 namespace import ::mathutil::*
+package require math::constants
+::math::constants::constants radtodeg degtorad pi
 
 for {set i 0} {$i<=1000} {incr i} {
     set xi [= {$i*0.05}]
@@ -157,6 +159,14 @@ test IntegTest-6 {} -body {
     unset errorStr
 }
 
+test IntegTest-7 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+     return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -integ {-vec y -from 0.0 -to 5}]
+} -result 42.5 -cleanup {
+    unset xloc yloc
+}
+
 ### DerivWhen tests
 test DerivWhenTest-1 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec y2 -val 1 -cross 1}]
@@ -169,7 +179,7 @@ test DerivWhenTest-2 {} -body {
 test DerivWhenTest-3 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec1 y1 -vec2 y2 -fall 5}]
 } -result {xwhen 29.059734040425376 dery -0.6961561896724078}
-# plotXNYN  -names {y1 y2} -columns $x $y1 $x $y2
+plotXNYN  -names {y1 y2} -columns $x $y1 $x $y2
 
 test DerivWhenTest-4 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y2 -when {-vec y1 -val 0.1 -rise 2}]
@@ -271,6 +281,141 @@ test CheckTest-4 {} -body {
     return $errorStr
 } -result {-find conflicts with -deriv} -cleanup {
     unset errorStr
+}
+
+### Avg tests
+test AvgTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -avg {-vec y1 -from 4 -to 25}]
+} -result -0.0783097020051382
+
+test AvgTest-2 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -avg {-vec y -from 0.0 -to 5}]
+} -result 8.5 -cleanup {
+    unset xloc yloc
+}
+
+test AvgTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -avg "-vec y1 -from 0.0 -to [= {14*$pi}]"]
+} -result -9.290611878927444e-10
+
+### Rms tests
+test RmsTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -rms {-vec y1 -from 4 -to 25}]
+} -result 0.7175577777924522
+
+test RmsTest-2 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -rms {-vec y -from 0.0 -to 5}]
+} -result 11.545561917897285 -cleanup {
+    unset xloc yloc
+}
+
+test RmsTest-3 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -rms "-vec y1 -from 0.0 -to [= {14*$pi}]"]
+} -result 0.7071068035643117
+
+### Min tests
+test MinTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -min {-vec y1 -from 4 -to 25}]
+} -result -0.9999902065507035
+
+test MinTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -min {-vec y1}]
+} -result -0.9999902065507035
+
+test MinTest-3 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -min {-vec y -from 0.0 -to 5}]
+} -result 0.0 -cleanup {
+    unset xloc yloc
+}
+
+### Max tests
+test MaxTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -max {-vec y1 -from 4 -to 25}]
+} -result 0.9999920733059188
+
+test MaxTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -max {-vec y1}]
+} -result 0.9999952152036801
+
+test MaxTest-3 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -max {-vec y -from 0.0 -to 5}]
+} -result 25 -cleanup {
+    unset xloc yloc
+}
+
+### Pp tests
+test PpTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -pp {-vec y1 -from 4 -to 25}]
+} -result 1.9999822798566222
+
+test PpTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -pp {-vec y1}]
+} -result 1.9999854217543835
+
+test PpTest-3 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -pp {-vec y -from 0.0 -to 5}]
+} -result 25.0 -cleanup {
+    unset xloc yloc
+}
+
+### Minat tests
+test MinatTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -minat {-vec y1 -from 4 -to 25}]
+} -result 11.0
+
+test MinatTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -minat {-vec y1}]
+} -result 11.0
+
+test MinatTest-3 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -minat {-vec y -from 0.0 -to 5}]
+} -result 0.0 -cleanup {
+    unset xloc yloc
+}
+
+test MinatTest-4 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -minat {-vec y -from 0.5 -to 5}]
+} -result 0.5 -cleanup {
+    unset xloc yloc
+}
+
+### Maxat tests
+test MaxatTest-1 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -maxat {-vec y1 -from 4 -to 25}]
+} -result 7.8500000000000005
+
+test MaxatTest-2 {} -body {
+    return [::measure::measure -xname x -data [dcreate x $x y1 $y1] -maxat {-vec y1}]
+} -result 45.550000000000004
+
+test MaxatTest-3 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -maxat {-vec y -from 0.0 -to 5}]
+} -result 5 -cleanup {
+    unset xloc yloc
+}
+
+test MaxatTest-4 {} -body {
+    set xloc {0 1 2 3 4 5}
+    set yloc {0 1 4 9 16 25}
+    return [::measure::measure -xname x -data [dcreate x $xloc y $yloc] -maxat {-vec y -from 0.5 -to 4.5}]
+} -result 4.5 -cleanup {
+    unset xloc yloc
 }
 
 cleanupTests

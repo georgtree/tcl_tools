@@ -32,16 +32,38 @@ proc ::measure::Allow {names keysList} {
     return [lremove $keysList {*}$indexes]
 }
 
+proc ::measure::FromTo {argsDict data xname} {
+    if {![dexist $argsDict from]} {
+        set from [@ [dget $data $xname] 0]
+    } else {
+        set from [dget $argsDict from]
+    }
+    if {![dexist $argsDict to]} {
+        set to [@ [dget $data $xname] end]
+    } else {
+        set to [dget $argsDict to]
+    }
+    uplevel 1 [list set from $from]
+    uplevel 1 [list set to $to] 
+}
+
 proc ::measure::measure {args} {
     # Does different measurements of inpu data lists.
     #  -xname - name of x list in data dictionary. This list must be strictly increaing without duplicate elements.
     #  -data - dictionary that contains lists with names as the keys and lists as the values.
     #  -trig - contains conditions for trigger (see below), selects Trigger-Target measurement, requires -targ
     #  -targ - contains conditions for target (see below), requires -trig
-    #  -find - contains conditions for find (see below)
-    #  -deriv - contains conditions for deriv (see below)
+    #  -find - contains conditions for find (see below), requires -when or -at
+    #  -deriv - contains conditions for deriv (see below), requires -when or -at
     #  -when - contains conditions for when (see below)
-    #  -at - time for find
+    #  -at - time for -find or -deriv
+    #  -avg - contains conditions for finding average value across the interval
+    #  -rms - contains conditions for finding root meas square value across the interval
+    #  -min - contains conditions for finding minimum value in the interval
+    #  -max - contains conditions for finding maximum value in the interval
+    #  -pp - contains conditions for finding peak to peak value in the interval
+    #  -minat - contains conditions for finding time of minimum value in the interval
+    #  -maxat - contains conditions for finding time of maximum value in the interval
     # This procedure imitates the .meas command from SPICE3 and Ngspice in particular. It has mutiple modes, and each mod
     #  could have different forms:
     #  ###### **Trigger-Target**
@@ -92,8 +114,8 @@ proc ::measure::measure {args} {
     #   -vec - name of vector in data dictionary
     #   -val - value to match
     #   -td - x axis delay after which the search is start, default is 0.0.
-    #   -from - start of the range in which search happens, default is 0.0.
-    #   -to - end of the range in which search happens, optional
+    #   -from - start of the range in which search happens, default is minimum value of x.
+    #   -to - end of the range in which search happens, default is maximum value of x.
     #   -cross - condition's count, cross conditions counts every time vector crosses value, and saves
     #     only n-th crossing the value. The possible values are positive integers, or `last` string.
     #   -rise - condition's count, rise conditions counts every time vector crosses value from lower to higher
@@ -108,8 +130,8 @@ proc ::measure::measure {args} {
     #   -vec1 - name of first vector in data dictionary
     #   -vec2 - name of second vector in data dictionary
     #   -td - x axis delay after which the search is start, default is 0.0.
-    #   -from - start of the range in which search happens, default is 0.0.
-    #   -to - end of the range in which search happens, optional
+    #   -from - start of the range in which search happens, default is minimum value of x.
+    #   -to - end of the range in which search happens, default is maximum value of x.
     #   -cross - condition's count, cross conditions counts every time `-vec1` vector crosses value, and saves
     #     only n-th crossing the value. The possible values are positive integers, or `last` string.
     #   -rise - condition's count, rise conditions counts every time `-vec1` vector crosses value from lower to higher
@@ -148,14 +170,25 @@ proc ::measure::measure {args} {
     # ```
     # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -at 5
     # ```
+    # Synopsis: -xname value -data value -find value -at value
     #  ###### **Deriv-At**
     #  In this mode it finds value of the vector's derivative at specified time.
     # Examples of usages:
     # ```
     # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5
     # ```
-
-    # Synopsis: -xname value -data value -find value -at value
+    # Synopsis: -xname value -data value -deriv value -at value
+    #  ###### **Min|Max|PP|MinAt|MaxAt**
+    #  This mode is combination of many modes with the same interface.
+    #   -vec - name of vector in data dictionary
+    #   -from - start of the range in which search happens, default is minimum value of x.
+    #   -to - end of the range in which search happens, default is maximum value of x.
+    # Examples of usages:
+    # ```
+    # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -avg {-vec y1 -from 1 -to 5}
+    # ```
+    # Synopsis: -xname value -data value -avg|rms|pp|min|max|minat|maxat \{-vec value ?-td value? ?-from value?
+    #   ?-to value?\}
     set keysList {trig targ find when at integ deriv avg min max pp rms minat maxat}
     argparse "
         {-xname= -required}
@@ -258,16 +291,7 @@ proc ::measure::measure {args} {
         } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
             return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
         }
-        if {![dexist $whenArgs from]} {
-            set from [@ [dget $data $xname] 0]
-        } else {
-            set from [dget $whenArgs from]
-        }
-        if {![dexist $whenArgs to]} {
-            set to [@ [dget $data $xname] end]
-        } else {
-            set to [dget $whenArgs to]
-        }
+        FromTo $whenArgs $data $xname
         if {[dexist $whenArgs vec1]} {
             if {[dget $whenArgs vec1] eq [dget $whenArgs vec2]} {
                 return -code error "vec1 must be different to vec2"
@@ -302,16 +326,7 @@ proc ::measure::measure {args} {
         } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
             return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
         }
-        if {![dexist $whenArgs from]} {
-            set from [@ [dget $data $xname] 0]
-        } else {
-            set from [dget $whenArgs from]
-        }
-        if {![dexist $whenArgs to]} {
-            set to [@ [dget $data $xname] end]
-        } else {
-            set to [dget $whenArgs to]
-        }
+        FromTo $whenArgs $data $xname
         if {[dexist $whenArgs vec1]} {
             if {[dget $whenArgs vec1] eq [dget $whenArgs vec2]} {
                 return -code error "vec1 must be different to vec2"
@@ -346,16 +361,7 @@ proc ::measure::measure {args} {
         } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
             return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
         }
-        if {![dexist $whenArgs from]} {
-            set from [@ [dget $data $xname] 0]
-        } else {
-            set from [dget $whenArgs from]
-        }
-        if {![dexist $whenArgs to]} {
-            set to [@ [dget $data $xname] end]
-        } else {
-            set to [dget $whenArgs to]
-        }
+        FromTo $whenArgs $data $xname
         if {[dexist $whenArgs vec1]} {
             return [FindDerivWhen [dget $data $xname] wheneq {} [dget $data [dget $whenArgs vec1]] {}\
                             [dget $data [dget $whenArgs vec2]] $whenVecCond [dget $whenArgs $whenVecCond]\
@@ -374,19 +380,51 @@ proc ::measure::measure {args} {
             {-from= -validate {[string is double $arg]}}
             {-to= -validate {[string is double $arg]}}
         } $integ]
-        if {![dexist $integArgs from]} {
-            set from [@ [dget $data $xname] 0]
-        } else {
-            set from [dget $integArgs from]
-        }
-        if {![dexist $integArgs to]} {
-            set to [@ [dget $data $xname] end]
-        } else {
-            set to [dget $integArgs to]
-        }
+        FromTo $integArgs $data $xname
         return [Integ [dget $data $xname] [dget $data [dget $integArgs vec]] $from $to]
+    } elseif {[info exists avg]} {
+        set avgArgs [argparse -inline {
+            {-vec= -required}
+            {-from= -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
+        } $avg]
+        FromTo $avgArgs $data $xname
+        return [Avg [dget $data $xname] [dget $data [dget $avgArgs vec]] $from $to]
+    } elseif {[info exists rms]} {
+        set rmsArgs [argparse -inline {
+            {-vec= -required}
+            {-from= -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
+        } $rms]
+        FromTo $rmsArgs $data $xname
+        return [Rms [dget $data $xname] [dget $data [dget $rmsArgs vec]] $from $to]
+    } elseif {[info exists min] || [info exists max] || [info exists pp] || [info exists minat] || [info exists maxat]} {
+        if {[info exists min]} {
+            set type min
+            set argsDict $min
+        } elseif {[info exists max]} {
+            set type max
+            set argsDict $max
+        } elseif {[info exists pp]} {
+            set type pp
+            set argsDict $pp
+        } elseif {[info exists minat]} {
+            set type minat
+            set argsDict $minat
+        } elseif {[info exists maxat]} {
+            set type maxat
+            set argsDict $maxat
+        }
+        set resDict [argparse -inline {
+            {-vec= -required}
+            {-from= -validate {[string is double $arg]}}
+            {-to= -validate {[string is double $arg]}}
+        } $argsDict]
+        FromTo $resDict $data $xname
+        return [MinMaxPPMinAtMaxAt [dget $data $xname] [dget $data [dget $resDict vec]] $from $to $type]
     }
 }
+
 
 proc ::measure::TrigTarg {x trigVec val1 targVec val2 trigVecCond trigVecCondCount targVecCond targVecCondCount\
                                   trigVecDelay targVecDelay} {
@@ -782,6 +820,69 @@ proc ::measure::Integ {x y xstart xend} {
         }
     }
     return $result
+}
+
+proc ::measure::Avg {x y xstart xend} {
+    set integral [Integ $x $y $xstart $xend]
+    return [= {$integral/($xend-$xstart)}]
+}
+
+proc ::measure::Rms {x y xstart xend} {
+    set ySq [lmap yVal $y {= $yVal*$yVal}]
+    set integral [Integ $x $ySq $xstart $xend]
+    return [= {sqrt($integral/($xend-$xstart))}]
+}
+
+proc ::measure::MinMaxPPMinAtMaxAt {x y xstart xend type} {
+    set xLen [llength $x]
+    set yLen [llength $y]
+    if {$xLen != $yLen} {
+        return -code error "Length of x '$xLen' is not equal to length of y '$yLen'"
+    }
+    if {$xstart<[@ $x 0]} {
+        return -code error "Start of interval '$xstart' is outside the x values range"
+    } elseif {$xend>[@ $x end]} {
+        return -code error "End of interval '$xend' is outside the x values range"
+    } elseif {$xstart>=$xend} {
+        return -code error "Start of the interval should be lower than the end of the interval"
+    }
+    set result 0.0
+    set startFlagFound false
+    set endFlagFound false
+    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+        set xi [@ $x $i]
+        set xip1 [@ $x [= {$i+1}]]
+        set yi [@ $y $i]
+        set yip1 [@ $y [= {$i+1}]]
+        if {($xi<=$xstart) && ($xip1>=$xstart) && !$startFlagFound} {
+            set ystart [CalcYBetween $xi $yi $xip1 $yip1 $xstart]
+            set istart $i
+            set startFlagFound true
+        } elseif {($xi<=$xend) && ($xip1>=$xend) && !$endFlagFound} {
+            set yend [CalcYBetween $xi $yi $xip1 $yip1 $xend]
+            set iend $i
+            set endFlagFound true
+        }
+        if {$endFlagFound} {
+            lappend targetList $ystart {*}[lrange $y [= {$istart+1}] $iend] $yend
+            if {$type eq {min}} {
+                return [tcl::mathfunc::min {*}$targetList]
+            } elseif {$type eq {max}} {
+                return [tcl::mathfunc::max {*}$targetList]
+            } elseif {$type eq {pp}} {
+                set max [tcl::mathfunc::max {*}$targetList]
+                set min [tcl::mathfunc::min {*}$targetList]
+                return [= {abs($max)+abs($min)}]
+            } elseif {$type eq {minat}} {
+                lappend xTargetList $xstart {*}[lrange $x [= {$istart+1}] $iend] $xend
+                return [@ $xTargetList [lsearch -real -exact $targetList [tcl::mathfunc::min {*}$targetList]]]
+            } elseif {$type eq {maxat}} {
+                lappend xTargetList $xstart {*}[lrange $x [= {$istart+1}] $iend] $xend
+                return [@ $xTargetList [lsearch -real -exact $targetList [tcl::mathfunc::max {*}$targetList]]]
+            }
+        }
+    }
+    return
 }
 
 # proc ::measure::DerivInterval {x y xstart xend} {
