@@ -726,11 +726,11 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
                 from=$from to=$to' was not found"
     }
     if {$mode in {when wheneq}} {
-        return [dcreate xwhen $xWhen]
+        return $xWhen
     } elseif {$mode in {findwhen findwheneq}} {
-        return [dcreate xwhen $xWhen yfind $yFind]
+        return $yFind
     } elseif {$mode in {derivwhen derivwheneq}} {
-        return [dcreate xwhen $xWhen dery $derY]
+        return $derY
     }
 }
 

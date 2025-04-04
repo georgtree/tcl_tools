@@ -57,23 +57,23 @@ test TrigTargTest-7 {} -body {
 ### FindWhen tests
 test FindWhenTest-1 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 0.5 -fall 5}]
-} -result {xwhen 26.17976390163929 yfind 0.8656776653169641}
+} -result 0.8656776653169641
 
 test FindWhenTest-2 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec y2 -val 0.5 -fall 5}]
-} -result {xwhen 26.17976390163929}
+} -result 26.17976390163929
 
 test FindWhenTest-3 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec1 y1 -vec2 y2 -fall 5}]
-} -result {xwhen 29.059734040425376 yfind -0.706968221057803}
+} -result -0.706968221057803
 
 test FindWhenTest-4 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 5}]
-} -result {xwhen 29.059734040425376}
+} -result 29.059734040425376
 
 test FindWhenTest-5 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 5 -from 1 -to 30}]
-} -result {xwhen 29.059734040425376}
+} -result 29.059734040425376
 
 test FindWhenTest-6 {} -body {
     catch {::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 5 -from 10 -to 20}} errorStr
@@ -82,23 +82,23 @@ test FindWhenTest-6 {} -body {
 
 test FindWhenTest-7 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall last -from 1 -to 30}]
-} -result {xwhen 29.059734040425376}
+} -result 29.059734040425376
 
 test FindWhenTest-8 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 0.5 -fall last}]
-} -result {xwhen 45.029318738629485 yfind 0.8656753304879521}
+} -result 0.8656753304879521
 
 test FindWhenTest-9 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall last}]
-} -result {xwhen 47.90928994793005}
+} -result 47.90928994793005
 
 test FindWhenTest-10 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -when {-vec1 y1 -vec2 y2 -fall 2 -from 10 -to 20}]
-} -result {xwhen 16.493359669208044}
+} -result 16.493359669208044
 
 test FindWhenTest-11 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -find y1 -when {-vec y2 -val 1 -fall 1}]
-} -result {xwhen 0.0 yfind 0.0}
+} -result 0.0
 
 ### FindAt tests
 test FindAtTest-1 {} -body {
@@ -170,27 +170,27 @@ test IntegTest-7 {} -body {
 ### DerivWhen tests
 test DerivWhenTest-1 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec y2 -val 1 -cross 1}]
-} -result {xwhen 0.0 dery 1.0008326043588514}
+} -result 1.0008326043588514
 
 test DerivWhenTest-2 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec y2 -val 1 -cross last}]
-} -result {xwhen 0.0 dery 1.0008326043588514}
+} -result 1.0008326043588514
 
 test DerivWhenTest-3 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -when {-vec1 y1 -vec2 y2 -fall 5}]
-} -result {xwhen 29.059734040425376 dery -0.6961561896724078}
-plotXNYN  -names {y1 y2} -columns $x $y1 $x $y2
+} -result -0.6961561896724078
+#plotXNYN  -names {y1 y2} -columns $x $y1 $x $y2
 
 test DerivWhenTest-4 {} -body {
     return [::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y2 -when {-vec y1 -val 0.1 -rise 2}]
-} -result {xwhen 6.383379063618874 dery -0.09167619818982331}
+} -result -0.09167619818982331
 
 test DerivAtTest-5 {} -body {
     set xloc {0 1 2 3 4 5}
     set yloc {0 1 4 9 16 25}
     #puts [::mathutil::deriv1 $xloc $yloc]
     return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -when {-vec y1 -val 25 -rise 1}]
-} -result {xwhen 5 dery -7} -cleanup {
+} -result -7 -cleanup {
     unset xloc yloc
 }
 
@@ -199,7 +199,7 @@ test DerivAtTest-6 {} -body {
     set yloc {0 1 4 9 16 25}
     #puts [::mathutil::deriv1 $xloc $yloc]
     return [::measure::measure -xname x -data [dcreate x $xloc y1 $yloc] -deriv y1 -when {-vec y1 -val 1 -rise 1}]
-} -result {xwhen 1 dery 0} -cleanup {
+} -result 0 -cleanup {
     unset xloc yloc
 }
 
