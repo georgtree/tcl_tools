@@ -1,4 +1,5 @@
 package require argparse
+package require extexpr
 package provide measure 0.1
 
 namespace eval ::measure {
@@ -437,7 +438,7 @@ proc ::measure::TrigTarg {x trigVec val1 targVec val2 trigVecCond trigVecCondCou
     set targVecCount 0
     set trigVecFoundFlag false
     set targVecFoundFlag false
-    for {set i 0} {$i<[= {$trigVecLen-1}]} {incr i} {
+    for {set i 0} {$i<$trigVecLen-1} {incr i} {
         set xi [@ $x $i]
         if {($xi<$trigVecDelay) && ($xi<$targVecDelay)} {
             continue
@@ -569,7 +570,7 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
     set whenVecCount 0
     set whenVecFoundFlag false
     if {$mode in {when findwhen derivwhen}} {
-        for {set i 0} {$i<[= {$whenVecLSLen-1}]} {incr i} {
+        for {set i 0} {$i<$whenVecLSLen-1} {incr i} {
             set xi [@ $x $i]
             if {($xi<$delay) || ($xi<$from) || ($xi>$to)} {
                 continue
@@ -631,7 +632,7 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
             }
         }
     } elseif {$mode in {wheneq findwheneq derivwheneq}} {
-        for {set i 0} {$i<[= {$whenVecLSLen-1}]} {incr i} {
+        for {set i 0} {$i<$whenVecLSLen-1} {incr i} {
             set xi [@ $x $i]
             if {($xi<$delay) || ($xi<$from) || ($xi>$to)} {
                 continue
@@ -737,7 +738,7 @@ proc ::measure::FindAt {x val findVec} {
     if {$xLen != $findVecLen} {
         return -code error "Length of x '$xLen' is not equal to length of findVec '$findVec'"
     }
-    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+    for {set i 0} {$i<$xLen-1} {incr i} {
         set xi [@ $x $i]
         set xip1 [@ $x [= {$i+1}]]
         set findVecLSI [@ $findVec $i]
@@ -756,7 +757,7 @@ proc ::measure::DerivAt {x val derivVec} {
     if {$xLen != $derivVecLen} {
         return -code error "Length of x '$xLen' is not equal to length of derivVec '$derivVec'"
     }
-    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+    for {set i 0} {$i<$xLen-1} {incr i} {
         set xi [@ $x $i]
         set xip1 [@ $x [= {$i+1}]]
         set derivVecLSI [@ $derivVec $i]
@@ -784,7 +785,7 @@ proc ::measure::Integ {x y xstart xend} {
     set result 0.0
     set startFlagFound false
     set endFlagFound false
-    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+    for {set i 0} {$i<$xLen-1} {incr i} {
         set xi [@ $x $i]
         set xip1 [@ $x [= {$i+1}]]
         set yi [@ $y $i]
@@ -825,7 +826,7 @@ proc ::measure::Avg {x y xstart xend} {
 }
 
 proc ::measure::Rms {x y xstart xend} {
-    set ySq [lmap yVal $y {= $yVal*$yVal}]
+    set ySq [= {mulll($y,$y)}]
     set integral [Integ $x $ySq $xstart $xend]
     return [= {sqrt($integral/($xend-$xstart))}]
 }
@@ -846,7 +847,7 @@ proc ::measure::MinMaxPPMinAtMaxAt {x y xstart xend type} {
     set result 0.0
     set startFlagFound false
     set endFlagFound false
-    for {set i 0} {$i<[= {$xLen-1}]} {incr i} {
+    for {set i 0} {$i<$xLen-1} {incr i} {
         set xi [@ $x $i]
         set xip1 [@ $x [= {$i+1}]]
         set yi [@ $y $i]
