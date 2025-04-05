@@ -3,41 +3,69 @@ package provide extexpr 0.1
 interp alias {} @ {} lindex
 interp alias {} = {} expr
 
-proc tcl::mathfunc::maxl {values} {
-    return [::tcl::mathfunc::max {*}$values]
+proc tcl::mathfunc::maxl {list} {
+    return [::tcl::mathfunc::max {*}$list]
 }
 
-proc tcl::mathfunc::minl {values} {
-    return [::tcl::mathfunc::min {*}$values]
+proc tcl::mathfunc::minl {list} {
+    return [::tcl::mathfunc::min {*}$list]
 }
 
 ### List-scalar operations
-proc tcl::mathfunc::multscl {scalar values} {
+proc tcl::mathfunc::mullsc {list scalar} {
+    # Multiplies each element of the list to scalar value
+    # Returns: list
     set result [list]
-    foreach value $values {
+    foreach value $list {
         lappend result [= {double($scalar*$value)}]
     }
     return $result
 }
 
-proc tcl::mathfunc::divlsc {values scalar} {
+proc tcl::mathfunc::sumlsc {list scalar} {
+    # Adds scalar value to each element of the list
+    # Returns: list
     set result [list]
-    foreach value $values {
+    foreach value $list {
+        lappend result [= {double($scalar+$value)}]
+    }
+    return $result
+}
+
+proc tcl::mathfunc::sublsc {list scalar} {
+    # Subtracts scalar value from each element of the list
+    # Returns: list
+    set result [list]
+    foreach value $list {
+        lappend result [= {double($value-$scalar)}]
+    }
+    return $result
+}
+
+proc tcl::mathfunc::divlsc {list scalar} {
+    # Divides each element of the list to scalar value
+    # Returns: list
+    set result [list]
+    foreach value $list {
         lappend result [= {double($value)/double($scalar)}]
     }
     return $result
 }
 
-proc tcl::mathfunc::powlsc {values scalar} {
+proc tcl::mathfunc::powlsc {list scalar} {
+    # Exponentiates each element of the list in scalar value
+    # Returns: list
     set result [list]
-    foreach value $values {
+    foreach value $list {
         lappend result [= {pow($value,$scalar)}]
     }
     return $result
 }
 
 ### List-list operations
-proc tcl::mathfunc::mulls {list1 list2} {
+proc tcl::mathfunc::mulll {list1 list2} {
+    # Multiplies each element of the list1 to each element of list2
+    # Returns: list
     set result [list]
     if {[llength $list1]!=[llength $list2]} {
         return -code error "Lengths of the input lists '[llength $list1]' and '[llength $list2]' are not equal"
@@ -48,7 +76,9 @@ proc tcl::mathfunc::mulls {list1 list2} {
     return $result
 }
 
-proc tcl::mathfunc::divls {list1 list2} {
+proc tcl::mathfunc::divll {list1 list2} {
+    # Divides each element of the list1 to each element of list2
+    # Returns: list
     set result [list]
     if {[llength $list1]!=[llength $list2]} {
         return -code error "Lengths of the input lists '[llength $list1]' and '[llength $list2]' are not equal"
@@ -59,7 +89,9 @@ proc tcl::mathfunc::divls {list1 list2} {
     return $result
 }
 
-proc tcl::mathfunc::sumls {list1 list2} {
+proc tcl::mathfunc::sumll {list1 list2} {
+    # Sums each element of the list1 with each element of list2
+    # Returns: list
     set result [list]
     if {[llength $list1]!=[llength $list2]} {
         return -code error "Lengths of the input lists '[llength $list1]' and '[llength $list2]' are not equal"
@@ -70,7 +102,9 @@ proc tcl::mathfunc::sumls {list1 list2} {
     return $result
 }
 
-proc tcl::mathfunc::subls {list1 list2} {
+proc tcl::mathfunc::subll {list1 list2} {
+    # Subtracts each element of the list2 from each element of list1
+    # Returns: list
     set result [list]
     if {[llength $list1]!=[llength $list2]} {
         return -code error "Lengths of the input lists '[llength $list1]' and '[llength $list2]' are not equal"
@@ -81,7 +115,9 @@ proc tcl::mathfunc::subls {list1 list2} {
     return $result
 }
 
-proc tcl::mathfunc::powls {list1 list2} {
+proc tcl::mathfunc::powll {list1 list2} {
+    # Exponentiates each element of the list1 in each element of list2
+    # Returns: list
     set result [list]
     if {[llength $list1]!=[llength $list2]} {
         return -code error "Lengths of the input lists '[llength $list1]' and '[llength $list2]' are not equal"
@@ -95,12 +131,15 @@ proc tcl::mathfunc::powls {list1 list2} {
 ### List commands
 namespace eval tcl::mathfunc {
     proc llength {list} {
+        # Wraps `llength` command into expr function
         ::llength $list
     }
     proc lindex {list index args} {
+        # Wraps `lindex` command into expr function
         ::lindex $list $index {*}$args
     }
     proc lrange {list first last} {
+        # Wraps `lrange` command into expr function
         ::lrange $list $first $last
     }
 }

@@ -5,9 +5,9 @@
 .SH NAME
 tcl::mathfunc - Commands in namespace tcl::mathfunc
 .SH SYNOPSIS
-\fBdivls\fP \fIlist1 list2\fP
+\fBdivll\fP \fIlist1 list2\fP
 .br
-\fBdivlsc\fP \fIvalues scalar\fP
+\fBdivlsc\fP \fIlist scalar\fP
 .br
 \fBlindex\fP \fIlist index ?args?\fP
 .br
@@ -15,29 +15,35 @@ tcl::mathfunc - Commands in namespace tcl::mathfunc
 .br
 \fBlrange\fP \fIlist first last\fP
 .br
-\fBmaxl\fP \fIvalues\fP
+\fBmaxl\fP \fIlist\fP
 .br
-\fBminl\fP \fIvalues\fP
+\fBminl\fP \fIlist\fP
 .br
-\fBmulls\fP \fIlist1 list2\fP
+\fBmulll\fP \fIlist1 list2\fP
 .br
-\fBmultscl\fP \fIscalar values\fP
+\fBmullsc\fP \fIlist scalar\fP
 .br
-\fBpowls\fP \fIlist1 list2\fP
+\fBpowll\fP \fIlist1 list2\fP
 .br
-\fBpowlsc\fP \fIvalues scalar\fP
+\fBpowlsc\fP \fIlist scalar\fP
 .br
-\fBsubls\fP \fIlist1 list2\fP
+\fBsubll\fP \fIlist1 list2\fP
 .br
-\fBsumls\fP \fIlist1 list2\fP
+\fBsublsc\fP \fIlist scalar\fP
+.br
+\fBsumll\fP \fIlist1 list2\fP
+.br
+\fBsumlsc\fP \fIlist scalar\fP
 .br
 .SH ::TCL::MATHFUNC
 .SH COMMANDS
 .PP
 .RS -4n
-\fBdivls\fR (::tcl::mathfunc)
+\fBdivll\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBdivls\fP \fIlist1 list2\fP
+.PP
+Divides each element of the list1 to each element of list2
+.RS 4n\fBdivll\fP \fIlist1 list2\fP
 .br
 .RE
 .PP
@@ -51,26 +57,38 @@ list2
 Not documented\&.
 .RE
 .PP
+\fBReturn value\fR
+.PP
+list
+.PP
 .RS -4n
 \fBdivlsc\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBdivlsc\fP \fIvalues scalar\fP
+.PP
+Divides each element of the list to scalar value
+.RS 4n\fBdivlsc\fP \fIlist scalar\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
-values
+list
 Not documented\&.
 .TP
 scalar
 Not documented\&.
 .RE
 .PP
+\fBReturn value\fR
+.PP
+list
+.PP
 .RS -4n
 \fBlindex\fR (::tcl::mathfunc)
 .RE
+.PP
+Wraps lindex command into expr function
 .RS 4n\fBlindex\fP \fIlist index ?args?\fP
 .br
 .RE
@@ -88,6 +106,8 @@ Not documented\&.
 .RS -4n
 \fBllength\fR (::tcl::mathfunc)
 .RE
+.PP
+Wraps llength command into expr function
 .RS 4n\fBllength\fP \fIlist\fP
 .br
 .RE
@@ -102,6 +122,8 @@ Not documented\&.
 .RS -4n
 \fBlrange\fR (::tcl::mathfunc)
 .RE
+.PP
+Wraps lrange command into expr function
 .RS 4n\fBlrange\fP \fIlist first last\fP
 .br
 .RE
@@ -122,35 +144,37 @@ Not documented\&.
 .RS -4n
 \fBmaxl\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBmaxl\fP \fIvalues\fP
+.RS 4n\fBmaxl\fP \fIlist\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
-values
+list
 Not documented\&.
 .RE
 .PP
 .RS -4n
 \fBminl\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBminl\fP \fIvalues\fP
+.RS 4n\fBminl\fP \fIlist\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
-values
+list
 Not documented\&.
 .RE
 .PP
 .RS -4n
-\fBmulls\fR (::tcl::mathfunc)
+\fBmulll\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBmulls\fP \fIlist1 list2\fP
+.PP
+Multiplies each element of the list1 to each element of list2
+.RS 4n\fBmulll\fP \fIlist1 list2\fP
 .br
 .RE
 .PP
@@ -164,27 +188,39 @@ list2
 Not documented\&.
 .RE
 .PP
+\fBReturn value\fR
+.PP
+list
+.PP
 .RS -4n
-\fBmultscl\fR (::tcl::mathfunc)
+\fBmullsc\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBmultscl\fP \fIscalar values\fP
+.PP
+Multiplies each element of the list to scalar value
+.RS 4n\fBmullsc\fP \fIlist scalar\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
+.TP
+list
+Not documented\&.
 .TP
 scalar
 Not documented\&.
-.TP
-values
-Not documented\&.
 .RE
 .PP
+\fBReturn value\fR
+.PP
+list
+.PP
 .RS -4n
-\fBpowls\fR (::tcl::mathfunc)
+\fBpowll\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBpowls\fP \fIlist1 list2\fP
+.PP
+Exponentiates each element of the list1 in each element of list2
+.RS 4n\fBpowll\fP \fIlist1 list2\fP
 .br
 .RE
 .PP
@@ -197,28 +233,40 @@ Not documented\&.
 list2
 Not documented\&.
 .RE
+.PP
+\fBReturn value\fR
+.PP
+list
 .PP
 .RS -4n
 \fBpowlsc\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBpowlsc\fP \fIvalues scalar\fP
+.PP
+Exponentiates each element of the list in scalar value
+.RS 4n\fBpowlsc\fP \fIlist scalar\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
-values
+list
 Not documented\&.
 .TP
 scalar
 Not documented\&.
 .RE
 .PP
+\fBReturn value\fR
+.PP
+list
+.PP
 .RS -4n
-\fBsubls\fR (::tcl::mathfunc)
+\fBsubll\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBsubls\fP \fIlist1 list2\fP
+.PP
+Subtracts each element of the list2 from each element of list1
+.RS 4n\fBsubll\fP \fIlist1 list2\fP
 .br
 .RE
 .PP
@@ -232,10 +280,39 @@ list2
 Not documented\&.
 .RE
 .PP
+\fBReturn value\fR
+.PP
+list
+.PP
 .RS -4n
-\fBsumls\fR (::tcl::mathfunc)
+\fBsublsc\fR (::tcl::mathfunc)
 .RE
-.RS 4n\fBsumls\fP \fIlist1 list2\fP
+.PP
+Subtracts scalar value from each element of the list
+.RS 4n\fBsublsc\fP \fIlist scalar\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+Not documented\&.
+.TP
+scalar
+Not documented\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+list
+.PP
+.RS -4n
+\fBsumll\fR (::tcl::mathfunc)
+.RE
+.PP
+Sums each element of the list1 with each element of list2
+.RS 4n\fBsumll\fP \fIlist1 list2\fP
 .br
 .RE
 .PP
@@ -248,4 +325,31 @@ Not documented\&.
 list2
 Not documented\&.
 .RE
+.PP
+\fBReturn value\fR
+.PP
+list
+.PP
+.RS -4n
+\fBsumlsc\fR (::tcl::mathfunc)
+.RE
+.PP
+Adds scalar value to each element of the list
+.RS 4n\fBsumlsc\fP \fIlist scalar\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+Not documented\&.
+.TP
+scalar
+Not documented\&.
+.RE
+.PP
+\fBReturn value\fR
+.PP
+list
 

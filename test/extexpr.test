@@ -2,7 +2,7 @@ package require tcltest
 namespace import ::tcltest::*
 package require extexpr
 
-
+### List operations tests
 test maxlProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
@@ -11,11 +11,35 @@ test maxlProcTest-1 {} -setup {
     unset y
 }
 
-test multsclProcTest-1 {} -setup {
+test minlProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
-    return [= {multscl(2,$y)}]
+    return [= {minl($y)}]
+} -result 0 -cleanup {
+    unset y
+}
+### List-scalar operations tests
+test mullscProcTest-1 {} -setup {
+    set y [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    return [= {mullsc($y,2)}]
 } -result {0.0 2.0 8.0 18.0 32.0 50.0 72.0 98.0 128.0 162.0 200.0} -cleanup {
+    unset y
+}
+
+test sumlscProcTest-1 {} -setup {
+    set y [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    return [= {sumlsc($y,2)}]
+} -result {2.0 3.0 6.0 11.0 18.0 27.0 38.0 51.0 66.0 83.0 102.0} -cleanup {
+    unset y
+}
+
+test sublscProcTest-1 {} -setup {
+    set y [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    return [= {sublsc($y,2)}]
+} -result {-2.0 -1.0 2.0 7.0 14.0 23.0 34.0 47.0 62.0 79.0 98.0} -cleanup {
     unset y
 }
 
@@ -35,55 +59,57 @@ test divlscProcTest-1 {} -setup {
     unset y
 }
 
-test mullsProcTest-1 {} -setup {
+### List-list operations tests
+
+test mulllProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
-    return [= {mulls($y,$y)}]
+    return [= {mulll($y,$y)}]
 } -result {0.0 1.0 16.0 81.0 256.0 625.0 1296.0 2401.0 4096.0 6561.0 10000.0} -cleanup {
     unset y
 }
 
-test mullsProcTest-2 {} -setup {
+test mulllProcTest-2 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
     set y1 [list 0 1 4 9 16 25 36 49 64 81]
 } -body {
-    catch {= {mulls($y,$y1)}} errorStr
+    catch {= {mulll($y,$y1)}} errorStr
     return $errorStr
 } -result {Lengths of the input lists '11' and '10' are not equal} -cleanup {
     unset y y1
 }
 
-test sumlsProcTest-1 {} -setup {
+test sumllProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
-    return [= {sumls($y,$y)}]
+    return [= {sumll($y,$y)}]
 } -result {0.0 2.0 8.0 18.0 32.0 50.0 72.0 98.0 128.0 162.0 200.0} -cleanup {
     unset y
 }
 
-test sublsProcTest-1 {} -setup {
+test subllProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
 } -body {
-    return [= {subls($y,$y)}]
+    return [= {subll($y,$y)}]
 } -result {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0} -cleanup {
     unset y
 }
 
-test divlsProcTest-1 {} -setup {
+test divllProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
     set y1 [list 4 1 40 19 439 22 1000 24 56 78 3]
 } -body {
-    return [= {divls($y,$y1)}]
+    return [= {divll($y,$y1)}]
 } -result {0.0 1.0 0.1 0.47368421052631576 0.03644646924829157 1.1363636363636365 0.036 2.0416666666666665\
 1.1428571428571428 1.0384615384615385 33.333333333333336} -cleanup {
     unset y y1
 }
 
-test powlsProcTest-1 {} -setup {
+test powllProcTest-1 {} -setup {
     set y [list 0 1 4 9 16 25 36 49 64 81 100]
     set y1 [list 1 2 1 2 1 2 1 2 1 2 1]
 } -body {
-    return [= {powls($y,$y1)}]
+    return [= {powll($y,$y1)}]
 } -result {0.0 1.0 4.0 81.0 16.0 625.0 36.0 2401.0 64.0 6561.0 100.0} -cleanup {
     unset y y1
 }
