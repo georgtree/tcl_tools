@@ -1,0 +1,251 @@
+'\"
+'\" '\" Copyright (c) George Yashin
+'\"
+.TH "tcl::mathfunc" 3tcl 0\&.1 "tcl_tools" "Collection of Tcl tools"
+.SH NAME
+tcl::mathfunc - Commands in namespace tcl::mathfunc
+.SH SYNOPSIS
+\fBdivls\fP \fIlist1 list2\fP
+.br
+\fBdivlsc\fP \fIvalues scalar\fP
+.br
+\fBlindex\fP \fIlist index ?args?\fP
+.br
+\fBllength\fP \fIlist\fP
+.br
+\fBlrange\fP \fIlist first last\fP
+.br
+\fBmaxl\fP \fIvalues\fP
+.br
+\fBminl\fP \fIvalues\fP
+.br
+\fBmulls\fP \fIlist1 list2\fP
+.br
+\fBmultscl\fP \fIscalar values\fP
+.br
+\fBpowls\fP \fIlist1 list2\fP
+.br
+\fBpowlsc\fP \fIvalues scalar\fP
+.br
+\fBsubls\fP \fIlist1 list2\fP
+.br
+\fBsumls\fP \fIlist1 list2\fP
+.br
+.SH ::TCL::MATHFUNC
+.SH COMMANDS
+.PP
+.RS -4n
+\fBdivls\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBdivls\fP \fIlist1 list2\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list1
+Not documented\&.
+.TP
+list2
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBdivlsc\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBdivlsc\fP \fIvalues scalar\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+values
+Not documented\&.
+.TP
+scalar
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBlindex\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBlindex\fP \fIlist index ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+Not documented\&.
+.TP
+index
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBllength\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBllength\fP \fIlist\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBlrange\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBlrange\fP \fIlist first last\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+Not documented\&.
+.TP
+first
+Not documented\&.
+.TP
+last
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBmaxl\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBmaxl\fP \fIvalues\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+values
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBminl\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBminl\fP \fIvalues\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+values
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBmulls\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBmulls\fP \fIlist1 list2\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list1
+Not documented\&.
+.TP
+list2
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBmultscl\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBmultscl\fP \fIscalar values\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+scalar
+Not documented\&.
+.TP
+values
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBpowls\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBpowls\fP \fIlist1 list2\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list1
+Not documented\&.
+.TP
+list2
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBpowlsc\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBpowlsc\fP \fIvalues scalar\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+values
+Not documented\&.
+.TP
+scalar
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBsubls\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBsubls\fP \fIlist1 list2\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list1
+Not documented\&.
+.TP
+list2
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBsumls\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBsumls\fP \fIlist1 list2\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list1
+Not documented\&.
+.TP
+list2
+Not documented\&.
+.RE
+

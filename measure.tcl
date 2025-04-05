@@ -1,9 +1,6 @@
 package require argparse
 package provide measure 0.1
 
-# TODO - taking into the account situation when the match esists only for the last element of the array.
-# in current inmplementation such match is not possible, but implementing this check increase number of checks and code 
-# branches significantly while such situation occurs very rare in typical application with floating-point numbers.
 namespace eval ::measure {
 
     namespace import ::tcl::mathop::*

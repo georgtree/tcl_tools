@@ -136,6 +136,8 @@ dist: dist-clean
 	cp -p $(srcdir)/test/gnuplotutil.test $(DIST_DIR)/test/
 	cp -p $(srcdir)/test/mathutil.test $(DIST_DIR)/test/
 	cp -p $(srcdir)/test/rfutil.test $(DIST_DIR)/test/
+	cp -p $(srcdir)/test/extexpr.test $(DIST_DIR)/test/
+	cp -p $(srcdir)/test/measure.test $(DIST_DIR)/test/
 	cp -p $(srcdir)/test/touchstoneutil.test $(DIST_DIR)/test/
 	cp -r $(srcdir)/test/example_files $(DIST_DIR)/test/
 
