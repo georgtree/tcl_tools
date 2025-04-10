@@ -71,9 +71,9 @@
 <tr><td>-td</td><td>X axis delay after which the search is start, default is 0.0.</td></tr>
 <tr><td>-from</td><td>Start of the range in which search happens, default is minimum value of x.</td></tr>
 <tr><td>-to</td><td>End of the range in which search happens, default is maximum value of x.</td></tr>
-<tr><td>-cross</td><td>Condition's count, cross conditions counts every time vector crosses value, and saves only n-th crossing the value. The possible values are positive integers, or <code>last</code> string.</td></tr>
-<tr><td>-rise</td><td>Condition's count, rise conditions counts every time vector crosses value from lower to higher (rising slope), and saves only n-th crossing the value. The possible values are positive integers, or <code>last</code> string.</td></tr>
-<tr><td>-fall</td><td>Condition's count, fall conditions counts every time vector crosses value from higher to lower (falling slope), and saves only n-th crossing the value. The possible values are positive integers, or <code>last</code> string.</td></tr>
+<tr><td>-cross</td><td>Condition's count, cross conditions counts every time vector crosses value, and saves only n-th crossing the value. The possible values are positive integers, <code>all</code> or <code>last</code> string.</td></tr>
+<tr><td>-rise</td><td>Condition's count, rise conditions counts every time vector crosses value from lower to higher (rising slope), and saves only n-th crossing the value. The possible values are positive integers, <code>all</code> or <code>last</code> string.</td></tr>
+<tr><td>-fall</td><td>Condition's count, fall conditions counts every time vector crosses value from higher to lower (falling slope), and saves only n-th crossing the value. The possible values are positive integers, <code>all</code> or <code>last</code> string.</td></tr>
 </table>
 <p class='ruff'>or</p>
 <table class='ruff_deflist'>
@@ -195,13 +195,13 @@
     <i><font color=#76a396>#   -from - start of the range in which search happens, default is minimum value of x.</font></i>
     <i><font color=#76a396>#   -to - end of the range in which search happens, default is maximum value of x.</font></i>
     <i><font color=#76a396>#   -cross - condition's count, cross conditions counts every time vector crosses value, and saves</font></i>
-    <i><font color=#76a396>#     only n-th crossing the value. The possible values are positive integers, or `last` string.</font></i>
+    <i><font color=#76a396>#     only n-th crossing the value. The possible values are positive integers, `all` or `last` string.</font></i>
     <i><font color=#76a396>#   -rise - condition's count, rise conditions counts every time vector crosses value from lower to higher</font></i>
-    <i><font color=#76a396>#     (rising slope), and saves only n-th crossing the value. The possible values are positive integers, or `last`</font></i>
-    <i><font color=#76a396>#     string.</font></i>
+    <i><font color=#76a396>#     (rising slope), and saves only n-th crossing the value. The possible values are positive integers, `all` or</font></i>
+    <i><font color=#76a396>#     `last` string.</font></i>
     <i><font color=#76a396>#   -fall - condition's count, fall conditions counts every time vector crosses value from higher to lower</font></i>
-    <i><font color=#76a396>#     (falling slope), and saves only n-th crossing the value. The possible values are positive integers, or `last`</font></i>
-    <i><font color=#76a396>#     string.</font></i>
+    <i><font color=#76a396>#     (falling slope), and saves only n-th crossing the value. The possible values are positive integers, `all` or</font></i>
+    <i><font color=#76a396>#     `last` string.</font></i>
     <i><font color=#76a396>#</font></i>
     <i><font color=#76a396>#  or</font></i>
     <i><font color=#76a396>#</font></i>
@@ -365,8 +365,8 @@
             <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]&lt;=0} {
                 <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be more than 0&quot;</font>
             }
-        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
-            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
+        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ni {last all}} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer, 'last' or 'all' string&quot;</font>
         }
         FromTo <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> vec1]} {
@@ -396,8 +396,8 @@
             <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]&lt;=0} {
                 <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be more than 0&quot;</font>
             }
-        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
-            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
+        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ni {last all}} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer, 'last' or 'all' string&quot;</font>
         }
         FromTo <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> vec1]} {
@@ -427,8 +427,8 @@
             <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>]&lt;=0} {
                 <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be more than 0&quot;</font>
             }
-        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ne {last}} {
-            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer or 'last' string&quot;</font>
+        } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$whenVecCond</font>] ni {last all}} {
+            <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Trig count '<font color=#f1b479>[</font>dget <font color=#f1b479>$</font>whenArgs <font color=#f1b479>$</font>whenVecCond<font color=#f1b479>]</font>' must be an integer, 'last' or 'all' string&quot;</font>
         }
         FromTo <font color=#f1b479>$whenArgs</font> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>
         <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$whenArgs</font> vec1]} {

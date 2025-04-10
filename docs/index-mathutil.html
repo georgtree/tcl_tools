@@ -41,8 +41,8 @@
         <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Length of x '<font color=#f1b479>$</font>xLen' is not equal to length of y '<font color=#f1b479>$</font>yLen'&quot;</font>
     }
     <b><font color=#ffa500>set</font></b> result <font color=#f1b479>$init</font>
-    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;[- <font color=#f1b479>$xLen</font> 1]} {<b><font color=#ffa500>incr</font></b> i} {
-        <b><font color=#ffa500>set</font></b> result [= {<font color=#f1b479>$result</font>+([@ <font color=#f1b479>$y</font> [+ <font color=#f1b479>$i</font> 1]]+[@ <font color=#f1b479>$y</font> <font color=#f1b479>$i</font>])/2.0*([@ <font color=#f1b479>$x</font> [+ <font color=#f1b479>$i</font> 1]]-[@ <font color=#f1b479>$x</font> <font color=#f1b479>$i</font>])}]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$xLen</font>-1} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> result [= {<font color=#f1b479>$result</font>+(lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>+1)+lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>))/2.0*(lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>+1)-lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>))}]
         <b><font color=#ffa500>lappend</font></b> resultList <font color=#f1b479>$result</font>
     }
     <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$resultList</font>
@@ -75,19 +75,19 @@
     }
     <b><font color=#ffa500>set</font></b> numPoints <font color=#f1b479>$xLen</font>
     <i><font color=#76a396># calculate first point</font></i>
-    <b><font color=#ffa500>set</font></b> h1 [- [@ <font color=#f1b479>$x</font> 1] [@ <font color=#f1b479>$x</font> 0]]
-    <b><font color=#ffa500>set</font></b> h2 [- [@ <font color=#f1b479>$x</font> 2] [@ <font color=#f1b479>$x</font> 1]]
-    <b><font color=#ffa500>lappend</font></b> yDeriv [= {-(2*<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*[@ <font color=#f1b479>$y</font> 0]+(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>)*[@ <font color=#f1b479>$y</font> 1]- <font color=#f1b479>$h1</font>/(<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*[@ <font color=#f1b479>$y</font> 2]}]
+    <b><font color=#ffa500>set</font></b> h1 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,1)-lindex(<font color=#f1b479>$x</font>,0)}]
+    <b><font color=#ffa500>set</font></b> h2 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,2)-lindex(<font color=#f1b479>$x</font>,1)}]
+    <b><font color=#ffa500>lappend</font></b> yDeriv [= {-(2*<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*lindex(<font color=#f1b479>$y</font>,0)+(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>)*lindex(<font color=#f1b479>$y</font>,1)-<font color=#f1b479>$h1</font>/(<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))* lindex(<font color=#f1b479>$y</font>,2)}]
     <i><font color=#76a396># calculate inner points</font></i>
-    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 1} {<font color=#f1b479>$i</font>&lt;[- <font color=#f1b479>$numPoints</font> 1]} {<b><font color=#ffa500>incr</font></b> i} {
-        <b><font color=#ffa500>set</font></b> h1 [- [@ <font color=#f1b479>$x</font> <font color=#f1b479>$i</font>] [@ <font color=#f1b479>$x</font> [- <font color=#f1b479>$i</font> 1]]]
-        <b><font color=#ffa500>set</font></b> h2 [- [@ <font color=#f1b479>$x</font> [+ <font color=#f1b479>$i</font> 1]] [@ <font color=#f1b479>$x</font> <font color=#f1b479>$i</font>]]
-        <b><font color=#ffa500>lappend</font></b> yDeriv [= {-<font color=#f1b479>$h2</font>/(<font color=#f1b479>$h1</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*[@ <font color=#f1b479>$y</font> [- <font color=#f1b479>$i</font> 1]]-(<font color=#f1b479>$h1</font>-<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>)*[@ <font color=#f1b479>$y</font> <font color=#f1b479>$i</font>]+ <font color=#f1b479>$h1</font>/(<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*[@ <font color=#f1b479>$y</font> [+ <font color=#f1b479>$i</font> 1]]}]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 1} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$numPoints</font>-1} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> h1 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>)-lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>-1)}]
+        <b><font color=#ffa500>set</font></b> h2 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>+1)-lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>)}]
+        <b><font color=#ffa500>lappend</font></b> yDeriv [= {-<font color=#f1b479>$h2</font>/(<font color=#f1b479>$h1</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>-1)-(<font color=#f1b479>$h1</font>-<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>)*lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>)+<font color=#f1b479>$h1</font>/(<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))* lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>+1)}]
     }
     <i><font color=#76a396># calculate last point</font></i>
-    <b><font color=#ffa500>set</font></b> h1 [- [@ <font color=#f1b479>$x</font> end-1] [@ <font color=#f1b479>$x</font> end-2]]
-    <b><font color=#ffa500>set</font></b> h2 [- [@ <font color=#f1b479>$x</font> end] [@ <font color=#f1b479>$x</font> end-1]]
-    <b><font color=#ffa500>lappend</font></b> yDeriv [= {<font color=#f1b479>$h2</font>/(<font color=#f1b479>$h1</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*[@ <font color=#f1b479>$y</font> end-2]-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>)*[@ <font color=#f1b479>$y</font> end-1]+ (<font color=#f1b479>$h1</font>+2*<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*[@ <font color=#f1b479>$y</font> end]}]
+    <b><font color=#ffa500>set</font></b> h1 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,{end-1})-lindex(<font color=#f1b479>$x</font>,{end-2})}]
+    <b><font color=#ffa500>set</font></b> h2 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,{end})-lindex(<font color=#f1b479>$x</font>,{end-1})}]
+    <b><font color=#ffa500>lappend</font></b> yDeriv [= {<font color=#f1b479>$h2</font>/(<font color=#f1b479>$h1</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*lindex(<font color=#f1b479>$y</font>,{end-2})-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>)*lindex(<font color=#f1b479>$y</font>,{end-1})+ (<font color=#f1b479>$h1</font>+2*<font color=#f1b479>$h2</font>)/(<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))*lindex(<font color=#f1b479>$y</font>,{end})}]
     <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$yDeriv</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::deriv2'>deriv2</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -118,19 +118,19 @@
     }
     <b><font color=#ffa500>set</font></b> numPoints <font color=#f1b479>$xLen</font>
     <i><font color=#76a396># calculate first point</font></i>
-    <b><font color=#ffa500>set</font></b> h1 [- [@ <font color=#f1b479>$x</font> 1] [@ <font color=#f1b479>$x</font> 0]]
-    <b><font color=#ffa500>set</font></b> h2 [- [@ <font color=#f1b479>$x</font> 2] [@ <font color=#f1b479>$x</font> 1]]
-    <b><font color=#ffa500>lappend</font></b> yDeriv [= {2*(<font color=#f1b479>$h2</font>*[@ <font color=#f1b479>$y</font> 0]-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)*[@ <font color=#f1b479>$y</font> 1]+<font color=#f1b479>$h1</font>*[@ <font color=#f1b479>$y</font> 2])/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))}]
+    <b><font color=#ffa500>set</font></b> h1 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,1)-lindex(<font color=#f1b479>$x</font>,0)}]
+    <b><font color=#ffa500>set</font></b> h2 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,2)-lindex(<font color=#f1b479>$x</font>,1)}]
+    <b><font color=#ffa500>lappend</font></b> yDeriv [= {2*(<font color=#f1b479>$h2</font>*lindex(<font color=#f1b479>$y</font>,0)-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)*lindex(<font color=#f1b479>$y</font>,1)+<font color=#f1b479>$h1</font>*lindex(<font color=#f1b479>$y</font>,2))/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))}]
     <i><font color=#76a396># calculate inner points</font></i>
-    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 1} {<font color=#f1b479>$i</font>&lt;[- <font color=#f1b479>$numPoints</font> 1]} {<b><font color=#ffa500>incr</font></b> i} {
-        <b><font color=#ffa500>set</font></b> h1 [- [@ <font color=#f1b479>$x</font> <font color=#f1b479>$i</font>] [@ <font color=#f1b479>$x</font> [- <font color=#f1b479>$i</font> 1]]]
-        <b><font color=#ffa500>set</font></b> h2 [- [@ <font color=#f1b479>$x</font> [+ <font color=#f1b479>$i</font> 1]] [@ <font color=#f1b479>$x</font> <font color=#f1b479>$i</font>]]
-        <b><font color=#ffa500>lappend</font></b> yDeriv [= {2*(<font color=#f1b479>$h2</font>*[@ <font color=#f1b479>$y</font> [- <font color=#f1b479>$i</font> 1]]-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)*[@ <font color=#f1b479>$y</font> <font color=#f1b479>$i</font>]+<font color=#f1b479>$h1</font>*[@ <font color=#f1b479>$y</font> [+ <font color=#f1b479>$i</font> 1]])/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))}]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 1} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$numPoints</font>-1} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> h1 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>)-lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>-1)}]
+        <b><font color=#ffa500>set</font></b> h2 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>+1)-lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>)}]
+        <b><font color=#ffa500>lappend</font></b> yDeriv [= {2*(<font color=#f1b479>$h2</font>*lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>-1)-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)*lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>)+<font color=#f1b479>$h1</font>*lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>+1))/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))}]
     }
     <i><font color=#76a396># calculate last point</font></i>
-    <b><font color=#ffa500>set</font></b> h1 [- [@ <font color=#f1b479>$x</font> end-1] [@ <font color=#f1b479>$x</font> end-2]]
-    <b><font color=#ffa500>set</font></b> h2 [- [@ <font color=#f1b479>$x</font> end] [@ <font color=#f1b479>$x</font> end-1]]
-    <b><font color=#ffa500>lappend</font></b> yDeriv [= {2*(<font color=#f1b479>$h2</font>*[@ <font color=#f1b479>$y</font> end-2]-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)*[@ <font color=#f1b479>$y</font> end-1]+<font color=#f1b479>$h1</font>*[@ <font color=#f1b479>$y</font> end])/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))}]
+    <b><font color=#ffa500>set</font></b> h1 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,{end-1})-lindex(<font color=#f1b479>$x</font>,{end-2})}]
+    <b><font color=#ffa500>set</font></b> h2 [= {<b><font color=#ffa500>lindex</font></b>(<font color=#f1b479>$x</font>,{end})-lindex(<font color=#f1b479>$x</font>,{end-1})}]
+    <b><font color=#ffa500>lappend</font></b> yDeriv [= {2*(<font color=#f1b479>$h2</font>*lindex(<font color=#f1b479>$y</font>,{end-2})-(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>)*lindex(<font color=#f1b479>$y</font>,{end-1})+<font color=#f1b479>$h1</font>*lindex(<font color=#f1b479>$y</font>,{end}))/(<font color=#f1b479>$h1</font>*<font color=#f1b479>$h2</font>*(<font color=#f1b479>$h1</font>+<font color=#f1b479>$h2</font>))}]
     <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$yDeriv</font>
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::mathutil::findApprox'>findApprox</a><span class='ns_scope'> [<a href="index-mathutil.html#::mathutil" title="::mathutil" class='ruff_cmd'>::mathutil</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -198,7 +198,7 @@
         <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Size of window must be odd&quot;</font>
     }
     <b><font color=#ffa500>set</font></b> yLen [<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$y</font>]
-    <b><font color=#ffa500>if</font></b> {<font color=#f1b479>$yLen</font> &lt; [+ <font color=#f1b479>$winSize</font> 1]} {
+    <b><font color=#ffa500>if</font></b> {<font color=#f1b479>$yLen</font>&lt;<font color=#f1b479>$winSize</font>+1} {
         <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Length of y '<font color=#f1b479>$</font>yLen' must be not less than size of window + 1  '<font color=#f1b479>$</font>winSize + 1 = <font color=#f1b479>[</font>+ <font color=#f1b479>$</font>winSize 1<font color=#f1b479>]</font>'&quot;</font>
     }
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists x]} {
@@ -208,12 +208,11 @@
         }
     }
     <i><font color=#76a396># actual calculations</font></i>
-    <b><font color=#ffa500>set</font></b> winSizeM1 [- <font color=#f1b479>$winSize</font> 1]
-    <b><font color=#ffa500>set</font></b> halfWinSize [= {int(<font color=#f1b479>$winSizeM1</font>/2)}]
-    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i <font color=#f1b479>$halfWinSize</font>} {<font color=#f1b479>$i</font>&lt;[- <font color=#f1b479>$yLen</font> <font color=#f1b479>$halfWinSize</font>]} {<b><font color=#ffa500>incr</font></b> i} {
+    <b><font color=#ffa500>set</font></b> halfWinSize [= {int((<font color=#f1b479>$winSize</font>-1)/2)}]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i <font color=#f1b479>$halfWinSize</font>} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$yLen</font>-<font color=#f1b479>$halfWinSize</font>} {<b><font color=#ffa500>incr</font></b> i} {
         <b><font color=#ffa500>set</font></b> value 0
-        <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> j [- <font color=#f1b479>$i</font> <font color=#f1b479>$halfWinSize</font>]} {<font color=#f1b479>$j</font>&lt;=[+ <font color=#f1b479>$i</font> <font color=#f1b479>$halfWinSize</font>]} {<b><font color=#ffa500>incr</font></b> j} {
-            <b><font color=#ffa500>set</font></b> value [= {<font color=#f1b479>$value</font>+[@ <font color=#f1b479>$y</font> <font color=#f1b479>$j</font>]}]
+        <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> j [= {<font color=#f1b479>$i</font>-<font color=#f1b479>$halfWinSize</font>}]} {<font color=#f1b479>$j</font>&lt;=<font color=#f1b479>$i</font>+<font color=#f1b479>$halfWinSize</font>} {<b><font color=#ffa500>incr</font></b> j} {
+            <b><font color=#ffa500>set</font></b> value [= {<font color=#f1b479>$value</font>+lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$j</font>)}]
         }
         <b><font color=#ffa500>lappend</font></b> yAvg [= {<font color=#f1b479>$value</font>/<font color=#f1b479>$winSize</font>}]
     }
@@ -245,8 +244,8 @@
         <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;Length of x '<font color=#f1b479>$</font>xLen' is not equal to length of y '<font color=#f1b479>$</font>yLen'&quot;</font>
     }
     <b><font color=#ffa500>set</font></b> result 0.0
-    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;[- <font color=#f1b479>$xLen</font> 1]} {<b><font color=#ffa500>incr</font></b> i} {
-        <b><font color=#ffa500>set</font></b> result [= {<font color=#f1b479>$result</font>+([@ <font color=#f1b479>$y</font> [+ <font color=#f1b479>$i</font> 1]]+[@ <font color=#f1b479>$y</font> <font color=#f1b479>$i</font>])/2.0*([@ <font color=#f1b479>$x</font> [+ <font color=#f1b479>$i</font> 1]]-[@ <font color=#f1b479>$x</font> <font color=#f1b479>$i</font>])}]
+    <b><font color=#ffa500>for</font></b> {<b><font color=#ffa500>set</font></b> i 0} {<font color=#f1b479>$i</font>&lt;<font color=#f1b479>$xLen</font>-1} {<b><font color=#ffa500>incr</font></b> i} {
+        <b><font color=#ffa500>set</font></b> result [= {<font color=#f1b479>$result</font>+(lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>+1)+lindex(<font color=#f1b479>$y</font>,<font color=#f1b479>$i</font>))/2.0*(lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>+1)-lindex(<font color=#f1b479>$x</font>,<font color=#f1b479>$i</font>))}]
     }
     <b><font color=#fe6efe>return</font></b> <font color=#f1b479>$result</font>
 }</pre></div>

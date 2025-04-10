@@ -115,13 +115,13 @@ proc ::measure::measure {args} {
     #   -from - start of the range in which search happens, default is minimum value of x.
     #   -to - end of the range in which search happens, default is maximum value of x.
     #   -cross - condition's count, cross conditions counts every time vector crosses value, and saves
-    #     only n-th crossing the value. The possible values are positive integers, or `last` string.
+    #     only n-th crossing the value. The possible values are positive integers, `all` or `last` string.
     #   -rise - condition's count, rise conditions counts every time vector crosses value from lower to higher
-    #     (rising slope), and saves only n-th crossing the value. The possible values are positive integers, or `last` 
-    #     string.
+    #     (rising slope), and saves only n-th crossing the value. The possible values are positive integers, `all` or
+    #     `last` string.
     #   -fall - condition's count, fall conditions counts every time vector crosses value from higher to lower
-    #     (falling slope), and saves only n-th crossing the value. The possible values are positive integers, or `last` 
-    #     string.
+    #     (falling slope), and saves only n-th crossing the value. The possible values are positive integers, `all` or 
+    #     `last` string.
     #
     #  or
     #
@@ -286,8 +286,8 @@ proc ::measure::measure {args} {
             if {[dget $whenArgs $whenVecCond]<=0} {
                 return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be more than 0"
             }
-        } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
-            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
+        } elseif {[dget $whenArgs $whenVecCond] ni {last all}} {
+            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer, 'last' or 'all' string"
         }
         FromTo $whenArgs $data $xname
         if {[dexist $whenArgs vec1]} {
@@ -321,8 +321,8 @@ proc ::measure::measure {args} {
             if {[dget $whenArgs $whenVecCond]<=0} {
                 return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be more than 0"
             }
-        } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
-            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
+        } elseif {[dget $whenArgs $whenVecCond] ni {last all}} {
+            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer, 'last' or 'all' string"
         }
         FromTo $whenArgs $data $xname
         if {[dexist $whenArgs vec1]} {
@@ -356,8 +356,8 @@ proc ::measure::measure {args} {
             if {[dget $whenArgs $whenVecCond]<=0} {
                 return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be more than 0"
             }
-        } elseif {[dget $whenArgs $whenVecCond] ne {last}} {
-            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer or 'last' string"
+        } elseif {[dget $whenArgs $whenVecCond] ni {last all}} {
+            return -code error "Trig count '[dget $whenArgs $whenVecCond]' must be an integer, 'last' or 'all' string"
         }
         FromTo $whenArgs $data $xname
         if {[dexist $whenArgs vec1]} {
@@ -614,10 +614,19 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
                             set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
                             set lastDerYWhenHit [DerivSelect $i $xi $xWhen $xip1 $x $findVec $yDeriv]
                         }
+                    } elseif {$whenVecCondCount eq {all}} {
+                        set xWhenLoc [CalcXBetween $xi $whenVecLSI $xip1 $whenVecLSIp1 $val]
+                        lappend xWhen $xWhenLoc
+                        if {$mode eq {findwhen}} {
+                            lappend yFind [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhenLoc]
+                        } elseif {$mode eq {derivwhen}} {
+                            set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhenLoc]
+                            lappend derY [Deriv {*}[DerivSelect $i $xi $xWhenLoc $xip1 $x $findVec $yDeriv]]
+                        }
                     }
                 }
             }
-            if {$whenVecCondCount ne {last}} {
+            if {$whenVecCondCount ni {last all}} {
                 if {($whenVecCount==$whenVecCondCount) && !$whenVecFoundFlag} {
                     set whenVecFoundFlag true
                     set xWhen [CalcXBetween $xi $whenVecLSI $xip1 $whenVecLSIp1 $val]
@@ -678,15 +687,25 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
                                 set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
                                 set lastDerYWhenHit [DerivSelect $i $xi $xWhen $xip1 $x $findVec $yDeriv]
                             }
+                        } elseif {$whenVecCondCount eq {all}} {
+                            set xWhenLoc [@ [CalcCrossPoint $xi $whenVecLSI $xip1 $whenVecLSIp1 $xi $whenVecRSI $xip1\
+                                                  $whenVecRSIp1] 0]
+                            lappend xWhen $xWhenLoc
+                            if {$mode eq {findwheneq}} {
+                                lappend yFind [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhenLoc]
+                            } elseif {$mode eq {derivwheneq}} {
+                                set yDeriv [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhenLoc]
+                                lappend derY [Deriv {*}[DerivSelect $i $xi $xWhenLoc $xip1 $x $findVec $yDeriv]]
+                            }
                         }
                     }
                 }
             }
-            if {$whenVecCondCount ne {last}} {
+            if {$whenVecCondCount ni {last all}} {
                 if {($whenVecCount==$whenVecCondCount) && !$whenVecFoundFlag} {
                     set whenVecFoundFlag true
-                    set xWhen [@ [CalcCrossPoint $xi $whenVecLSI $xip1 $whenVecLSIp1 $xi $whenVecRSI\
-                                          $xip1 $whenVecRSIp1] 0]
+                    set xWhen [@ [CalcCrossPoint $xi $whenVecLSI $xip1 $whenVecLSIp1 $xi $whenVecRSI $xip1\
+                                          $whenVecRSIp1] 0]
                     if {$mode eq {findwheneq}} {
                         set yFind [CalcYBetween $xi [@ $findVec $i] $xip1 [@ $findVec [= {$i+1}]] $xWhen]
                     } elseif {$mode eq {derivwheneq}} {
