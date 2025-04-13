@@ -13,6 +13,8 @@ tcl::mathfunc - Commands in namespace tcl::mathfunc
 .br
 \fBllength\fP \fIlist\fP
 .br
+\fBlogb\fP \fIvalue base\fP
+.br
 \fBlrange\fP \fIlist first last\fP
 .br
 \fBmaxl\fP \fIlist\fP
@@ -116,6 +118,23 @@ Wraps llength command into expr function
 .RS 4n
 .TP
 list
+Not documented\&.
+.RE
+.PP
+.RS -4n
+\fBlogb\fR (::tcl::mathfunc)
+.RE
+.RS 4n\fBlogb\fP \fIvalue base\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+value
+Not documented\&.
+.TP
+base
 Not documented\&.
 .RE
 .PP

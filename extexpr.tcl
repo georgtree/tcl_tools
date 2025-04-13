@@ -11,6 +11,10 @@ proc tcl::mathfunc::minl {list} {
     return [::tcl::mathfunc::min {*}$list]
 }
 
+proc tcl::mathfunc::logb {value base} {
+    return [= {log($value)/double(log($base))}]
+}
+
 ### List-scalar operations
 proc tcl::mathfunc::mullsc {list scalar} {
     # Multiplies each element of the list to scalar value

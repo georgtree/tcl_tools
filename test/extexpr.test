@@ -138,3 +138,15 @@ test llengthProcTest-1 {} -setup {
 } -result 11 -cleanup {
     unset y
 }
+### Math functions tests
+test logbProcTest-1 {} -body {
+    return [= {logb(16,2)}]
+} -result 4.0
+
+test logbProcTest-2 {} -body {
+    return [= {logb(16,3)}]
+} -result 2.5237190142858297
+
+test logbProcTest-3 {} -body {
+    return [= {logb(0,3)}]
+} -result -Inf
