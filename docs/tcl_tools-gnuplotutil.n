@@ -83,6 +83,9 @@ Enables running gnuplot in background, requires -nodelete switch\&.
 -darkmode
 Enables dark mode for graph\&.
 .TP
+-inline
+Provides data directly in command string, without creating temporary file\&.
+.TP
 -nodelete
 Disables deleting of temporary file after end of plotting\&.
 .TP
@@ -319,6 +322,9 @@ Provides the x and y data to plot, the number of columns is not restricted and m
 .TP
 -grid
 Enables display of grid\&.
+.TP
+-inline
+Provides data directly in command string, without creating temporary file, and passes datablock number\&.
 .TP
 -lstyles
 Set individual styles for each graph in the same order as data columns provided, must have the length 2*(number of x-y data pairs)
