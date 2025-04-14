@@ -274,7 +274,7 @@ proc ::measure::measure {args} {
             {-vec1= -require vec2 -forbid {vec val}}
             {-vec2= -require vec1 -forbid {vec val}}
             {-td|delay= -default 0.0 -validate {[string is double $arg]}}
-            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -validate {[string is double $arg]}}
             {-to= -validate {[string is double $arg]}}
             {-cross= -forbid {rise fall}}
             {-rise= -forbid {cross fall}}
@@ -309,7 +309,7 @@ proc ::measure::measure {args} {
             {-vec1= -require vec2 -forbid {vec val}}
             {-vec2= -require vec1 -forbid {vec val}}
             {-td|delay= -default 0.0 -validate {[string is double $arg]}}
-            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -validate {[string is double $arg]}}
             {-to= -validate {[string is double $arg]}}
             {-cross= -forbid {rise fall}}
             {-rise= -forbid {cross fall}}
@@ -344,7 +344,7 @@ proc ::measure::measure {args} {
             {-vec1= -require vec2 -forbid {vec val}}
             {-vec2= -require vec1 -forbid {vec val}}
             {-td|delay= -default 0.0 -validate {[string is double $arg]}}
-            {-from= -default 0.0 -validate {[string is double $arg]}}
+            {-from= -validate {[string is double $arg]}}
             {-to= -validate {[string is double $arg]}}
             {-cross= -forbid {rise fall}}
             {-rise= -forbid {cross fall}}
@@ -572,7 +572,7 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
     if {$mode in {when findwhen derivwhen}} {
         for {set i 0} {$i<$whenVecLSLen-1} {incr i} {
             set xi [@ $x $i]
-            if {($xi<$delay) || ($xi<$from) || ($xi>$to)} {
+            if {($xi<($from+$delay)) || ($xi>$to)} {
                 continue
             }
             set xip1 [@ $x [= {$i+1}]]
@@ -643,7 +643,7 @@ proc ::measure::FindDerivWhen {x mode findVec whenVecLS val whenVecRS whenVecCon
     } elseif {$mode in {wheneq findwheneq derivwheneq}} {
         for {set i 0} {$i<$whenVecLSLen-1} {incr i} {
             set xi [@ $x $i]
-            if {($xi<$delay) || ($xi<$from) || ($xi>$to)} {
+            if {($xi<($from+$delay)) || ($xi>$to)} {
                 continue
             }
             set xip1 [@ $x [= {$i+1}]]
