@@ -56,7 +56,7 @@ proc ::gnuplotutil::plotXYN {x args} {
     #  x - list of x-point for 2D graph
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
-    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -background - enables running gnuplot in background, requires -nodelete or -inline switch
     #  -inline - provides data directly in command string, without creating temporary file
     #  -nodelete - disables deleting of temporary file after end of plotting
     #  -xlabel - provides x-axis label to display, string must be provided after it
@@ -138,7 +138,10 @@ proc ::gnuplotutil::plotXYN {x args} {
         if {[llength $columnNames]!=[= {$numCol}]} {
             return -code error {Column names count is not the same as count of data columns}
         } else {
-            lappend outList "{ } $columnNames"
+            foreach columnName $columnNames {
+                lappend processedNames "\"$columnName\""
+            }
+            lappend outList "{ } [join $processedNames]"
             set autoTitleStr {set key autotitle columnheader}
         }
     } else {
@@ -209,7 +212,7 @@ proc ::gnuplotutil::plotXNYN {args} {
     # Plots 2D graphs in Gnuplot with individual x-values.
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
-    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -background - enables running gnuplot in background, requires -nodelete or -inline switch
     #  -inline - provides data directly in command string, without creating temporary file
     #  -nodelete - disables deleting of temporary file after end of plotting
     #  -xlabel - provides x-axis label to display, string must be provided after it
@@ -300,7 +303,7 @@ proc ::gnuplotutil::plotXNYN {args} {
             return -code error {Column names count is not the same as count of data columns}
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
-                set headerString "${headerString} { } [@ $columnNames $i]"
+                set headerString "${headerString} { } \"[@ $columnNames $i]\""
             }
             lappend outList $headerString
             set autoTitleStr {set key autotitle columnheader}
@@ -385,6 +388,9 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     #  -xlabel - provides x-axis label to display, string must be provided after it
     #  -ylabel - provides y-axis label to display, string must be provided after it
     #  -grid - enables display of grid
+    #  -size - set size of the subplot
+    #  -origin - set origin of the subplot
+    #  -optcmd - provides optional string that may contain additional commands to gnuplot
     #  -path - provides location of temporary file, default is current location
     #  -inline - provides data directly in command string, without creating temporary file, and passes datablock number
     #  -names - enables setting the column names of provided data, value must be provided as list
@@ -403,11 +409,16 @@ proc ::gnuplotutil::plotXNYNMp {args} {
         -xlabel=
         -ylabel=
         -grid
-        {-path= -default "."}
+        -size=
+        -origin=
+        -optcmd=
+        {-path= -default {}}
         -names=
         -lstyles=
         {-columns -catchall}
     }]
+    initArgStr $arguments size sizeStr {"set size [join [dget $arguments size] ,]"}
+    initArgStr $arguments origin originStr {"set origin [join [dget $arguments origin] ,]"}
     initArgStr $arguments xlog xscaleStr {{set logscale x}}
     initArgStr $arguments xlog xscaleStrUnset {{unset logscale x}}
     initArgStr $arguments ylog yscaleStr {{set logscale y}}
@@ -420,6 +431,7 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     initArgStr $arguments xlabel xlabelStrUnset {{unset xlabel}}
     initArgStr $arguments ylabel ylabelStr {"set ylabel '[dget $arguments ylabel]'"}
     initArgStr $arguments ylabel ylabelStrUnset {{unset ylabel}}
+    initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
         return -code error "Number of data columns $columnsNum is odd"
@@ -443,7 +455,7 @@ proc ::gnuplotutil::plotXNYNMp {args} {
             return -code error {Column names count is not the same as count of data columns}
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
-                set headerString "${headerString} { } [@ $columnNames $i]"
+                set headerString "${headerString} { } \"[@ $columnNames $i]\""
             }
             lappend outList $headerString
             set autoTitleStr {set key autotitle columnheader}
@@ -501,8 +513,9 @@ proc ::gnuplotutil::plotXNYNMp {args} {
      for {set i 1} {$i<$dataNum} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] [@ $lineStyles $i] "
     }
-    set commandList [list $autoTitleStr $xlabelStr $ylabelStr $xscaleStr $yscaleStr $gridStr $commandStr $xlabelStrUnset\
-                             $ylabelStrUnset $xscaleStrUnset $yscaleStrUnset $gridStrUnset]
+    set commandList [list $optcmdStr $sizeStr $originStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr $yscaleStr\
+                             $gridStr $commandStr $xlabelStrUnset $ylabelStrUnset $xscaleStrUnset $yscaleStrUnset\
+                             $gridStrUnset]
     set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments inline]} {
         return [dict create cmdString $commandStr]
@@ -512,13 +525,11 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     
 }
 
-
-
-proc ::gnuplotutil::multiplotXNYN {layout args} {
+proc ::gnuplotutil::multiplotXNYN {args} {
     # Plots 2D graphs in Gnuplot with individual x-values and using multiplot to display.
-    #  layout - list of layout configurations values, for example, {2 2}
+    #  -layout - list of layout configurations values, for example, {2 2}
     #  -nodelete - disables deleting of temporary file after end of plotting
-    #  -background - enables running gnuplot in background, requires -nodelete switch
+    #  -background - enables running gnuplot in background, requires -nodelete or -inline switch
     #  -inline - provides data directly in command string, without creating temporary file
     #  -optcmd - provides optional string that may contain additional commands to gnuplot
     #  -terminal - provides terminal, default 'x11' on linux and 'windows' on windows
@@ -546,6 +557,7 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
     # gnuplotutil::multiplotXNYN {2 2} -plots $plot1 $plot2 $plot3 $plot4
     # ```
     set arguments [argparse -inline {
+        -layout=
         -nodelete
         -background
         -inline
@@ -559,10 +571,14 @@ proc ::gnuplotutil::multiplotXNYN {layout args} {
         AliasesKeysCheck $arguments {nodelete inline}
     }
     initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
-    if {[llength $layout]>2} {
-        return -code error {Length of layout arguments is more than 2}
+    if {[dict exists $arguments layout]} {
+        if {[llength [dict get $arguments layout]]>2} {
+            return -code error {Length of layout arguments is more than 2}
+        } else {
+            set layoutStr "set multiplot layout [@ [dict get $arguments layout] 0],[@ [dict get $arguments layout] 1]"
+        }
     } else {
-        set layoutStr "set multiplot layout [@ $layout 0],[@ $layout 1]"
+        set layoutStr {set multiplot}
     }
     initTerminalStr $arguments terminalStr
     if {[dexist $arguments darkmode]} {
@@ -718,8 +734,11 @@ proc ::gnuplotutil::plotHist {x args} {
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
             return -code error {Column names count is not the same as count of data columns}
-          } else {
-            lappend outList "{ } $columnNames"
+        } else {
+            foreach columnName $columnNames {
+                lappend processedNames "\"$columnName\""
+            }
+            lappend outList "{ } [join $processedNames]"
             set autoTitleStr {set key autotitle columnheader}
         }
     } else {
