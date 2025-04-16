@@ -127,8 +127,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     set yColumnCount 0
     foreach val [dget $arguments columns] {
         if {[llength $val]!=[llength $x]} {
-            return -code error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of\
-                    points of x-axis data"
+            return -code error "Number of points '[llength $val]' of y-axis data (column $yColumnCount) doesn't match\
+                    the number of points '[llength $x]' of x-axis data"
             incr yColumnCount
         }
     }
@@ -136,7 +136,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     set numCol [llength [dget $arguments columns]]
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
-            return -code error {Column names count is not the same as count of data columns}
+            return -code error "Column names count '[llength $columnNames]' is not the same as count '$numCol' of data\
+                    columns"
         } else {
             foreach columnName $columnNames {
                 lappend processedNames "\"$columnName\""
@@ -149,7 +150,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     }
     if {([dexist $arguments lstyles])} {
         if {[llength $lineStyles]!=$numCol} {
-            return -code error {Lines styles count is not the same as count of data columns}
+            return -code error "Lines styles count '[llength $lineStyles]' is not the same as count '$numCol' of data\
+                    columns"
         }
     } else {
         for {set i 0} {$i<$numCol} {incr i} {
@@ -291,16 +293,17 @@ proc ::gnuplotutil::plotXNYN {args} {
         set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            return -code error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number\
-                    of pointsof x-axis data (column $yColumnCount)"
+            return -code error "Number of points '$yLen' of y-axis data (column [= {1+$yColumnCount}]) doesn't match the\
+                    number of points '$xLen' of x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
     if {([dexist $arguments names])} {
             set headerString {}
-        if {[llength $columnNames]!=[= {$dataNum}]} {
-            return -code error {Column names count is not the same as count of data columns}
+        if {[llength $columnNames]!=$dataNum} {
+            return -code error "Column names count '[llength $columnNames]' is not the same as count '$dataNum' of data\
+                    columns"
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
                 set headerString "${headerString} { } \"[@ $columnNames $i]\""
@@ -313,7 +316,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     }
     if {([dexist $arguments lstyles])} {
         if {[llength $lineStyles]!=$dataNum} {
-            return -code error {Lines styles count is not the same as count of data columns}
+            return -code error "Lines styles count '[llength $lineStyles]' is not the same as count '$dataNum' of data\
+                    columns"
         }
     } else {
         for {set i 0} {$i<$dataNum} {incr i} {
@@ -434,7 +438,7 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     initArgStr $arguments optcmd optcmdStr {[dget $arguments optcmd]}
     set columnsNum [llength [dget $arguments columns]]
     if {$columnsNum % 2 != 0} {
-        return -code error "Number of data columns $columnsNum is odd"
+        return -code error "Number of data columns '$columnsNum' is odd"
     }
     set dataNum [= {int($columnsNum/2)}]
     set yColumnCount 0
@@ -443,16 +447,17 @@ proc ::gnuplotutil::plotXNYNMp {args} {
         set yLen [llength [@ [dget $arguments columns] [= {int($i*2+1)}]]]
         lappend xLengths $xLen
         if {$xLen != $yLen} {
-            return -code error "Number of points of y-axis data (column [= {1+$yColumnCount}]) doesn't match the number\
-                    of points of x-axis data (column $yColumnCount)"
+            return -code error "Number of points '$yLen' of y-axis data (column [= {1+$yColumnCount}]) doesn't match the\
+                    number of points '$xLen' of x-axis data (column $yColumnCount)"
         }
         incr yColumnCount
     }
     # fill output structure with values
     if {([dexist $arguments names])} {
             set headerString {}
-        if {[llength $columnNames]!=[= {$dataNum}]} {
-            return -code error {Column names count is not the same as count of data columns}
+        if {[llength $columnNames]!=$dataNum} {
+            return -code error "Column names count '[llength $columnNames]' is not the same as count '$dataNum' of data\
+                    columns"
         } else {
             for {set i 0} {$i<=$dataNum} {incr i} {
                 set headerString "${headerString} { } \"[@ $columnNames $i]\""
@@ -465,7 +470,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     }
     if {([dexist $arguments lstyles])} {
         if {[llength $lineStyles]!=$dataNum} {
-            return -code error {Lines styles count is not the same as count of data columns}
+            return -code error "Lines styles count '[llength $lineStyles]' is not the same as count '$dataNum' of data\
+                    columns"
         }
     } else {
         for {set i 0} {$i<$dataNum} {incr i} {
@@ -724,8 +730,8 @@ proc ::gnuplotutil::plotHist {x args} {
     set yColumnCount 0
     foreach val [dget $arguments columns] {
         if {[llength $val] != [llength $x]} {
-            return -code error "Number of points of y-axis data (column $yColumnCount) doesn't match the number of\
-                    points of x-axis data"
+            return -code error "Number of points '[llength $val]' of y-axis data (column $yColumnCount) doesn't match\
+                    the number of points '[llength $x]' of x-axis data"
             incr yColumnCount
         }
     }
@@ -733,7 +739,8 @@ proc ::gnuplotutil::plotHist {x args} {
     set numCol [llength [dget $arguments columns]]
     if {([dexist $arguments names])} {
         if {[llength $columnNames]!=[= {$numCol}]} {
-            return -code error {Column names count is not the same as count of data columns}
+            return -code error "Column names count '[llength $columnNames]' is not the same as count '$numCol' of data\
+                    columns"
         } else {
             foreach columnName $columnNames {
                 lappend processedNames "\"$columnName\""

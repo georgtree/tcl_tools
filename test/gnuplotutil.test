@@ -46,7 +46,7 @@ test testPlotXYN-3 {test with data of different length} -setup {
     catch {gnuplotutil::plotXYN $x -xlabel "x label" -ylabel "y label" -grid -names [list y1 y2] -columns $y1 $y2}\
             errorStr
     return $errorStr
-} -result {Number of points of y-axis data (column 0) doesn't match the number of points of x-axis data}
+} -result {Number of points '6' of y-axis data (column 0) doesn't match the number of points '7' of x-axis data}
 
 test testPlotXYN-4 {test mismatched -names length} -setup {
     set x [list 0 1 2 3 4 5 6]
@@ -56,7 +56,7 @@ test testPlotXYN-4 {test mismatched -names length} -setup {
     catch {gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list y1]\
                    -columns $y1 $y2} errorStr
     return $errorStr
-} -result {Column names count is not the same as count of data columns}
+} -result {Column names count '1' is not the same as count '2' of data columns}
 
 test testPlotXYN-5 {test with no switches} -setup {
     set x [list 0 1 2 3 4 5 6]
