@@ -36,6 +36,17 @@ proc ::gnuplotutil::initArgStr {optDict optName varName value} {
     return
 }
 
+proc ::gnuplotutil::initRangeStr {optDict optName varName} {
+    if {[dexist $optDict $optName]} {
+        lassign [dget $optDict $optName] min max
+        set str "set $optName \[${min}:${max}\]"
+        uplevel {*}[list set $varName [list $str]]
+    } else {
+        uplevel {*}[list set $varName {""}]
+    }
+    return
+}
+
 proc ::gnuplotutil::initTerminalStr {optDict varName} {
     if {[dexist $optDict terminal]} {
         uplevel set $varName [dget $optDict terminal]
@@ -89,6 +100,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     set arguments [argparse -inline {
         -xlog
         -ylog
+        -xrange=
+        -yrange=
         -background
         -inline
         {-nodelete -forbid inline}
@@ -110,6 +123,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     }
     initArgStr $arguments xlog xscaleStr {{set logscale x}}
     initArgStr $arguments ylog yscaleStr {{set logscale y}}
+    initRangeStr $arguments xrange xrangeStr
+    initRangeStr $arguments yrange yrangeStr
     initArgStr $arguments grid gridStr {{set grid}}
     initArgStr $arguments output outputStr {"set output '[dget $arguments output]'"}
     initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
@@ -192,8 +207,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     for {set i 1} {$i<$numCol} {incr i} {
         set commandStr "${commandStr}, '' using 1:[= {$i+2}] [@ $lineStyles $i] "
     }
-    set commandList [list {set mouse} $outputStr $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
-                             $yscaleStr $gridStr $commandStr {pause mouse close}]
+    set commandList [list {set mouse} $outputStr $darkmodeStr $xrangeStr $yrangeStr $optcmdStr $autoTitleStr $xlabelStr\
+                             $ylabelStr $xscaleStr $yscaleStr $gridStr $commandStr {pause mouse close}]
     set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
@@ -247,6 +262,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     set arguments [argparse -inline {
         -xlog
         -ylog
+        -xrange=
+        -yrange=
         -background
         -inline
         {-nodelete -forbid inline}
@@ -268,6 +285,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     }
     initArgStr $arguments xlog xscaleStr {{set logscale x}}
     initArgStr $arguments ylog yscaleStr {{set logscale y}}
+    initRangeStr $arguments xrange xrangeStr
+    initRangeStr $arguments yrange yrangeStr
     initArgStr $arguments grid gridStr {{set grid}}
     initArgStr $arguments output outputStr {"set output '[dget $arguments output]'"}
     initArgStr $arguments xlabel xlabelStr {"set xlabel '[dget $arguments xlabel]'"}
@@ -365,8 +384,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     for {set i 1} {$i<$dataNum} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] [@ $lineStyles $i] "
     }
-    set commandList [list {set mouse} $outputStr $darkmodeStr $optcmdStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr\
-                             $yscaleStr $gridStr $commandStr {pause mouse close}]
+    set commandList [list {set mouse} $outputStr $darkmodeStr $xrangeStr $yrangeStr $optcmdStr $autoTitleStr $xlabelStr\
+                             $ylabelStr $xscaleStr $yscaleStr $gridStr $commandStr {pause mouse close}]
     set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments background]} {
         set status [catch {exec gnuplot << "\n$commandStr\n" & } errorStr]
@@ -409,6 +428,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     set arguments [argparse -inline {
         -xlog
         -ylog
+        -xrange=
+        -yrange=
         -inline=
         -xlabel=
         -ylabel=
@@ -425,6 +446,10 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     initArgStr $arguments origin originStr {"set origin [join [dget $arguments origin] ,]"}
     initArgStr $arguments xlog xscaleStr {{set logscale x}}
     initArgStr $arguments xlog xscaleStrUnset {{unset logscale x}}
+    initRangeStr $arguments xrange xrangeStr
+    initArgStr $arguments xrange xrangeStrUnset {{unset xrange}}
+    initRangeStr $arguments yrange yrangeStr
+    initArgStr $arguments yrange yrangeStrUnset {{unset yrange}}
     initArgStr $arguments ylog yscaleStr {{set logscale y}}
     initArgStr $arguments ylog yscaleStrUnset {{unset logscale y}}
     initArgStr $arguments grid gridStr {{set grid}}
@@ -519,9 +544,9 @@ proc ::gnuplotutil::plotXNYNMp {args} {
      for {set i 1} {$i<$dataNum} {incr i} {
         set commandStr  "${commandStr}, '' using [= {$i*2+1}]:[= {$i*2+2}] [@ $lineStyles $i] "
     }
-    set commandList [list $optcmdStr $sizeStr $originStr $autoTitleStr $xlabelStr $ylabelStr $xscaleStr $yscaleStr\
-                             $gridStr $commandStr $xlabelStrUnset $ylabelStrUnset $xscaleStrUnset $yscaleStrUnset\
-                             $gridStrUnset]
+    set commandList [list $optcmdStr $sizeStr $originStr $autoTitleStr $xlabelStr $ylabelStr $xrangeStr $yrangeStr\
+                             $xscaleStr $yscaleStr $gridStr $commandStr $xlabelStrUnset $ylabelStrUnset $xscaleStrUnset\
+                             $yscaleStrUnset $gridStrUnset $xrangeStrUnset $yrangeStrUnset]
     set commandStr [join [lmap elem $commandList {= {$elem eq {} ? [continue] : $elem}}] "\n"]
     if {[dexist $arguments inline]} {
         return [dict create cmdString $commandStr]
