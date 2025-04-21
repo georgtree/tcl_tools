@@ -11,7 +11,7 @@ test testPlotXYN-1 {test for all on switches} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list y1 y2]\
+    set result [gnuplotutil::plotXYN $x -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list y1 y2]\
                         -columns $y1 $y2]
     return $result
 } -result {set mouse
@@ -43,7 +43,7 @@ test testPlotXYN-3 {test with data of different length} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125]
 } -body {
-    catch {gnuplotutil::plotXYN $x -xlabel "x label" -ylabel "y label" -grid -names [list y1 y2] -columns $y1 $y2}\
+    catch {gnuplotutil::plotXYN $x -xlabel {x label} -ylabel {y label} -grid -names [list y1 y2] -columns $y1 $y2}\
             errorStr
     return $errorStr
 } -result {Number of points '6' of y-axis data (column 0) doesn't match the number of points '7' of x-axis data}
@@ -53,7 +53,7 @@ test testPlotXYN-4 {test mismatched -names length} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    catch {gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list y1]\
+    catch {gnuplotutil::plotXYN $x -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list y1]\
                    -columns $y1 $y2} errorStr
     return $errorStr
 } -result {Column names count '1' is not the same as count '2' of data columns}
@@ -235,7 +235,7 @@ test testPlotXNYN-1 {test for all on switches} -setup {
     set x2 [list 0 1 2 3 4 5 6 7]
     set y2 [list 0 1 8 27 64 125 216 350]
 } -body {
-    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list y1 y2]\
+    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list y1 y2]\
                         -columns $x1 $y1 $x2 $y2]
     return $result
 } -result {set mouse
@@ -255,7 +255,7 @@ test testPlotXNYN-2 {test for all on switches} -setup {
     set x2 [list 0 1 2 3 4 5 6 7]
     set y2 [list 0 1 8 27 64 125 216 350]
 } -body {
-    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid\
+    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel {x label} -ylabel {y label} -darkmode -grid\
                         -names [list y1 y2] -columns $x1 $y1 $x2 $y2]
     return $result
 } -result {set mouse
@@ -280,7 +280,7 @@ test testPlotXNYN-3 {test for all on switches} -setup {
     set x2 [list 0 1 2 3 4 5 6 7]
     set y2 [list 0 1 8 27 64 125 216 350]
 } -body {
-    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid\
+    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel {x label} -ylabel {y label} -darkmode -grid\
                         -names [list y1 y2] -inline -columns $x1 $y1 $x2 $y2]
     return $result
 } -result {set mouse
@@ -317,9 +317,9 @@ test testPlotXNYN-4 {test for all on switches} -setup {
     set x2 [list 0 1 2 3 4 5 6 7]
     set y2 [list 0 1 8 27 64 125 216 350]
 } -body {
-    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid\
-                        -names [list {y1 long name} {y2 long name}] -inline -lstyles [list {lt 2 lc rgb "red" lw 3} {lt 2 lc rgb "orange" lw 2}]\
-                        -columns $x1 $y1 $x2 $y2]
+    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel {x label} -ylabel {y label} -darkmode -grid\
+                        -names [list {y1 long name} {y2 long name}] -inline\
+                        -lstyles [list {lt 2 lc rgb "red" lw 3} {lt 2 lc rgb "orange" lw 2}] -columns $x1 $y1 $x2 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced background rgb 'black'
@@ -355,9 +355,9 @@ test testPlotXNYN-5 {test for all on switches} -setup {
     set x2 [list 0 1 2 3 4 5 6 7]
     set y2 [list 0 1 8 27 64 125 216 350]
 } -body {
-    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -xrange {5 9} -yrange {10 40}\
-                        -names [list {y1 long name} {y2 long name}] -inline -lstyles [list {lt 2 lc rgb "red" lw 3} {lt 2 lc rgb "orange" lw 2}]\
-                        -columns $x1 $y1 $x2 $y2]
+    set result [gnuplotutil::plotXNYN -xlog -ylog -xlabel {x label} -ylabel {y label} -darkmode -grid -xrange {5 9}\
+                        -yrange {10 40} -names [list {y1 long name} {y2 long name}] -inline\
+                        -lstyles [list {lt 2 lc rgb "red" lw 3} {lt 2 lc rgb "orange" lw 2}] -columns $x1 $y1 $x2 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced background rgb 'black'
@@ -399,10 +399,10 @@ test testMultiplotXNYN-1 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -plots\
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list {name1 long} name2 name3]\
-                                 -columns $x1 $y1 $x2 $y2 $x3 $y3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid\
+                                 -names [list {name1 long} name2 name3] -columns $x1 $y1 $x2 $y2 $x3 $y3]\
                         [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced
@@ -447,10 +447,10 @@ test testMultiplotXNYN-2 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -darkmode -plots \
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -ylabel {y label} -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced background rgb 'black'
@@ -500,10 +500,10 @@ test testMultiplotXNYN-3 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -darkmode -background -nodelete -plots\
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -ylabel {y label} -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced background rgb 'black'
@@ -559,12 +559,12 @@ test testMultiplotXNYN-4 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -darkmode -plots \
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2]\
+                        [list -ylabel {y label} -grid -names [list name1 name2]\
                                  -lstyles [list {lt 2 lc rgb "red" lw 3} {lt 2 lc rgb "orange" lw 2}]\
                                  -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced background rgb 'black'
@@ -614,10 +614,10 @@ test testMultiplotXNYN-5 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -inline -plots\
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -ylabel {y label} -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced
@@ -700,10 +700,10 @@ test testMultiplotXNYN-6 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -plots\
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -optcmd {set format x '%8.6f'} -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -columns $x3 $y3]\
+                        [list -ylabel {y label} -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced
@@ -749,12 +749,12 @@ test testMultiplotXNYN-7 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -size {1200 1000} -plots\
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -optcmd {set format x '%8.6f'} -size {0.5 0.2} -origin {0.1 0.01}\
                                  -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -grid -names [list name1 name2] -size {0.5 0.2} -origin {0.1 0.21}\
+                        [list -ylabel {y label} -grid -names [list name1 name2] -size {0.5 0.2} -origin {0.1 0.21}\
                                  -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -names [list name3] -size {0.5 0.2} -origin {0.1 0.42}\
+                        [list -xlabel {x label} -ylabel {y label} -names [list name3] -size {0.5 0.2} -origin {0.1 0.42}\
                                  -columns $x3 $y3]\
                         [list -grid -names [list name2] -size {0.5 0.2} -origin {0.1 0.63} -columns $x2 $y2]]
     return $result
@@ -809,10 +809,10 @@ test testMultiplotXNYN-8 {general test} -setup {
     set y3 [list 49 64 81 100]
 } -body {
     set result [gnuplotutil::multiplotXNYN -layout {2 2} -plots\
-                        [list -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list name1 name2 name3]\
+                        [list -xlog -ylog -xlabel {x label} -ylabel {y label} -grid -names [list name1 name2 name3]\
                                  -optcmd {set format x '%8.6f'} -columns $x1 $y1 $x2 $y2 $x3 $y3]\
-                        [list -ylabel "y label" -xrange {2 10} -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
-                        [list -xlabel "x label" -ylabel "y label" -yrange {10 50} -names [list name3] -columns $x3 $y3]\
+                        [list -ylabel {y label} -xrange {2 10} -grid -names [list name1 name2] -columns $x1 $y1 $x2 $y2]\
+                        [list -xlabel {x label} -ylabel {y label} -yrange {10 50} -names [list name3] -columns $x3 $y3]\
                         [list -grid -names [list name2] -columns $x2 $y2]]
     return $result
 } -result {set term x11 size 800,600 noenhanced
@@ -859,8 +859,8 @@ test testPlotHist-1 {test clustered style} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label"\
-                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel {x label}\
+                        -ylabel {y label} -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
@@ -878,7 +878,7 @@ test testPlotHist-2 {test rowstacked style} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style rowstacked -xlabel "x label" -ylabel "y label"\
+    set result [gnuplotutil::plotHist $x1 -style rowstacked -xlabel {x label} -ylabel {y label}\
                         -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
@@ -896,8 +896,9 @@ test testPlotHist-3 {test columnstacked style} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style columnstacked -fill solid -xlabel "x label"\
-                        -ylabel "y label" -names [list {y1 long name} {y2 long name}] -size [list 1800 1000] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style columnstacked -fill solid -xlabel {x label}\
+                        -ylabel {y label} -names [list {y1 long name} {y2 long name}] -size [list 1800 1000]\
+                        -columns $y1 $y2]
     return $result
 } -result ""
 
@@ -906,8 +907,8 @@ test testPlotHist-4 {test clustered style with border} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -border 2 -xlabel "x label"\
-                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -fill solid -border 2 -xlabel {x label}\
+                        -ylabel {y label} -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
@@ -925,8 +926,8 @@ test testPlotHist-5 {test boxwidth} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -xlabel "x label"\
-                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -xlabel {x label}\
+                        -ylabel {y label} -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
@@ -945,8 +946,8 @@ test testPlotHist-6 {test style fill with density} -setup {
     set y1 [list 0 1 4 9 16 25 36]
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
-    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -density 0.5 -xlabel "x label"\
-                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+    set result [gnuplotutil::plotHist $x1 -style clustered -boxwidth 0.5 -fill solid -density 0.5 -xlabel {x label}\
+                        -ylabel {y label} -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
@@ -966,8 +967,8 @@ test testPlotHist-7 {test style fill with density and transparent modificator} -
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
     set result [gnuplotutil::plotHist $x1 -style rowstacked -boxwidth 0.5 -fill solid -transparent -density 0.1\
-                        -xlabel "x label" \
-                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+                        -xlabel {x label} \
+                        -ylabel {y label} -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
@@ -987,8 +988,8 @@ test testPlotHist-8 {test with grid} -setup {
     set y2 [list 0 1 8 27 64 125 216]
 } -body {
     set result [gnuplotutil::plotHist $x1 -grid -style rowstacked -boxwidth 0.5 -fill solid -transparent -density 0.1\
-                        -xlabel "x label" \
-                        -ylabel "y label" -names [list y1 y2] -columns $y1 $y2]
+                        -xlabel {x label} \
+                        -ylabel {y label} -names [list y1 y2] -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
@@ -1010,8 +1011,8 @@ test testPlotHist-9 {test with optional command} -setup {
     set optCommand "set xtics font 'Helvetica,5'"
 } -body {
     set result [gnuplotutil::plotHist $x1 -grid -style rowstacked -boxwidth 0.5 -fill solid -transparent -density 0.1\
-                        -xlabel "x label" \
-                        -ylabel "y label" -names [list y1 y2] -optcmd $optCommand -columns $y1 $y2]
+                        -xlabel {x label} \
+                        -ylabel {y label} -names [list y1 y2] -optcmd $optCommand -columns $y1 $y2]
     return $result
 } -result {set mouse
 set term x11 size 800,600 noenhanced
