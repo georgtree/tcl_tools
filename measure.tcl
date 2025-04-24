@@ -204,7 +204,8 @@ proc ::measure::measure {args} {
         \{-pp= -forbid \{[Allow pp $keysList]\}\}
         \{-rms= -forbid \{[Allow rms $keysList]\}\}
         \{-minat= -forbid \{[Allow minat $keysList]\}\}
-        \{-maxat= -forbid \{[Allow maxat $keysList]\}\}"
+        \{-maxat= -forbid \{[Allow maxat $keysList]\}\}
+        \{-between= -forbid \{[Allow between $keysList]\}\}"
     if {[info exists at]} {
         if {![info exists find] && ![info exists deriv]} {
             return -code error "When -at switch is presented, -find switch or -deriv switch is required"
@@ -377,9 +378,10 @@ proc ::measure::measure {args} {
             {-vec= -required}
             {-from= -validate {[string is double $arg]}}
             {-to= -validate {[string is double $arg]}}
+            {-cum -boolean}
         } $integ]
         FromTo $integArgs $data $xname
-        return [Integ [dget $data $xname] [dget $data [dget $integArgs vec]] $from $to]
+        return [Integ [dget $data $xname] [dget $data [dget $integArgs vec]] $from $to [dget $integArgs cum]]
     } elseif {[info exists avg]} {
         set avgArgs [argparse -inline {
             {-vec= -required}
@@ -396,7 +398,8 @@ proc ::measure::measure {args} {
         } $rms]
         FromTo $rmsArgs $data $xname
         return [Rms [dget $data $xname] [dget $data [dget $rmsArgs vec]] $from $to]
-    } elseif {[info exists min] || [info exists max] || [info exists pp] || [info exists minat] || [info exists maxat]} {
+    } elseif {[info exists min] || [info exists max] || [info exists pp] || [info exists minat] || [info exists maxat]\
+                      || [info exists between]} {
         if {[info exists min]} {
             set type min
             set argsDict $min
@@ -412,6 +415,9 @@ proc ::measure::measure {args} {
         } elseif {[info exists maxat]} {
             set type maxat
             set argsDict $maxat
+        } elseif {[info exists between]} {
+            set type between
+            set argsDict $between
         }
         set resDict [argparse -inline {
             {-vec= -required}
@@ -788,7 +794,7 @@ proc ::measure::DerivAt {x val derivVec} {
     }
 }
 
-proc ::measure::Integ {x y xstart xend} {
+proc ::measure::Integ {x y xstart xend {cum false}} {
     set xLen [llength $x]
     set yLen [llength $y]
     if {$xLen != $yLen} {
@@ -823,20 +829,36 @@ proc ::measure::Integ {x y xstart xend} {
                 set xi $xstart
                 set yi $ystart
                 set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
+                if {$cum} {
+                    dict lappend resultCum x $xi 
+                    dict lappend resultCum y $result
+                }
                 continue
             } elseif {$endFlagFound} {
                 if {$i==$iend} {
                     set xip1 $xend
                     set yip1 $yend
                     set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
+                    if {$cum} {
+                        dict lappend resultCum x $xip1
+                        dict lappend resultCum y $result
+                    }
                     break
                 }
             } else {
                 set result [= {$result+($yip1+$yi)/2.0*($xip1-$xi)}]
+                if {$cum} {
+                    dict lappend resultCum x $xi
+                    dict lappend resultCum y $result
+                }
             }
         }
     }
-    return $result
+    if {$cum} {
+        return $resultCum
+    } else {
+        return $result
+    }
 }
 
 proc ::measure::Avg {x y xstart xend} {
@@ -863,7 +885,6 @@ proc ::measure::MinMaxPPMinAtMaxAt {x y xstart xend type} {
     } elseif {$xstart>=$xend} {
         return -code error "Start of the interval should be lower than the end of the interval"
     }
-    set result 0.0
     set startFlagFound false
     set endFlagFound false
     for {set i 0} {$i<$xLen-1} {incr i} {
@@ -896,6 +917,10 @@ proc ::measure::MinMaxPPMinAtMaxAt {x y xstart xend type} {
             } elseif {$type eq {maxat}} {
                 lappend xTargetList $xstart {*}[lrange $x [= {$istart+1}] $iend] $xend
                 return [@ $xTargetList [lsearch -real -exact $targetList [tcl::mathfunc::max {*}$targetList]]]
+            } elseif {$type eq {between}} {
+                dict append result x [list $xstart {*}[lrange $x [= {$istart+1}] $iend] $xend]
+                dict append result y [list $ystart {*}[lrange $y [= {$istart+1}] $iend] $yend]
+                return $result
             }
         }
     }
