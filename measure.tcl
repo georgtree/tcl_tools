@@ -62,6 +62,7 @@ proc ::measure::measure {args} {
     #  -pp - contains conditions for finding peak to peak value in the interval
     #  -minat - contains conditions for finding time of minimum value in the interval
     #  -maxat - contains conditions for finding time of maximum value in the interval
+    #  -between - contains conditions for fetching data in the interval
     # This procedure imitates the .meas command from SPICE3 and Ngspice in particular. It has mutiple modes, and each mod
     #  could have different forms:
     #  ###### **Trigger-Target**
@@ -176,7 +177,7 @@ proc ::measure::measure {args} {
     # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5
     # ```
     # Synopsis: -xname value -data value -deriv value -at value
-    #  ###### **Min|Max|PP|MinAt|MaxAt**
+    #  ###### **Min|Max|PP|MinAt|MaxAt|Between**
     #  This mode is combination of many modes with the same interface.
     #   -vec - name of vector in data dictionary
     #   -from - start of the range in which search happens, default is minimum value of x.
@@ -185,9 +186,21 @@ proc ::measure::measure {args} {
     # ```
     # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -avg {-vec y1 -from 1 -to 5}
     # ```
-    # Synopsis: -xname value -data value -avg|rms|pp|min|max|minat|maxat \{-vec value ?-td value? ?-from value?
+    # In **Between** mode, the x and y values are returned within specified interval.
+    # Synopsis: -xname value -data value -avg|rms|pp|min|max|minat|maxat|between \{-vec value ?-td value? ?-from value?
     #   ?-to value?\}
-    set keysList {trig targ find when at integ deriv avg min max pp rms minat maxat}
+    #  ###### **Integ**
+    #  This mode is combination of many modes with the same interface.
+    #   -vec - name of vector in data dictionary
+    #   -from - start of the integration range, default is minimum value of x.
+    #   -to - end of the integration range, default is maximum value of x.
+    #   -cum - optional flag to return cumulative integration result list instead of thhe final value
+    # Examples of usages:
+    # ```
+    # ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -avg {-vec y1 -from 1 -to 5}
+    # ```
+    # Synopsis: -xname value -data value -integ \{-vec value ?-td value? ?-from value? ?-to value? ?-cum?\}
+    set keysList {trig targ find when at integ deriv avg min max pp rms minat maxat between}
     argparse "
         {-xname= -required}
         {-data= -required}
