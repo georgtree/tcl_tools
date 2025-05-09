@@ -14,7 +14,7 @@ Packages are written in pure Tcl and relies on Tcllib. The only necessary extern
 the `argparse` package.
 
 - [Tcllib](https://www.tcl.tk/software/tcllib/)
-- [argparse](https://wiki.tcl-lang.org/page/argparse)
+- [argparse](https://github.com/georgtree/argparse)
 
 To install, run 
 ```bash
