@@ -34,7 +34,7 @@ the argparse package\&.
 \fITcllib\fP [URL: https://www\&.tcl\&.tk/software/tcllib/]
 .TP
 \(bu
-\fIargparse\fP [URL: https://wiki\&.tcl-lang\&.org/page/argparse]
+\fIargparse\fP [URL: https://github\&.com/georgtree/argparse]
 .PP
 To install, run
 .PP
