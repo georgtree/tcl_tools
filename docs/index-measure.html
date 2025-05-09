@@ -295,24 +295,25 @@
     <i><font color=#76a396># ```</font></i>
     <i><font color=#76a396># Synopsis: -xname value -data value -integ \{-vec value ?-td value? ?-from value? ?-to value? ?-cum?\}</font></i>
     <b><font color=#ffa500>set</font></b> keysList {trig targ find when at integ deriv avg min max pp rms minat maxat between}
-    argparse <font color=#90ee90>&quot;</font>
-<font color=#90ee90>        <font color=#f1b479>{</font>-xname= -required<font color=#f1b479>}</font></font>
-<font color=#90ee90>        <font color=#f1b479>{</font>-data= -required<font color=#f1b479>}</font></font>
-<font color=#90ee90>        \{-trig= -require targ -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>trig targ<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-targ= -require trig -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>trig targ<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-find= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-when= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find when deriv<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-at= -validate <font color=#f1b479>{</font>\[string is double \$arg\]<font color=#f1b479>}</font> -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>find deriv at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-integ= -forbid \{<font color=#f1b479>[</font>Allow integ <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-deriv= -forbid \{<font color=#f1b479>[</font>Allow <font color=#f1b479>{</font>deriv when at<font color=#f1b479>}</font> <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-avg= -forbid \{<font color=#f1b479>[</font>Allow avg <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-min= -forbid \{<font color=#f1b479>[</font>Allow min <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-max= -forbid \{<font color=#f1b479>[</font>Allow max <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-pp= -forbid \{<font color=#f1b479>[</font>Allow pp <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-rms= -forbid \{<font color=#f1b479>[</font>Allow rms <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-minat= -forbid \{<font color=#f1b479>[</font>Allow minat <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-maxat= -forbid \{<font color=#f1b479>[</font>Allow maxat <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}</font>
-<font color=#90ee90>        \{-between= -forbid \{<font color=#f1b479>[</font>Allow between <font color=#f1b479>$</font>keysList<font color=#f1b479>]</font>\}\}&quot;</font>
+    argparse {
+        {<font color=#b9b96e>-xname</font>= <font color=#b9b96e>-required</font>}
+        {<font color=#b9b96e>-data</font>= <font color=#b9b96e>-required</font>}
+        {<font color=#b9b96e>-trig</font>= <font color=#b9b96e>-require</font> targ <font color=#b9b96e>-allow</font> {data xname targ}}
+        {<font color=#b9b96e>-targ</font>= <font color=#b9b96e>-require</font> trig <font color=#b9b96e>-allow</font> {data xname trig}}
+        {<font color=#b9b96e>-find</font>= <font color=#b9b96e>-allow</font> {data xname when at}}
+        {<font color=#b9b96e>-when</font>= <font color=#b9b96e>-allow</font> {data xname find deriv}}
+        {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-type</font> double <font color=#b9b96e>-allow</font> {data xname find deriv}}
+        {<font color=#b9b96e>-integ</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-deriv</font>= <font color=#b9b96e>-allow</font> {data xname deriv when at}}
+        {<font color=#b9b96e>-avg</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-min</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-max</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-pp</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-rms</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-minat</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-maxat</font>= <font color=#b9b96e>-allow</font> {data xname}}
+        {<font color=#b9b96e>-between</font>= <font color=#b9b96e>-allow</font> {data xname}}
+    }
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists at]} {
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>info</font></b> exists find] && ![<b><font color=#ffa500>info</font></b> exists deriv]} {
             <b><font color=#fe6efe>return</font></b> <font color=#b9b96e>-code</font> error <font color=#90ee90>&quot;When -at switch is presented, -find switch or -deriv switch is required&quot;</font>
@@ -325,10 +326,10 @@
     }
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists trig]} {
         <b><font color=#ffa500>set</font></b> definition {
-            {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-forbid</font> {vec val delay cross rise fall} <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-forbid</font> {vec val delay cross rise fall} <font color=#b9b96e>-type</font> double}
             {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> val}
-            {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val} <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val} <font color=#b9b96e>-type</font> double}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall} <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall} <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise} <font color=#b9b96e>-forbid</font> at <font color=#b9b96e>-require</font> {vec val}}
@@ -380,9 +381,9 @@
             {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-require</font> vec <font color=#b9b96e>-forbid</font> {vec1 vec2}}
             {<font color=#b9b96e>-vec1</font>= <font color=#b9b96e>-require</font> vec2 <font color=#b9b96e>-forbid</font> {vec val}}
             {<font color=#b9b96e>-vec2</font>= <font color=#b9b96e>-require</font> vec1 <font color=#b9b96e>-forbid</font> {vec val}}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-type</font> double}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise}}
@@ -411,9 +412,9 @@
             {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-require</font> vec <font color=#b9b96e>-forbid</font> {vec1 vec2}}
             {<font color=#b9b96e>-vec1</font>= <font color=#b9b96e>-require</font> vec2 <font color=#b9b96e>-forbid</font> {vec val}}
             {<font color=#b9b96e>-vec2</font>= <font color=#b9b96e>-require</font> vec1 <font color=#b9b96e>-forbid</font> {vec val}}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-type</font> double}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise}}
@@ -442,9 +443,9 @@
             {<font color=#b9b96e>-val</font>= <font color=#b9b96e>-require</font> vec <font color=#b9b96e>-forbid</font> {vec1 vec2}}
             {<font color=#b9b96e>-vec1</font>= <font color=#b9b96e>-require</font> vec2 <font color=#b9b96e>-forbid</font> {vec val}}
             {<font color=#b9b96e>-vec2</font>= <font color=#b9b96e>-require</font> vec1 <font color=#b9b96e>-forbid</font> {vec val}}
-            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-td</font>|delay= <font color=#b9b96e>-default</font> 0.0 <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-type</font> double}
             {<font color=#b9b96e>-cross</font>= <font color=#b9b96e>-forbid</font> {rise fall}}
             {<font color=#b9b96e>-rise</font>= <font color=#b9b96e>-forbid</font> {cross fall}}
             {<font color=#b9b96e>-fall</font>= <font color=#b9b96e>-forbid</font> {cross rise}}
@@ -471,8 +472,8 @@
     } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists integ]} {
         <b><font color=#ffa500>set</font></b> integArgs [argparse <font color=#b9b96e>-inline</font> {
             {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-required</font>}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-type</font> double}
             {<font color=#b9b96e>-cum</font> <font color=#b9b96e>-boolean</font>}
         } <font color=#f1b479>$integ</font>]
         FromTo <font color=#f1b479>$integArgs</font> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>
@@ -480,16 +481,16 @@
     } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists avg]} {
         <b><font color=#ffa500>set</font></b> avgArgs [argparse <font color=#b9b96e>-inline</font> {
             {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-required</font>}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-type</font> double}
         } <font color=#f1b479>$avg</font>]
         FromTo <font color=#f1b479>$avgArgs</font> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>
         <b><font color=#fe6efe>return</font></b> [Avg [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$avgArgs</font> vec]] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]
     } <b><font color=#ffa500>elseif</font></b> {[<b><font color=#ffa500>info</font></b> exists rms]} {
         <b><font color=#ffa500>set</font></b> rmsArgs [argparse <font color=#b9b96e>-inline</font> {
             {<font color=#b9b96e>-vec</font>= <font color=#b9b96e>-required</font>}
-            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
-            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-validate</font> {[<b><font color=#ffa500>string</font></b> is double <font color=#f1b479>$arg</font>]}}
+            {<font color=#b9b96e>-from</font>= <font color=#b9b96e>-type</font> double}
+            {<font color=#b9b96e>-to</font>= <font color=#b9b96e>-type</font> double}
         } <font color=#f1b479>$rms</font>]
         FromTo <font color=#f1b479>$rmsArgs</font> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>
         <b><font color=#fe6efe>return</font></b> [Rms [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> <font color=#f1b479>$xname</font>] [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$data</font> [<b><font color=#ffa500>dget</font></b> <font color=#f1b479>$rmsArgs</font> vec]] <font color=#f1b479>$from</font> <font color=#f1b479>$to</font>]

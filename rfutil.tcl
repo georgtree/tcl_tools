@@ -582,7 +582,7 @@ proc ::rfutil::mag {data args} {
     # Returns list of magnitudes
     #
     set arguments [argparse -inline {
-        {-db -boolean} }]
+        {-db -boolean}}]
     set len [llength $data]
     if {[dget $arguments db]==1} {
         for {set i 0} {$i<$len} {incr i} {

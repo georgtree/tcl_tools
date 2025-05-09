@@ -9,6 +9,8 @@ tcl::mathfunc - Commands in namespace tcl::mathfunc
 .br
 \fBdivlsc\fP \fIlist scalar\fP
 .br
+\fBli\fP \fIlist index ?args?\fP
+.br
 \fBlindex\fP \fIlist index ?args?\fP
 .br
 \fBllength\fP \fIlist\fP
@@ -85,6 +87,25 @@ Not documented\&.
 \fBReturn value\fR
 .PP
 list
+.PP
+.RS -4n
+\fBli\fR (::tcl::mathfunc)
+.RE
+.PP
+Wraps lindex command into expr function
+.RS 4n\fBli\fP \fIlist index ?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.TP
+list
+Not documented\&.
+.TP
+index
+Not documented\&.
+.RE
 .PP
 .RS -4n
 \fBlindex\fR (::tcl::mathfunc)

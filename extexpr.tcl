@@ -142,6 +142,10 @@ namespace eval tcl::mathfunc {
         # Wraps `lindex` command into expr function
         ::lindex $list $index {*}$args
     }
+    proc li {list index args} {
+        # Wraps `lindex` command into expr function
+        ::lindex $list $index {*}$args
+    }
     proc lrange {list first last} {
         # Wraps `lrange` command into expr function
         ::lrange $list $first $last

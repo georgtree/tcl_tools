@@ -151,7 +151,7 @@ gnuplotutil::multiplotXNYN {2 2} <font color=#b9b96e>-plots</font> <font color=#
         <font color=#b9b96e>-inline</font>
         <font color=#b9b96e>-optcmd</font>=
         <font color=#b9b96e>-terminal</font>=
-        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600}}
+        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600} <font color=#b9b96e>-type</font> list}
         <font color=#b9b96e>-darkmode</font>
         {<font color=#b9b96e>-plots</font> <font color=#b9b96e>-catchall</font>}
     }]
@@ -287,22 +287,22 @@ gnuplotutil::plotHist <font color=#f1b479>$x1</font> <font color=#b9b96e>-style<
         <font color=#b9b96e>-xlabel</font>=
         <font color=#b9b96e>-ylabel</font>=
         {<font color=#b9b96e>-style</font>= <font color=#b9b96e>-enum</font> {clustered rowstacked columnstacked} <font color=#b9b96e>-required</font>}
-        {<font color=#b9b96e>-gap</font>= <font color=#b9b96e>-require</font> {style}}
+        {<font color=#b9b96e>-gap</font>= <font color=#b9b96e>-require</font> style}
         <font color=#b9b96e>-optcmd</font>=
         <font color=#b9b96e>-grid</font>
         <font color=#b9b96e>-background</font>
         <font color=#b9b96e>-inline</font>
         <font color=#b9b96e>-terminal</font>=
-        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600}}
+        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600} <font color=#b9b96e>-type</font> list}
         {<font color=#b9b96e>-path</font>= <font color=#b9b96e>-default</font> {}}
         <font color=#b9b96e>-darkmode</font>
         <font color=#b9b96e>-output</font>=
         <font color=#b9b96e>-names</font>=
         <font color=#b9b96e>-boxwidth</font>=
         {<font color=#b9b96e>-fill</font>= <font color=#b9b96e>-enum</font> {empty solid}}
-        {<font color=#b9b96e>-density</font>= <font color=#b9b96e>-require</font> {fill}}
-        {<font color=#b9b96e>-transparent</font> <font color=#b9b96e>-require</font> {fill}}
-        {<font color=#b9b96e>-border</font>= <font color=#b9b96e>-require</font> {fill}}
+        {<font color=#b9b96e>-density</font>= <font color=#b9b96e>-require</font> fill}
+        {<font color=#b9b96e>-transparent</font> <font color=#b9b96e>-require</font> fill}
+        {<font color=#b9b96e>-border</font>= <font color=#b9b96e>-require</font> fill}
         {<font color=#b9b96e>-columns</font> <font color=#b9b96e>-catchall</font>}
     }]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> background]} {
@@ -440,8 +440,10 @@ gnuplotutil::plotHist <font color=#f1b479>$x1</font> <font color=#b9b96e>-style<
 <tr><td><code><font color=#b9b96e>-terminal</font></code></td><td>Selects terminal, default 'x11' on Linux and 'windows' on Windows.</td></tr>
 <tr><td><code><font color=#b9b96e>-xlabel</font></code></td><td>Provides x-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#b9b96e>-xlog</font></code></td><td>Enables log scale of x axis.</td></tr>
+<tr><td><code><font color=#b9b96e>-xrange</font></code></td><td>Provides minimum and maximum values of x-axis, must be list with two elements.</td></tr>
 <tr><td><code><font color=#b9b96e>-ylabel</font></code></td><td>Provides y-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#b9b96e>-ylog</font></code></td><td>Enables log scale of y axis.</td></tr>
+<tr><td><code><font color=#b9b96e>-yrange</font></code></td><td>Provides minimum and maximum values of y-axis, must be list with two elements.</td></tr>
 </table>
 <h5 class='ruff'>Description</h5>
 <figure  class='ruff-snippet ruff-figure'><pre class='ruff'>Example:
@@ -460,6 +462,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
     <i><font color=#76a396># Plots 2D graphs in Gnuplot with individual x-values.</font></i>
     <i><font color=#76a396>#  -xlog - enables log scale of x axis</font></i>
     <i><font color=#76a396>#  -ylog - enables log scale of y axis</font></i>
+    <i><font color=#76a396>#  -xrange - provides minimum and maximum values of x-axis, must be list with two elements</font></i>
+    <i><font color=#76a396>#  -yrange - provides minimum and maximum values of y-axis, must be list with two elements</font></i>
     <i><font color=#76a396>#  -background - enables running gnuplot in background, requires -nodelete or -inline switch</font></i>
     <i><font color=#76a396>#  -inline - provides data directly in command string, without creating temporary file</font></i>
     <i><font color=#76a396>#  -nodelete - disables deleting of temporary file after end of plotting</font></i>
@@ -493,8 +497,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
     <b><font color=#ffa500>set</font></b> arguments [argparse <font color=#b9b96e>-inline</font> {
         <font color=#b9b96e>-xlog</font>
         <font color=#b9b96e>-ylog</font>
-        <font color=#b9b96e>-xrange</font>=
-        <font color=#b9b96e>-yrange</font>=
+        {<font color=#b9b96e>-xrange</font>= <font color=#b9b96e>-type</font> list}
+        {<font color=#b9b96e>-yrange</font>= <font color=#b9b96e>-type</font> list}
         <font color=#b9b96e>-background</font>
         <font color=#b9b96e>-inline</font>
         {<font color=#b9b96e>-nodelete</font> <font color=#b9b96e>-forbid</font> inline}
@@ -502,13 +506,13 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
         <font color=#b9b96e>-ylabel</font>=
         <font color=#b9b96e>-optcmd</font>=
         <font color=#b9b96e>-terminal</font>=
-        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600}}
+        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600} <font color=#b9b96e>-type</font> list}
         <font color=#b9b96e>-grid</font>
         <font color=#b9b96e>-darkmode</font>
         <font color=#b9b96e>-output</font>=
         {<font color=#b9b96e>-path</font>= <font color=#b9b96e>-default</font> {}}
-        <font color=#b9b96e>-names</font>=
-        <font color=#b9b96e>-lstyles</font>=
+        {<font color=#b9b96e>-names</font>= <font color=#b9b96e>-type</font> list}
+        {<font color=#b9b96e>-lstyles</font>= <font color=#b9b96e>-type</font> list}
         {<font color=#b9b96e>-columns</font> <font color=#b9b96e>-catchall</font>}
     }]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> background]} {
@@ -644,8 +648,10 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
 <tr><td><code><font color=#b9b96e>-size</font></code></td><td>Set size of the subplot.</td></tr>
 <tr><td><code><font color=#b9b96e>-xlabel</font></code></td><td>Provides x-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#b9b96e>-xlog</font></code></td><td>Enables log scale of x axis.</td></tr>
+<tr><td><code><font color=#b9b96e>-xrange</font></code></td><td>Provides minimum and maximum values of x-axis, must be list with two elements.</td></tr>
 <tr><td><code><font color=#b9b96e>-ylabel</font></code></td><td>Provides y-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#b9b96e>-ylog</font></code></td><td>Enables log scale of y axis.</td></tr>
+<tr><td><code><font color=#b9b96e>-yrange</font></code></td><td>Provides minimum and maximum values of y-axis, must be list with two elements.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list that contains command script and name of data file</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_gnuplotutil_plotXNYNMp' href="javascript:toggleSource('gnuplotutil_plotXNYNMp')">Show source</a></p>
@@ -655,6 +661,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
     <i><font color=#76a396>#  for individual plots</font></i>
     <i><font color=#76a396>#  -xlog - enables log scale of x axis</font></i>
     <i><font color=#76a396>#  -ylog - enables log scale of y axis</font></i>
+    <i><font color=#76a396>#  -xrange - provides minimum and maximum values of x-axis, must be list with two elements</font></i>
+    <i><font color=#76a396>#  -yrange - provides minimum and maximum values of y-axis, must be list with two elements</font></i>
     <i><font color=#76a396>#  -xlabel - provides x-axis label to display, string must be provided after it</font></i>
     <i><font color=#76a396>#  -ylabel - provides y-axis label to display, string must be provided after it</font></i>
     <i><font color=#76a396>#  -grid - enables display of grid</font></i>
@@ -675,8 +683,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
     <b><font color=#ffa500>set</font></b> arguments [argparse <font color=#b9b96e>-inline</font> {
         <font color=#b9b96e>-xlog</font>
         <font color=#b9b96e>-ylog</font>
-        <font color=#b9b96e>-xrange</font>=
-        <font color=#b9b96e>-yrange</font>=
+        {<font color=#b9b96e>-xrange</font>= <font color=#b9b96e>-type</font> list}
+        {<font color=#b9b96e>-yrange</font>= <font color=#b9b96e>-type</font> list}
         <font color=#b9b96e>-inline</font>=
         <font color=#b9b96e>-xlabel</font>=
         <font color=#b9b96e>-ylabel</font>=
@@ -685,8 +693,8 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
         <font color=#b9b96e>-origin</font>=
         <font color=#b9b96e>-optcmd</font>=
         {<font color=#b9b96e>-path</font>= <font color=#b9b96e>-default</font> {}}
-        <font color=#b9b96e>-names</font>=
-        <font color=#b9b96e>-lstyles</font>=
+        {<font color=#b9b96e>-names</font>= <font color=#b9b96e>-type</font> list}
+        {<font color=#b9b96e>-lstyles</font>= <font color=#b9b96e>-type</font> list}
         {<font color=#b9b96e>-columns</font> <font color=#b9b96e>-catchall</font>}
     }]
     initArgStr <font color=#f1b479>$arguments</font> size sizeStr {<font color=#90ee90>&quot;set size <font color=#f1b479>[</font>join <font color=#f1b479>[</font>dget <font color=#f1b479>$</font>arguments size<font color=#f1b479>]</font> ,<font color=#f1b479>]</font>&quot;</font>}
@@ -817,8 +825,10 @@ gnuplotutil::plotXNYN <font color=#b9b96e>-xlog</font> <font color=#b9b96e>-ylog
 <tr><td><code><font color=#b9b96e>-terminal</font></code></td><td>Selects terminal, default 'x11' on Linux and 'windows' on Windows.</td></tr>
 <tr><td><code><font color=#b9b96e>-xlabel</font></code></td><td>Provides x-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#b9b96e>-xlog</font></code></td><td>Enables log scale of x axis.</td></tr>
+<tr><td><code><font color=#b9b96e>-xrange</font></code></td><td>Provides minimum and maximum values of x-axis, must be list with two elements.</td></tr>
 <tr><td><code><font color=#b9b96e>-ylabel</font></code></td><td>Provides y-axis label to display, string must be provided after it.</td></tr>
 <tr><td><code><font color=#b9b96e>-ylog</font></code></td><td>Enables log scale of y axis.</td></tr>
+<tr><td><code><font color=#b9b96e>-yrange</font></code></td><td>Provides minimum and maximum values of y-axis, must be list with two elements.</td></tr>
 </table>
 <h5 class='ruff'>Description</h5>
 <figure  class='ruff-snippet ruff-figure'><pre class='ruff'>Example:
@@ -837,6 +847,8 @@ gnuplotutil::plotXYN <font color=#f1b479>$x</font> <font color=#b9b96e>-xlog</fo
     <i><font color=#76a396>#  x - list of x-point for 2D graph</font></i>
     <i><font color=#76a396>#  -xlog - enables log scale of x axis</font></i>
     <i><font color=#76a396>#  -ylog - enables log scale of y axis</font></i>
+    <i><font color=#76a396>#  -xrange - provides minimum and maximum values of x-axis, must be list with two elements</font></i>
+    <i><font color=#76a396>#  -yrange - provides minimum and maximum values of y-axis, must be list with two elements</font></i>
     <i><font color=#76a396>#  -background - enables running gnuplot in background, requires -nodelete or -inline switch</font></i>
     <i><font color=#76a396>#  -inline - provides data directly in command string, without creating temporary file</font></i>
     <i><font color=#76a396>#  -nodelete - disables deleting of temporary file after end of plotting</font></i>
@@ -870,8 +882,8 @@ gnuplotutil::plotXYN <font color=#f1b479>$x</font> <font color=#b9b96e>-xlog</fo
     <b><font color=#ffa500>set</font></b> arguments [argparse <font color=#b9b96e>-inline</font> {
         <font color=#b9b96e>-xlog</font>
         <font color=#b9b96e>-ylog</font>
-        <font color=#b9b96e>-xrange</font>=
-        <font color=#b9b96e>-yrange</font>=
+        {<font color=#b9b96e>-xrange</font>= <font color=#b9b96e>-type</font> list}
+        {<font color=#b9b96e>-yrange</font>= <font color=#b9b96e>-type</font> list}
         <font color=#b9b96e>-background</font>
         <font color=#b9b96e>-inline</font>
         {<font color=#b9b96e>-nodelete</font> <font color=#b9b96e>-forbid</font> inline}
@@ -879,13 +891,13 @@ gnuplotutil::plotXYN <font color=#f1b479>$x</font> <font color=#b9b96e>-xlog</fo
         <font color=#b9b96e>-ylabel</font>=
         <font color=#b9b96e>-optcmd</font>=
         <font color=#b9b96e>-terminal</font>=
-        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600}}
+        {<font color=#b9b96e>-size</font>= <font color=#b9b96e>-default</font> {800 600} <font color=#b9b96e>-type</font> list}
         <font color=#b9b96e>-grid</font>
         <font color=#b9b96e>-darkmode</font>
         <font color=#b9b96e>-output</font>=
         {<font color=#b9b96e>-path</font>= <font color=#b9b96e>-default</font> {}}
-        <font color=#b9b96e>-names</font>=
-        <font color=#b9b96e>-lstyles</font>=
+        {<font color=#b9b96e>-names</font>= <font color=#b9b96e>-type</font> list}
+        {<font color=#b9b96e>-lstyles</font>= <font color=#b9b96e>-type</font> list}
         {<font color=#b9b96e>-columns</font> <font color=#b9b96e>-catchall</font>}
     }]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>dexist</font></b> <font color=#f1b479>$arguments</font> background]} {

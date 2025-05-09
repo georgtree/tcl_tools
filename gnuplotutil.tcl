@@ -67,6 +67,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     #  x - list of x-point for 2D graph
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
+    #  -xrange - provides minimum and maximum values of x-axis, must be list with two elements
+    #  -yrange - provides minimum and maximum values of y-axis, must be list with two elements
     #  -background - enables running gnuplot in background, requires -nodelete or -inline switch
     #  -inline - provides data directly in command string, without creating temporary file
     #  -nodelete - disables deleting of temporary file after end of plotting
@@ -100,8 +102,8 @@ proc ::gnuplotutil::plotXYN {x args} {
     set arguments [argparse -inline {
         -xlog
         -ylog
-        -xrange=
-        -yrange=
+        {-xrange= -type list}
+        {-yrange= -type list}
         -background
         -inline
         {-nodelete -forbid inline}
@@ -109,13 +111,13 @@ proc ::gnuplotutil::plotXYN {x args} {
         -ylabel=
         -optcmd=
         -terminal=
-        {-size= -default {800 600}}
+        {-size= -default {800 600} -type list}
         -grid
         -darkmode
         -output=
         {-path= -default {}}
-        -names=
-        -lstyles=
+        {-names= -type list}
+        {-lstyles= -type list}
         {-columns -catchall}
     }]
     if {[dexist $arguments background]} {
@@ -229,6 +231,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     # Plots 2D graphs in Gnuplot with individual x-values.
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
+    #  -xrange - provides minimum and maximum values of x-axis, must be list with two elements
+    #  -yrange - provides minimum and maximum values of y-axis, must be list with two elements
     #  -background - enables running gnuplot in background, requires -nodelete or -inline switch
     #  -inline - provides data directly in command string, without creating temporary file
     #  -nodelete - disables deleting of temporary file after end of plotting
@@ -262,8 +266,8 @@ proc ::gnuplotutil::plotXNYN {args} {
     set arguments [argparse -inline {
         -xlog
         -ylog
-        -xrange=
-        -yrange=
+        {-xrange= -type list}
+        {-yrange= -type list}
         -background
         -inline
         {-nodelete -forbid inline}
@@ -271,13 +275,13 @@ proc ::gnuplotutil::plotXNYN {args} {
         -ylabel=
         -optcmd=
         -terminal=
-        {-size= -default {800 600}}
+        {-size= -default {800 600} -type list}
         -grid
         -darkmode
         -output=
         {-path= -default {}}
-        -names=
-        -lstyles=
+        {-names= -type list}
+        {-lstyles= -type list}
         {-columns -catchall}
     }]
     if {[dexist $arguments background]} {
@@ -408,6 +412,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     #  for individual plots
     #  -xlog - enables log scale of x axis
     #  -ylog - enables log scale of y axis
+    #  -xrange - provides minimum and maximum values of x-axis, must be list with two elements
+    #  -yrange - provides minimum and maximum values of y-axis, must be list with two elements
     #  -xlabel - provides x-axis label to display, string must be provided after it
     #  -ylabel - provides y-axis label to display, string must be provided after it
     #  -grid - enables display of grid
@@ -428,8 +434,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     set arguments [argparse -inline {
         -xlog
         -ylog
-        -xrange=
-        -yrange=
+        {-xrange= -type list}
+        {-yrange= -type list}
         -inline=
         -xlabel=
         -ylabel=
@@ -438,8 +444,8 @@ proc ::gnuplotutil::plotXNYNMp {args} {
         -origin=
         -optcmd=
         {-path= -default {}}
-        -names=
-        -lstyles=
+        {-names= -type list}
+        {-lstyles= -type list}
         {-columns -catchall}
     }]
     initArgStr $arguments size sizeStr {"set size [join [dget $arguments size] ,]"}
@@ -594,7 +600,7 @@ proc ::gnuplotutil::multiplotXNYN {args} {
         -inline
         -optcmd=
         -terminal=
-        {-size= -default {800 600}}
+        {-size= -default {800 600} -type list}
         -darkmode
         {-plots -catchall}
     }]
@@ -691,22 +697,22 @@ proc ::gnuplotutil::plotHist {x args} {
         -xlabel=
         -ylabel=
         {-style= -enum {clustered rowstacked columnstacked} -required}
-        {-gap= -require {style}}
+        {-gap= -require style}
         -optcmd=
         -grid
         -background
         -inline
         -terminal=
-        {-size= -default {800 600}}
+        {-size= -default {800 600} -type list}
         {-path= -default {}}
         -darkmode
         -output=
         -names=
         -boxwidth=
         {-fill= -enum {empty solid}}
-        {-density= -require {fill}}
-        {-transparent -require {fill}}
-        {-border= -require {fill}}
+        {-density= -require fill}
+        {-transparent -require fill}
+        {-border= -require fill}
         {-columns -catchall}
     }]
     if {[dexist $arguments background]} {

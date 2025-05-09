@@ -301,11 +301,17 @@ Provides x-axis label to display, string must be provided after it\&.
 -xlog
 Enables log scale of x axis\&.
 .TP
+-xrange
+Provides minimum and maximum values of x-axis, must be list with two elements\&.
+.TP
 -ylabel
 Provides y-axis label to display, string must be provided after it\&.
 .TP
 -ylog
 Enables log scale of y axis\&.
+.TP
+-yrange
+Provides minimum and maximum values of y-axis, must be list with two elements\&.
 .RE
 .PP
 \fBDescription\fR
@@ -372,11 +378,17 @@ Provides x-axis label to display, string must be provided after it\&.
 -xlog
 Enables log scale of x axis\&.
 .TP
+-xrange
+Provides minimum and maximum values of x-axis, must be list with two elements\&.
+.TP
 -ylabel
 Provides y-axis label to display, string must be provided after it\&.
 .TP
 -ylog
 Enables log scale of y axis\&.
+.TP
+-yrange
+Provides minimum and maximum values of y-axis, must be list with two elements\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -443,11 +455,17 @@ Provides x-axis label to display, string must be provided after it\&.
 -xlog
 Enables log scale of x axis\&.
 .TP
+-xrange
+Provides minimum and maximum values of x-axis, must be list with two elements\&.
+.TP
 -ylabel
 Provides y-axis label to display, string must be provided after it\&.
 .TP
 -ylog
 Enables log scale of y axis\&.
+.TP
+-yrange
+Provides minimum and maximum values of y-axis, must be list with two elements\&.
 .RE
 .PP
 \fBDescription\fR
