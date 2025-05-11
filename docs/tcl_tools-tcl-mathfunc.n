@@ -9,6 +9,8 @@ tcl::mathfunc - Commands in namespace tcl::mathfunc
 .br
 \fBdivlsc\fP \fIlist scalar\fP
 .br
+\fBexactone\fP \fI?args?\fP
+.br
 \fBli\fP \fIlist index ?args?\fP
 .br
 \fBlindex\fP \fIlist index ?args?\fP
@@ -87,6 +89,25 @@ Not documented\&.
 \fBReturn value\fR
 .PP
 list
+.PP
+.RS -4n
+\fBexactone\fR (::tcl::mathfunc)
+.RE
+.PP
+Returns true if only exactly one element is true
+boolean
+.RS 4n\fBexactone\fP \fI?args?\fP
+.br
+.RE
+.PP
+\fBParameters\fR
+.RS 4n
+.RE
+.PP
+\fBReturn value\fR
+.PP
+Returns true if only exactly one element is true
+boolean
 .PP
 .RS -4n
 \fBli\fR (::tcl::mathfunc)

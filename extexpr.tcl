@@ -15,6 +15,26 @@ proc tcl::mathfunc::logb {value base} {
     return [= {log($value)/double(log($base))}]
 }
 
+### Boolean operations
+proc tcl::mathfunc::exactone {args} {
+    # Returns true if only exactly one element is true
+    # Returns: boolean
+    set first false
+    foreach arg $args {
+        if {$first && $arg} {
+            return false
+        }
+        if {$arg} {
+            set first true
+        }
+    }
+    if {$first} {
+        return true
+    } else {
+        return false
+    }
+}
+
 ### List-scalar operations
 proc tcl::mathfunc::mullsc {list scalar} {
     # Multiplies each element of the list to scalar value
