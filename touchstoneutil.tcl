@@ -1,5 +1,6 @@
 package require math::complexnumbers
 package require math::constants
+package require argparse 0.58
 package require textutil::split
 
 package provide touchstoneutil 0.1
@@ -17,7 +18,10 @@ namespace eval ::touchstoneutil {
 
 # format of s2p must be without space between # and Hz, #Hz S RI R 50
 
-proc ::touchstoneutil::s2p_read {filePath} {
+proc ::touchstoneutil::s2p_read {args} {
+    argparse -help {Read file in touchstone s2p format} {
+        {filePath -help {Path to file}}
+    }
     variable degtorad
     set infile [open $filePath r]
     set i 0

@@ -30,7 +30,7 @@ measure - Commands in namespace measure
 \fBmeasure\fR (::measure)
 .RE
 .PP
-Does different measurements of inpu data lists\&.
+Does different measurements of input data lists\&.
 .RS 4n\fBmeasure\fP \fI-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}\fP
 .br
 \fBmeasure\fP \fI-xname value -data value -trig {-at value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}\fP
@@ -280,7 +280,7 @@ Examples of usages:
 .fi
 .RE
 .PP
-\fB\fBMin|Max|PP|MinAt|MaxAt|Between\fP\fR
+\fB\fBAvg|Rms|Min|Max|PP|MinAt|MaxAt|Between\fP\fR
 .PP
 This mode is combination of many modes with the same interface\&.
 .RS 4n

@@ -62,6 +62,32 @@ put this folder to path listed in auto_path variable of your local Tcl installat
 Any OS that has tcl8\&.6/tcl9\&.0 (Linux, Windows, FreeBSD)\&.
 .SH DOCUMENTATION
 .PP
-You can find some documentation \fIhere\fP [URL: https://georgtree\&.github\&.io/tcl_tools]
+You can find some documentation \fIhere\fP [URL: https://georgtree\&.github\&.io/tcl_tools]\&.
 Also on Linux you can open manpages installed after run of make install\&.
+.PP
+All public commands in all packages in this distribution (except extexpr) support -help command that returns
+information about command and its arguments\&. For example, if we call command ::mathutil::movAvg with -help
+switch in interactive terminal:
+.PP
+.RS 4n
+.nf
+::mathutil::movAvg -help
+.fi
+.RE
+.PP
+Information printed into the standard output:
+.PP
+.RS 4n
+.nf
+Finds moving average of y with given window size\&. Returns: list of y, and x if
+-x argument is specified\&. Can accepts unambiguous prefixes instead of switches
+names\&. Required parameters must appear before switches\&.
+    Switches:
+        -x - Expects argument\&. Optional argument with x values\&.
+    Parameters:
+        y - List of values, must be larger than window size\&.
+        winsize - Size of the window, must be an integer larger than 1 and odd
+            size\&. Type integer\&.
+.fi
+.RE
 

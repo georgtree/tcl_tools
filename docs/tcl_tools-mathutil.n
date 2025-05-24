@@ -5,17 +5,17 @@
 .SH NAME
 mathutil - Commands in namespace mathutil
 .SH SYNOPSIS
-\fBcumtrapz\fP \fIx y ?init?\fP
+\fBcumtrapz\fP \fI?args?\fP
 .br
-\fBderiv1\fP \fIx y\fP
+\fBderiv1\fP \fI?args?\fP
 .br
-\fBderiv2\fP \fIx y\fP
+\fBderiv2\fP \fI?args?\fP
 .br
-\fBfindApprox\fP \fIlist value ?epsilon?\fP
+\fBfindApprox\fP \fI?args?\fP
 .br
-\fBmovAvg\fP \fIy winSize ?args?\fP
+\fBmovAvg\fP \fI?args?\fP
 .br
-\fBtrapz\fP \fIx y\fP
+\fBtrapz\fP \fI?args?\fP
 .br
 .SH ::MATHUTIL
 .SH COMMANDS
@@ -25,21 +25,21 @@ mathutil - Commands in namespace mathutil
 .RE
 .PP
 Does trapezoidal integration with storing cumulative data at each point
-.RS 4n\fBcumtrapz\fP \fIx y ?init?\fP
+.RS 4n\fBcumtrapz\fP \fI?args?\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
+init
+Start value\&.
+.TP
 x
 List of x values\&.
 .TP
 y
 List of y values\&.
-.TP
-init
-Start value\&. Optional, default 0\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -51,7 +51,7 @@ list each value of which is the value of integral across all previous xy values
 .RE
 .PP
 Calculates first derivative of x-y lists
-.RS 4n\fBderiv1\fP \fIx y\fP
+.RS 4n\fBderiv1\fP \fI?args?\fP
 .br
 .RE
 .PP
@@ -80,7 +80,7 @@ value of first derivative
 .RE
 .PP
 Calculates second derivative of x-y lists
-.RS 4n\fBderiv2\fP \fIx y\fP
+.RS 4n\fBderiv2\fP \fI?args?\fP
 .br
 .RE
 .PP
@@ -109,21 +109,21 @@ value of second derivative
 .RE
 .PP
 Finds index of first matched value in list with epsilon tolerance
-.RS 4n\fBfindApprox\fP \fIlist value ?epsilon?\fP
+.RS 4n\fBfindApprox\fP \fI?args?\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
+epsilon
+Tolerance\&.
+.TP
 list
 List of values\&.
 .TP
 value
 Value to match\&.
-.TP
-epsilon
-Tolerance\&. Optional, default 1\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -135,21 +135,21 @@ value from the list
 .RE
 .PP
 Finds moving average of y with given window size\&.
-.RS 4n\fBmovAvg\fP \fIy winSize ?args?\fP
+.RS 4n\fBmovAvg\fP \fI?args?\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
 .TP
-y
-List of values, must be larger than window size\&.
-.TP
-winSize
-Size of the window, must be an integer larger than 1\&.
-.TP
 -x
 Optional argument with x values\&.
+.TP
+winsize
+Size of the window, must be an integer larger than 1\&.
+.TP
+y
+List of values, must be larger than window size\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -161,7 +161,7 @@ list of y, and x if -x argument is specified
 .RE
 .PP
 Does trapezoidal integration of x-y lists
-.RS 4n\fBtrapz\fP \fIx y\fP
+.RS 4n\fBtrapz\fP \fI?args?\fP
 .br
 .RE
 .PP

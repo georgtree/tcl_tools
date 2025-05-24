@@ -46,8 +46,26 @@ sudo make install
 <p class='ruff'>Any OS that has tcl8.6/tcl9.0 (Linux, Windows, FreeBSD).</p>
 <h1 class='ruff'><a name='Documentation'></a>Documentation<span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h1>
 <div style='clear:both;'></div>
-<p class='ruff'>You can find some documentation <a href="https://georgtree.github.io/tcl_tools" >here</a> Also on Linux you can open manpages installed after run of <code>make install</code>.</p>
-</main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a class='ruff-highlight' style='padding-top:2px;' href='index.html'>Start page</a></li>
+<p class='ruff'>You can find some documentation <a href="https://georgtree.github.io/tcl_tools" >here</a>. Also on Linux you can open manpages installed after run of <code>make install</code>.</p>
+<p class='ruff'>All public commands in all packages in this distribution (except <code>extexpr</code>) support <code><font color=#b9b96e>-help</font></code> command that returns information about command and its arguments. For example, if we call command <code>::mathutil::movAvg</code> with <code><font color=#b9b96e>-help</font></code> switch in interactive terminal:</p>
+
+<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>::mathutil::movAvg <font color=#b9b96e>-help</font>
+</pre>
+
+</figure><p class='ruff'>Information printed into the standard output:</p>
+
+<figure  class='ruff-snippet ruff-figure'><pre class='ruff'>Finds moving average of y with given window size. Returns: list of y, and x if
+<font color=#b9b96e>-x</font> argument is specified. Can accepts unambiguous prefixes instead of switches
+names. Required parameters must appear before switches.
+    Switches:
+        <font color=#b9b96e>-x</font> - Expects argument. Optional argument with x values.
+    Parameters:
+        y - List of values, must be larger than window size.
+        winsize - Size of the window, must be an integer larger than 1 and odd
+            size. Type integer.
+</pre>
+
+</figure></main><nav class='ruff-nav'><ul ><li class='ruff-toc1'><a class='ruff-highlight' style='padding-top:2px;' href='index.html'>Start page</a></li>
 <li class='ruff-toc1'><a href='index-docindex.html' accesskey='i'>Index</a></li>
 <hr>
 <li class='ruff-toc1'><a href='index-gnuplotutil.html'>gnuplotutil</a></li>

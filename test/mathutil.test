@@ -83,7 +83,7 @@ test findApproxProcTest-3 {test procedure of approximate search} -setup {
 } -body {
     catch {findApprox $list 37 a} errorStr
     return $errorStr
-} -result {Epsilon must be a number} -cleanup {
+} -result {epsilon value "a" is not of the type double} -cleanup {
     unset list
 }
 
@@ -92,7 +92,7 @@ test findApproxProcTest-4 {test procedure of approximate search} -setup {
 } -body {
     catch {findApprox $list 37! 2} errorStr
     return $errorStr
-} -result {Value must be a number} -cleanup {
+} -result {value value "37!" is not of the type double} -cleanup {
     unset list
 }
 
@@ -102,6 +102,15 @@ test findApproxProcTest-5 {test procedure of approximate search} -setup {
     catch {findApprox $list 37 0.5} errorStr
     return $errorStr
 } -result {Value '37' was not found} -cleanup {
+    unset list
+}
+
+test findApproxProcTest-6 {test procedure of approximate search} -setup {
+    set list [list 0 1 4 9 16 25 36 49 64 81 100]
+} -body {
+    catch {findApprox $list 37 -1} errorStr
+    return $errorStr
+} -result {Epsilon must be larger than zero} -cleanup {
     unset list
 }
 
@@ -162,7 +171,7 @@ test movAvgTest-4 {test procedure of moving average filter} -setup {
 } -body {
     catch {movAvg $y $winSize} errorStr
     return $errorStr
-} -result {Length of y '7' must be not less than size of window + 1  '11 + 1 = 12'} -cleanup {
+} -result {Length of y '7' must be not less than size of window + 1 '11 + 1 = 12'} -cleanup {
     unset winSize y
 }
 
@@ -172,7 +181,7 @@ test movAvgTest-5 {test procedure of moving average filter} -setup {
 } -body {
     catch {movAvg $y $winSize} errorStr
     return $errorStr
-} -result {Window size must be an integer} -cleanup {
+} -result {winsize value "0.5" is not of the type integer} -cleanup {
     unset winSize y
 }
 

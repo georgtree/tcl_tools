@@ -5,7 +5,7 @@
 .SH NAME
 touchstoneutil - Commands in namespace touchstoneutil
 .SH SYNOPSIS
-\fBs2p_read\fP \fIfilePath\fP
+\fBs2p_read\fP \fI?args?\fP
 .br
 .SH ::TOUCHSTONEUTIL
 .SH COMMANDS
@@ -13,14 +13,11 @@ touchstoneutil - Commands in namespace touchstoneutil
 .RS -4n
 \fBs2p_read\fR (::touchstoneutil)
 .RE
-.RS 4n\fBs2p_read\fP \fIfilePath\fP
+.RS 4n\fBs2p_read\fP \fI?args?\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
-.TP
-filePath
-Not documented\&.
 .RE
 

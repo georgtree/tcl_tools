@@ -1,5 +1,5 @@
 package require csv
-package require argparse
+package require argparse 0.58
 package require textutil::trim
 namespace import ::textutil::trim::trim
 package provide gnuplotutil 0.1
@@ -62,7 +62,7 @@ proc ::gnuplotutil::initTerminalStr {optDict varName} {
     }
 }
 
-proc ::gnuplotutil::plotXYN {x args} {
+proc ::gnuplotutil::plotXYN {args} {
     # Plots 2D graphs in Gnuplot with the common x-values.
     #  x - list of x-point for 2D graph
     #  -xlog - enables log scale of x axis
@@ -99,26 +99,32 @@ proc ::gnuplotutil::plotXYN {x args} {
     # gnuplotutil::plotXYN $x -xlog -ylog -xlabel "x label" -ylabel "y label" -grid -names [list  y1 y2]
     # -columns $y1 $y2
     # ```
-    set arguments [argparse -inline {
-        -xlog
-        -ylog
-        {-xrange= -type list}
-        {-yrange= -type list}
-        -background
-        -inline
-        {-nodelete -forbid inline}
-        -xlabel=
-        -ylabel=
-        -optcmd=
-        -terminal=
-        {-size= -default {800 600} -type list}
-        -grid
-        -darkmode
-        -output=
-        {-path= -default {}}
-        {-names= -type list}
-        {-lstyles= -type list}
-        {-columns -catchall}
+    set arguments [argparse -inline -pfirst -help {Plots 2D graphs in Gnuplot with the common x-values} {
+        {x -help {List of x-point for 2D graph}}
+        {-xlog -help {Enables log scale of x axis}}
+        {-ylog -help {Enables log scale of y axis}}
+        {-xrange= -type list -help {Provides minimum and maximum values of x-axis, must be list with two elements}}
+        {-yrange= -type list -help {Provides minimum and maximum values of y-axis, must be list with two elements}}
+        {-background -help {Enables running gnuplot in background}}
+        {-inline -help {Provides data directly in command string, without creating temporary file}}
+        {-nodelete -forbid inline -help {Disables deleting of temporary file after end of plotting}}
+        {-xlabel= -help {Provides x-axis label to display}}
+        {-ylabel= -help {Provides y-axis label to display}}
+        {-optcmd= -help {Provides optional string that may contain additional commands to gnuplot}}
+        {-terminal= -help {Selects terminal, default 'x11' on Linux and 'windows' on Windows}}
+        {-size= -default {800 600} -type list -help {Provides size of the window, must be list with two elements: width\
+                                                             and height in pixels}}
+        {-grid -help {Enables display of grid}}
+        {-darkmode -help {Enables dark mode for graph}}
+        {-output= -help {Command redirects output to the specified file or device}}
+        {-path= -default {} -help {Provides location of temporary file}}
+        {-names= -type list -help {Enables setting the column names of provided data, value must be provided as list in\
+                                           the same order as data columns provided, must have the length equal to the\
+                                           number of y data colums}}
+        {-lstyles= -type list -help {Sets individual styles for each graph in the same order as data columns provided,\
+                                             must have the length 2*(number of x-y data pairs)}}
+        {-columns -catchall -help {Provides the y data to plot, the number of columns is not restricted and must be\
+                                           provided at the end of command after all switches}}
     }]
     if {[dexist $arguments background]} {
         AliasesKeysCheck $arguments {nodelete inline}
@@ -143,9 +149,9 @@ proc ::gnuplotutil::plotXYN {x args} {
     }
     set yColumnCount 0
     foreach val [dget $arguments columns] {
-        if {[llength $val]!=[llength $x]} {
+        if {[llength $val]!=[llength [dget $arguments x]]} {
             return -code error "Number of points '[llength $val]' of y-axis data (column $yColumnCount) doesn't match\
-                    the number of points '[llength $x]' of x-axis data"
+                    the number of points '[llength [dget $arguments x]]' of x-axis data"
             incr yColumnCount
         }
     }
@@ -175,9 +181,9 @@ proc ::gnuplotutil::plotXYN {x args} {
             lappend lineStyles {with lines}
         }
     }
-    set numRow [llength $x]
+    set numRow [llength [dget $arguments x]]
     for {set i 0} {$i<$numRow} {incr i} {
-        set row [@ $x $i]
+        set row [@ [dget $arguments x] $i]
         foreach val [dget $arguments columns] {
             lappend row [@ $val $i]
         }
@@ -263,26 +269,31 @@ proc ::gnuplotutil::plotXNYN {args} {
     # gnuplotutil::plotXNYN -xlog -ylog -xlabel "x label" -ylabel "y label" -darkmode -grid -names [list y1 y2]
     # -columns $x1 $y1 $x2 $y2
     # ```
-    set arguments [argparse -inline {
-        -xlog
-        -ylog
-        {-xrange= -type list}
-        {-yrange= -type list}
-        -background
-        -inline
-        {-nodelete -forbid inline}
-        -xlabel=
-        -ylabel=
-        -optcmd=
-        -terminal=
-        {-size= -default {800 600} -type list}
-        -grid
-        -darkmode
-        -output=
-        {-path= -default {}}
-        {-names= -type list}
-        {-lstyles= -type list}
-        {-columns -catchall}
+    set arguments [argparse -inline -help {Plots 2D graphs in Gnuplot with individual x-values} {
+        {-xlog -help {Enables log scale of x axis}}
+        {-ylog -help {Enables log scale of y axis}}
+        {-xrange= -type list -help {Provides minimum and maximum values of x-axis, must be list with two elements}}
+        {-yrange= -type list -help {Provides minimum and maximum values of y-axis, must be list with two elements}}
+        {-background -help {Enables running gnuplot in background}}
+        {-inline -help {Provides data directly in command string, without creating temporary file}}
+        {-nodelete -forbid inline -help {Disables deleting of temporary file after end of plotting}}
+        {-xlabel= -help {Provides x-axis label to display}}
+        {-ylabel= -help {Provides y-axis label to display}}
+        {-optcmd= -help {Provides optional string that may contain additional commands to gnuplot}}
+        {-terminal= -help {Selects terminal, default 'x11' on Linux and 'windows' on Windows}}
+        {-size= -default {800 600} -type list -help {Provides size of the window, must be list with two elements: width\
+                                                             and height in pixels}}
+        {-grid -help {Enables display of grid}}
+        {-darkmode -help {Enables dark mode for graph}}
+        {-output= -help {Command redirects output to the specified file or device}}
+        {-path= -default {} -help {Provides location of temporary file}}
+        {-names= -type list -help {Enables setting the column names of provided data, value must be provided as list in\
+                                           the same order as data columns provided, must have the length equal to the\
+                                           number of y data colums}}
+        {-lstyles= -type list -help {Sets individual styles for each graph in the same order as data columns provided,\
+                                             must have the length 2*(number of x-y data pairs)}}
+        {-columns -catchall -help {Provides the y data to plot, the number of columns is not restricted and must be\
+                                           provided at the end of command after all switches}}
     }]
     if {[dexist $arguments background]} {
         AliasesKeysCheck $arguments {nodelete inline}
@@ -431,22 +442,28 @@ proc ::gnuplotutil::plotXNYNMp {args} {
     # Returns: list that contains command script and name of data file
     # Synopsis: ?-xlog? ?-ylog? ?-xlabel string? ?-ylabel string? ?-grid? ?-path string? ?-names list?
     #   -columns xList1 yList1 ?xList2 yList2 ...? 
-    set arguments [argparse -inline {
-        -xlog
-        -ylog
-        {-xrange= -type list}
-        {-yrange= -type list}
-        -inline=
-        -xlabel=
-        -ylabel=
-        -grid
-        -size=
-        -origin=
-        -optcmd=
-        {-path= -default {}}
-        {-names= -type list}
-        {-lstyles= -type list}
-        {-columns -catchall}
+    set arguments [argparse -inline -help {Auxilary function for gnuplotutil::multiplotXNYN, creates command strings\
+                                                   and data files for individual plots} {
+        {-xlog -help {Enables log scale of x axis}}
+        {-ylog -help {Enables log scale of y axis}}
+        {-xrange= -type list -help {Provides minimum and maximum values of x-axis, must be list with two elements}}
+        {-yrange= -type list -help {Provides minimum and maximum values of y-axis, must be list with two elements}}
+        {-inline -help {Provides data directly in command string, without creating temporary file}}
+        {-xlabel= -help {Provides x-axis label to display}}
+        {-ylabel= -help {Provides y-axis label to display}}
+        {-grid -help {Enables display of grid}}
+        {-size= -type list -help {Provides size of the window, must be list with two elements: width\
+                                                             and height in pixels}}
+        {-origin= -help {Set origin of the subplot}}
+        {-optcmd= -help {Provides optional string that may contain additional commands to gnuplot}}
+        {-path= -default {} -help {Provides location of temporary file}}
+        {-names= -type list -help {Enables setting the column names of provided data, value must be provided as list in\
+                                           the same order as data columns provided, must have the length equal to the\
+                                           number of y data colums}}
+        {-lstyles= -type list -help {Sets individual styles for each graph in the same order as data columns provided,\
+                                             must have the length 2*(number of x-y data pairs)}}
+        {-columns -catchall -help {Provides the y data to plot, the number of columns is not restricted and must be\
+                                           provided at the end of command after all switches}}
     }]
     initArgStr $arguments size sizeStr {"set size [join [dget $arguments size] ,]"}
     initArgStr $arguments origin originStr {"set origin [join [dget $arguments origin] ,]"}
@@ -593,16 +610,20 @@ proc ::gnuplotutil::multiplotXNYN {args} {
     # set plot4 [list -grid -names [list name2] -columns $x2 $y2 ]
     # gnuplotutil::multiplotXNYN {2 2} -plots $plot1 $plot2 $plot3 $plot4
     # ```
-    set arguments [argparse -inline {
-        -layout=
-        -nodelete
-        -background
-        -inline
-        -optcmd=
-        -terminal=
-        {-size= -default {800 600} -type list}
-        -darkmode
-        {-plots -catchall}
+    set arguments [argparse -inline -help {Plots 2D graphs in Gnuplot with individual x-values and using multiplot to\
+                                                   display} {
+        {-layout= -help {List of layout configurations values, for example, {2 2}}}
+        {-nodelete -forbid inline -help {Disables deleting of temporary file after end of plotting}}
+        {-background -help {Enables running gnuplot in background}}
+        {-inline -help {Provides data directly in command string, without creating temporary file}}
+        {-optcmd= -help {Provides optional string that may contain additional commands to gnuplot}}
+        {-terminal= -help {Selects terminal, default 'x11' on Linux and 'windows' on Windows}}
+        {-size= -default {800 600} -type list -help {Provides size of the window, must be list with two elements: width\
+                                                             and height in pixels}}
+        {-darkmode -help {Enables dark mode for graph}}
+        {-plots -catchall -help {Provides the list of individual plots, the number of plots is not restricted and must\
+                                         be provided at the end of command after all switches, the inputs syntax is the\
+                                         same as in [::gnuplotutil::plotXNYNMp]}}
     }]
     if {[dexist $arguments background]} {
         AliasesKeysCheck $arguments {nodelete inline}
@@ -627,7 +648,7 @@ proc ::gnuplotutil::multiplotXNYN {args} {
     set i 0
     foreach plot [dget $arguments plots] {
         if {[dexist $arguments inline]} {
-            set plotResults [gnuplotutil::plotXNYNMp -inline $i {*}$plot]
+            set plotResults [gnuplotutil::plotXNYNMp -inline {*}$plot]
         } else {
             set plotResults [gnuplotutil::plotXNYNMp {*}$plot]
             lappend fileNames [dget $plotResults file]
@@ -654,9 +675,9 @@ proc ::gnuplotutil::multiplotXNYN {args} {
     }
 }
 
-proc ::gnuplotutil::plotHist {x args} {
+proc ::gnuplotutil::plotHist {args} {
     # Plots 2D histograms in Gnuplot with the common x-values.
-    #  x - List of strings that contains x-point for 2D histogram
+    #  x - List that contains x-point for 2D histogram
     #  -nodelete - disables deleting of temporary file after end of plotting
     #  -xlabel - provides x-axis label to display, string must be provided after it
     #  -ylabel - provides y-axis label to display, string must be provided after it
@@ -692,28 +713,33 @@ proc ::gnuplotutil::plotHist {x args} {
     # gnuplotutil::plotHist $x1 -style clustered -fill solid -xlabel "x label" -ylabel "y label" -names [list y1 y2]
     # -columns $y1 $y2]
     # ```
-    set arguments [argparse -inline {
-        {-nodelete -forbid inline}
-        -xlabel=
-        -ylabel=
-        {-style= -enum {clustered rowstacked columnstacked} -required}
-        {-gap= -require style}
-        -optcmd=
-        -grid
-        -background
-        -inline
-        -terminal=
-        {-size= -default {800 600} -type list}
-        {-path= -default {}}
-        -darkmode
-        -output=
-        -names=
-        -boxwidth=
-        {-fill= -enum {empty solid}}
-        {-density= -require fill}
-        {-transparent -require fill}
-        {-border= -require fill}
-        {-columns -catchall}
+    set arguments [argparse -inline -pfirst -help {Plots 2D histograms in Gnuplot with the common x-values} {
+        {x -help {List that contains x-point for 2D histogram}}
+        {-nodelete -forbid inline -help {Disables deleting of temporary file after end of plotting}}
+        {-xlabel= -help {Provides x-axis label to display}}
+        {-ylabel= -help {Provides y-axis label to display}}
+        {-style= -enum {clustered rowstacked columnstacked} -required -help {Provides style of diagram}}
+        {-gap= -require style -help {Provides gap between columns in clustered style}}
+        {-optcmd= -help {Provides optional string that may contain additional commands to gnuplot}}
+        {-grid -help {Enables display of grid}}
+        {-background -help {Enables running gnuplot in background}}
+        {-inline -help {Provides data directly in command string, without creating temporary file}}
+        {-terminal= -help {Selects terminal, default 'x11' on Linux and 'windows' on Windows}}
+        {-size= -default {800 600} -type list -help {Provides size of the window, must be list with two elements: width\
+                                                             and height in pixels}}
+        {-path= -default {} -help {Provides location of temporary file}}
+        {-darkmode -help {Enables dark mode for graph}}
+        {-output= -help {Command redirects output to the specified file or device}}
+        {-names= -type list -help {Enables setting the column names of provided data, value must be provided as list in\
+                                           the same order as data columns provided, must have the length equal to the\
+                                           number of y data colums}}
+        {-boxwidth= -help {Provides width of columns, must be in range (0,1]}}
+        {-fill= -enum {empty solid} -help {Provides fill of columns}}
+        {-density= -require fill -help {Provides density of solid filling}}
+        {-transparent -require fill -help {Enables transparency to filling of columns}}
+        {-border= -require fill -help {Provides border of columns with particular style}}
+        {-columns -catchall -help {Provides the y data to plot, the number of columns is not restricted and must be\
+                                           provided at the end of command after all switches}}
     }]
     if {[dexist $arguments background]} {
         AliasesKeysCheck $arguments {nodelete inline}
@@ -760,9 +786,9 @@ proc ::gnuplotutil::plotHist {x args} {
     }
     set yColumnCount 0
     foreach val [dget $arguments columns] {
-        if {[llength $val] != [llength $x]} {
+        if {[llength $val] != [llength [dget $arguments x]]} {
             return -code error "Number of points '[llength $val]' of y-axis data (column $yColumnCount) doesn't match\
-                    the number of points '[llength $x]' of x-axis data"
+                    the number of points '[llength [dget $arguments x]]' of x-axis data"
             incr yColumnCount
         }
     }
@@ -782,9 +808,9 @@ proc ::gnuplotutil::plotHist {x args} {
     } else {
         set autoTitleStr {}
     }
-    set numRow [llength $x]
+    set numRow [llength [dget $arguments x]]
     for {set i 0} {$i<$numRow} {incr i} {
-        set row [@ $x $i]
+        set row [@ [dget $arguments x] $i]
         foreach val [dget $arguments columns] {
             lappend row [@ $val $i]
         }

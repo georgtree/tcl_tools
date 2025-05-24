@@ -19,7 +19,7 @@
 <div style='clear:both;'></div>
 <h3 class='ruffproc'><a name='::measure::measure'>measure</a><span class='ns_scope'> [<a href="index-measure.html#::measure" title="::measure" class='ruff_cmd'>::measure</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
-<p class='ruff'>Does different measurements of inpu data lists.</p>
+<p class='ruff'>Does different measurements of input data lists.</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-at value} -targ {-vec value -val value ?-td value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -trig {-vec value -val value ?-td value? -cross|rise|fall value} -targ {-at value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find|deriv value? -when {-vec value -val value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value ?-find|deriv value? -when {-vec1 value -vec2 value ?-td value? ?-from value? ?-to value? -cross|rise|fall value}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -find value -at value</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -deriv value -at value</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -avg|rms|pp|min|max|minat|maxat|between {-vec value ?-td value? ?-from value? ?-to value?}</span><br><span class='ruff_cmd'>measure</span> <span class='ruff_arg'>-xname value -data value -integ {-vec value ?-td value? ?-from value? ?-to value? ?-cum?}</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><font color=#b9b96e>-at</font></code></td><td>Time for -find or -deriv.</td></tr>
@@ -113,7 +113,7 @@
 <figure  class='ruff-snippet ruff-figure'><pre class='ruff'>::measure::measure <font color=#b9b96e>-xname</font> x <font color=#b9b96e>-data</font> [<b><font color=#ffa500>dcreate</font></b> x <font color=#f1b479>$x</font> y1 <font color=#f1b479>$y1</font> y2 <font color=#f1b479>$y2</font>] <font color=#b9b96e>-deriv</font> y1 <font color=#b9b96e>-at</font> 5
 </pre>
 
-</figure><h6 class='ruff'><strong>Min|Max|PP|MinAt|MaxAt|Between</strong></h6><p class='ruff'>This mode is combination of many modes with the same interface.</p>
+</figure><h6 class='ruff'><strong>Avg|Rms|Min|Max|PP|MinAt|MaxAt|Between</strong></h6><p class='ruff'>This mode is combination of many modes with the same interface.</p>
 <table class='ruff_deflist'>
 <tr><td>-vec</td><td>Name of vector in data dictionary.</td></tr>
 <tr><td>-from</td><td>Start of the range in which search happens, default is minimum value of x.</td></tr>
@@ -140,7 +140,7 @@
 </figure><div class='ruff_source'><p class='ruff_source_link'><a id='l_measure_measure' href="javascript:toggleSource('measure_measure')">Show source</a></p>
 <div id='measure_measure' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::measure::measure {args} {
 
-    <i><font color=#76a396># Does different measurements of inpu data lists.</font></i>
+    <i><font color=#76a396># Does different measurements of input data lists.</font></i>
     <i><font color=#76a396>#  -xname - name of x list in data dictionary. This list must be strictly increaing without duplicate elements.</font></i>
     <i><font color=#76a396>#  -data - dictionary that contains lists with names as the keys and lists as the values.</font></i>
     <i><font color=#76a396>#  -trig - contains conditions for trigger (see below), selects Trigger-Target measurement, requires -targ</font></i>
@@ -271,7 +271,7 @@
     <i><font color=#76a396># ::measure::measure -xname x -data [dcreate x $x y1 $y1 y2 $y2] -deriv y1 -at 5</font></i>
     <i><font color=#76a396># ```</font></i>
     <i><font color=#76a396># Synopsis: -xname value -data value -deriv value -at value</font></i>
-    <i><font color=#76a396>#  ###### **Min|Max|PP|MinAt|MaxAt|Between**</font></i>
+    <i><font color=#76a396>#  ###### **Avg|Rms|Min|Max|PP|MinAt|MaxAt|Between**</font></i>
     <i><font color=#76a396>#  This mode is combination of many modes with the same interface.</font></i>
     <i><font color=#76a396>#   -vec - name of vector in data dictionary</font></i>
     <i><font color=#76a396>#   -from - start of the range in which search happens, default is minimum value of x.</font></i>
@@ -295,24 +295,24 @@
     <i><font color=#76a396># ```</font></i>
     <i><font color=#76a396># Synopsis: -xname value -data value -integ \{-vec value ?-td value? ?-from value? ?-to value? ?-cum?\}</font></i>
     <b><font color=#ffa500>set</font></b> keysList {trig targ find when at integ deriv avg min max pp rms minat maxat between}
-    argparse {
-        {<font color=#b9b96e>-xname</font>= <font color=#b9b96e>-required</font>}
-        {<font color=#b9b96e>-data</font>= <font color=#b9b96e>-required</font>}
-        {<font color=#b9b96e>-trig</font>= <font color=#b9b96e>-require</font> targ <font color=#b9b96e>-allow</font> {data xname targ}}
-        {<font color=#b9b96e>-targ</font>= <font color=#b9b96e>-require</font> trig <font color=#b9b96e>-allow</font> {data xname trig}}
-        {<font color=#b9b96e>-find</font>= <font color=#b9b96e>-allow</font> {data xname when at}}
-        {<font color=#b9b96e>-when</font>= <font color=#b9b96e>-allow</font> {data xname find deriv}}
-        {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-type</font> double <font color=#b9b96e>-allow</font> {data xname find deriv}}
-        {<font color=#b9b96e>-integ</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-deriv</font>= <font color=#b9b96e>-allow</font> {data xname deriv when at}}
-        {<font color=#b9b96e>-avg</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-min</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-max</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-pp</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-rms</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-minat</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-maxat</font>= <font color=#b9b96e>-allow</font> {data xname}}
-        {<font color=#b9b96e>-between</font>= <font color=#b9b96e>-allow</font> {data xname}}
+    argparse <font color=#b9b96e>-help</font> {Does different measurements of input data lists. This procedure imitates the .meas command from SPICE3 and Ngspice in particular. It has mutiple modes, and each mod could have different forms: Trigger-Target, Find-When, Deriv-When, Find-At, Deriv-At, Avg|Rms|Min|Max|PP|MinAt|MaxAt|Between and Integ. See documentation for further details} {
+        {<font color=#b9b96e>-xname</font>= <font color=#b9b96e>-required</font> <font color=#b9b96e>-help</font> {Name of x list in data dictionary. This list must be strictly increaing without duplicate elements}}
+        {<font color=#b9b96e>-data</font>= <font color=#b9b96e>-required</font> <font color=#b9b96e>-help</font> {Dictionary that contains lists with names as the keys and lists as the values}}
+        {<font color=#b9b96e>-trig</font>= <font color=#b9b96e>-require</font> targ <font color=#b9b96e>-allow</font> {data xname targ} <font color=#b9b96e>-help</font> {Conditions for trigger, selects Trigger-Target measurement}}
+        {<font color=#b9b96e>-targ</font>= <font color=#b9b96e>-require</font> trig <font color=#b9b96e>-allow</font> {data xname trig}  <font color=#b9b96e>-help</font> {Conditions for target}}
+        {<font color=#b9b96e>-find</font>= <font color=#b9b96e>-allow</font> {data xname when at} <font color=#b9b96e>-help</font> {Conditions for Find-When or Find-At mode}}
+        {<font color=#b9b96e>-when</font>= <font color=#b9b96e>-allow</font> {data xname find deriv} <font color=#b9b96e>-help</font> {Conditions for Find-When or Deriv-When modes}}
+        {<font color=#b9b96e>-at</font>= <font color=#b9b96e>-type</font> double <font color=#b9b96e>-allow</font> {data xname find deriv} <font color=#b9b96e>-help</font> {Time for Find-At or Deriv-At modes}}
+        {<font color=#b9b96e>-integ</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for Integ mode}}
+        {<font color=#b9b96e>-deriv</font>= <font color=#b9b96e>-allow</font> {data xname deriv when at} <font color=#b9b96e>-help</font> {Conditions for Deriv-At mode}}
+        {<font color=#b9b96e>-avg</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding average value across the interval}}
+        {<font color=#b9b96e>-min</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding minimum value in the interval}}
+        {<font color=#b9b96e>-max</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding maximum value in the interval}}
+        {<font color=#b9b96e>-pp</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding peak to peak value in the interval}}
+        {<font color=#b9b96e>-rms</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding root meas square value across the interval}}
+        {<font color=#b9b96e>-minat</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding time of minimum value in the interval}}
+        {<font color=#b9b96e>-maxat</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for finding time of maximum value in the interval}}
+        {<font color=#b9b96e>-between</font>= <font color=#b9b96e>-allow</font> {data xname} <font color=#b9b96e>-help</font> {Conditions for fetching data in the interval}}
     }
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>info</font></b> exists at]} {
         <b><font color=#ffa500>if</font></b> {![<b><font color=#ffa500>info</font></b> exists find] && ![<b><font color=#ffa500>info</font></b> exists deriv]} {
@@ -540,6 +540,6 @@
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-find</font> value <font color=#b9b96e>-at</font> value&lt;/span&gt;
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-deriv</font> value <font color=#b9b96e>-at</font> value&lt;/span&gt;
 &lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-avg</font>|rms|pp|min|max|minat|maxat|between {<font color=#b9b96e>-vec</font> value ?-td value? ?-from value? ?-to value?}&lt;/span&gt;
-&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-integ</font> {<font color=#b9b96e>-vec</font> value ?-td value? ?-from value? ?-to value? ?-cum?}&lt;/span&gt;</pre>Does different measurements of inpu data lists.
+&lt;span class='ruff_cmd'&gt;measure&lt;/span&gt; &lt;span class='ruff_arg'&gt;<font color=#b9b96e>-xname</font> value <font color=#b9b96e>-data</font> value <font color=#b9b96e>-integ</font> {<font color=#b9b96e>-vec</font> value ?-td value? ?-from value? ?-to value? ?-cum?}&lt;/span&gt;</pre>Does different measurements of input data lists.
 </span></li></ul></nav><footer class='ruff-layout-footer ruff-ft'><div style='float: right;'>Document generated by <a href='https://ruff.magicsplat.com'>Ruff!</a></div><div>&copy; George Yashin</div></footer>
 </div></body></html>

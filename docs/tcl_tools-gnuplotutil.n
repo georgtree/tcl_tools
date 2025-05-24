@@ -160,9 +160,6 @@ Plots 2D histograms in Gnuplot with the common x-values\&.
 \fBParameters\fR
 .RS 4n
 .TP
-x
-List of strings that contains x-point for 2D histogram\&.
-.TP
 -background
 Enables running gnuplot in background, requires -nodelete switch\&.
 .TP
@@ -225,6 +222,9 @@ Provides x-axis label to display, string must be provided after it\&.
 .TP
 -ylabel
 Provides y-axis label to display, string must be provided after it\&.
+.TP
+x
+List that contains x-point for 2D histogram\&.
 .RE
 .PP
 \fBDescription\fR
@@ -407,9 +407,6 @@ Plots 2D graphs in Gnuplot with the common x-values\&.
 \fBParameters\fR
 .RS 4n
 .TP
-x
-List of x-point for 2D graph\&.
-.TP
 -background
 Enables running gnuplot in background, requires -nodelete or -inline switch\&.
 .TP
@@ -466,6 +463,9 @@ Enables log scale of y axis\&.
 .TP
 -yrange
 Provides minimum and maximum values of y-axis, must be list with two elements\&.
+.TP
+x
+List of x-point for 2D graph\&.
 .RE
 .PP
 \fBDescription\fR
