@@ -22,14 +22,16 @@
 <p class='ruff'>Divides each element of the list1 to each element of list2</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>divll</span> <span class='ruff_arg'>list1 list2</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>list1</code></td><td>Not documented.</td></tr>
-<tr><td><code>list2</code></td><td>Not documented.</td></tr>
+<tr><td><code>list1</code></td><td>First list of values.</td></tr>
+<tr><td><code>list2</code></td><td>Second list of values.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_divll' href="javascript:toggleSource('tcl_mathfunc_divll')">Show source</a></p>
 <div id='tcl_mathfunc_divll' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::divll {list1 list2} {
 
     <i><font color=#76a396># Divides each element of the list1 to each element of list2</font></i>
+    <i><font color=#76a396>#  list1 - first list of values</font></i>
+    <i><font color=#76a396>#  list2 - second list of values</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list1</font>]!=[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list2</font>]} {
@@ -45,14 +47,16 @@
 <p class='ruff'>Divides each element of the list to scalar value</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>divlsc</span> <span class='ruff_arg'>list scalar</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
-<tr><td><code>scalar</code></td><td>Not documented.</td></tr>
+<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>List of values.</td></tr>
+<tr><td><code>scalar</code></td><td>Scalar divider.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_divlsc' href="javascript:toggleSource('tcl_mathfunc_divlsc')">Show source</a></p>
 <div id='tcl_mathfunc_divlsc' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::divlsc {<b><font color=#ffa500>list</font></b> scalar} {
 
     <i><font color=#76a396># Divides each element of the list to scalar value</font></i>
+    <i><font color=#76a396>#  list - list of values</font></i>
+    <i><font color=#76a396>#  scalar - scalar divider</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>foreach</font></b> value <font color=#f1b479>$list</font> {
@@ -62,15 +66,17 @@
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::tcl::mathfunc::exactone'>exactone</a><span class='ns_scope'> [<a href="index-tcl-mathfunc.html#::tcl::mathfunc" title="::tcl::mathfunc" class='ruff_cmd'>::tcl::mathfunc</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
-<p class='ruff'>Returns true if only exactly one element is true  boolean</p>
+<p class='ruff'>Calculates boolean function that returns <code>true</code> if only exactly one element is <code>true</code></p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>exactone</span> <span class='ruff_arg'>?args?</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
+<tr><td><code>args</code></td><td>Boolean values.</td></tr>
 </table>
-<h5 class='ruff'>Return value</h5><p class='ruff'>Returns true if only exactly one element is true  boolean</p>
+<h5 class='ruff'>Return value</h5><p class='ruff'>boolean</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_exactone' href="javascript:toggleSource('tcl_mathfunc_exactone')">Show source</a></p>
 <div id='tcl_mathfunc_exactone' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::exactone {args} {
 
-    <i><font color=#76a396># Returns true if only exactly one element is true</font></i>
+    <i><font color=#76a396># Calculates boolean function that returns `true` if only exactly one element is `true`</font></i>
+    <i><font color=#76a396>#  args - boolean values</font></i>
     <i><font color=#76a396># Returns: boolean</font></i>
     <b><font color=#ffa500>set</font></b> first false
     <b><font color=#ffa500>foreach</font></b> arg <font color=#f1b479>$args</font> {
@@ -130,14 +136,20 @@
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::tcl::mathfunc::logb'>logb</a><span class='ns_scope'> [<a href="index-tcl-mathfunc.html#::tcl::mathfunc" title="::tcl::mathfunc" class='ruff_cmd'>::tcl::mathfunc</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
+<p class='ruff'>Implements logarithm function with arbitary base</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>logb</span> <span class='ruff_arg'>value base</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>value</code></td><td>Not documented.</td></tr>
-<tr><td><code>base</code></td><td>Not documented.</td></tr>
+<tr><td><code>value</code></td><td>Value to calculate the logarithm from.</td></tr>
+<tr><td><code>base</code></td><td>Logarithm base.</td></tr>
 </table>
+<h5 class='ruff'>Return value</h5><p class='ruff'>value of logarithm</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_logb' href="javascript:toggleSource('tcl_mathfunc_logb')">Show source</a></p>
 <div id='tcl_mathfunc_logb' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::logb {value base} {
 
+    <i><font color=#76a396># Implements logarithm function with arbitary base</font></i>
+    <i><font color=#76a396>#  value - value to calculate the logarithm from</font></i>
+    <i><font color=#76a396>#  base - logarithm base</font></i>
+    <i><font color=#76a396># Returns: value of logarithm</font></i>
     <b><font color=#fe6efe>return</font></b> [= {log(<font color=#f1b479>$value</font>)/double(log(<font color=#f1b479>$base</font>))}]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::tcl::mathfunc::lrange'>lrange</a><span class='ns_scope'> [<a href="index-tcl-mathfunc.html#::tcl::mathfunc" title="::tcl::mathfunc" class='ruff_cmd'>::tcl::mathfunc</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -157,6 +169,7 @@
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::tcl::mathfunc::maxl'>maxl</a><span class='ns_scope'> [<a href="index-tcl-mathfunc.html#::tcl::mathfunc" title="::tcl::mathfunc" class='ruff_cmd'>::tcl::mathfunc</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
+<p class='ruff'>Wraps ::tcl::mathfunc::max command to accept single list instead of expanded one</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>maxl</span> <span class='ruff_arg'>list</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
@@ -164,10 +177,12 @@
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_maxl' href="javascript:toggleSource('tcl_mathfunc_maxl')">Show source</a></p>
 <div id='tcl_mathfunc_maxl' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::maxl {<b><font color=#ffa500>list</font></b>} {
 
+    <i><font color=#76a396># Wraps ::tcl::mathfunc::max command to accept single list instead of expanded one</font></i>
     <b><font color=#fe6efe>return</font></b> [::tcl::mathfunc::max {<b><font color=#ffa500>*</font></b>}<font color=#f1b479>$list</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::tcl::mathfunc::minl'>minl</a><span class='ns_scope'> [<a href="index-tcl-mathfunc.html#::tcl::mathfunc" title="::tcl::mathfunc" class='ruff_cmd'>::tcl::mathfunc</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
 <div style='clear:both;'></div>
+<p class='ruff'>Wraps ::tcl::mathfunc::min command to accept single list instead of expanded one</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>minl</span> <span class='ruff_arg'>list</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
 <tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
@@ -175,6 +190,7 @@
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_minl' href="javascript:toggleSource('tcl_mathfunc_minl')">Show source</a></p>
 <div id='tcl_mathfunc_minl' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::minl {<b><font color=#ffa500>list</font></b>} {
 
+    <i><font color=#76a396># Wraps ::tcl::mathfunc::min command to accept single list instead of expanded one</font></i>
     <b><font color=#fe6efe>return</font></b> [::tcl::mathfunc::min {<b><font color=#ffa500>*</font></b>}<font color=#f1b479>$list</font>]
 }</pre></div>
 </div><h3 class='ruffproc'><a name='::tcl::mathfunc::mulll'>mulll</a><span class='ns_scope'> [<a href="index-tcl-mathfunc.html#::tcl::mathfunc" title="::tcl::mathfunc" class='ruff_cmd'>::tcl::mathfunc</a>]</span><span class='ruff-uplink'><a href='#top'>Top</a>, <a href='index.html'>Main</a>, <a href='index-docindex.html#'>Index</a></span></h3>
@@ -182,14 +198,16 @@
 <p class='ruff'>Multiplies each element of the list1 to each element of list2</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>mulll</span> <span class='ruff_arg'>list1 list2</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>list1</code></td><td>Not documented.</td></tr>
-<tr><td><code>list2</code></td><td>Not documented.</td></tr>
+<tr><td><code>list1</code></td><td>First list of values.</td></tr>
+<tr><td><code>list2</code></td><td>Second list of values.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_mulll' href="javascript:toggleSource('tcl_mathfunc_mulll')">Show source</a></p>
 <div id='tcl_mathfunc_mulll' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::mulll {list1 list2} {
 
     <i><font color=#76a396># Multiplies each element of the list1 to each element of list2</font></i>
+    <i><font color=#76a396>#  list1 - first list of values</font></i>
+    <i><font color=#76a396>#  list2 - second list of values</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list1</font>]!=[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list2</font>]} {
@@ -205,14 +223,16 @@
 <p class='ruff'>Multiplies each element of the list to scalar value</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>mullsc</span> <span class='ruff_arg'>list scalar</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
-<tr><td><code>scalar</code></td><td>Not documented.</td></tr>
+<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>List of values.</td></tr>
+<tr><td><code>scalar</code></td><td>Scalar multiplier.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_mullsc' href="javascript:toggleSource('tcl_mathfunc_mullsc')">Show source</a></p>
 <div id='tcl_mathfunc_mullsc' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::mullsc {<b><font color=#ffa500>list</font></b> scalar} {
 
     <i><font color=#76a396># Multiplies each element of the list to scalar value</font></i>
+    <i><font color=#76a396>#  list - list of values</font></i>
+    <i><font color=#76a396>#  scalar - scalar multiplier</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>foreach</font></b> value <font color=#f1b479>$list</font> {
@@ -225,14 +245,16 @@
 <p class='ruff'>Exponentiates each element of the list1 in each element of list2</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>powll</span> <span class='ruff_arg'>list1 list2</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>list1</code></td><td>Not documented.</td></tr>
-<tr><td><code>list2</code></td><td>Not documented.</td></tr>
+<tr><td><code>list1</code></td><td>First list of values.</td></tr>
+<tr><td><code>list2</code></td><td>Second list of values.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_powll' href="javascript:toggleSource('tcl_mathfunc_powll')">Show source</a></p>
 <div id='tcl_mathfunc_powll' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::powll {list1 list2} {
 
     <i><font color=#76a396># Exponentiates each element of the list1 in each element of list2</font></i>
+    <i><font color=#76a396>#  list1 - first list of values</font></i>
+    <i><font color=#76a396>#  list2 - second list of values</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list1</font>]!=[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list2</font>]} {
@@ -248,14 +270,16 @@
 <p class='ruff'>Exponentiates each element of the list in scalar value</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>powlsc</span> <span class='ruff_arg'>list scalar</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
-<tr><td><code>scalar</code></td><td>Not documented.</td></tr>
+<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>List of values.</td></tr>
+<tr><td><code>scalar</code></td><td>Scalar power value.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_powlsc' href="javascript:toggleSource('tcl_mathfunc_powlsc')">Show source</a></p>
 <div id='tcl_mathfunc_powlsc' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::powlsc {<b><font color=#ffa500>list</font></b> scalar} {
 
     <i><font color=#76a396># Exponentiates each element of the list in scalar value</font></i>
+    <i><font color=#76a396>#  list - list of values</font></i>
+    <i><font color=#76a396>#  scalar - scalar power value</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>foreach</font></b> value <font color=#f1b479>$list</font> {
@@ -268,14 +292,16 @@
 <p class='ruff'>Subtracts each element of the list2 from each element of list1</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>subll</span> <span class='ruff_arg'>list1 list2</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>list1</code></td><td>Not documented.</td></tr>
-<tr><td><code>list2</code></td><td>Not documented.</td></tr>
+<tr><td><code>list1</code></td><td>First list of values.</td></tr>
+<tr><td><code>list2</code></td><td>Second list of values.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_subll' href="javascript:toggleSource('tcl_mathfunc_subll')">Show source</a></p>
 <div id='tcl_mathfunc_subll' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::subll {list1 list2} {
 
     <i><font color=#76a396># Subtracts each element of the list2 from each element of list1</font></i>
+    <i><font color=#76a396>#  list1 - first list of values</font></i>
+    <i><font color=#76a396>#  list2 - second list of values</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list1</font>]!=[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list2</font>]} {
@@ -291,14 +317,16 @@
 <p class='ruff'>Subtracts scalar value from each element of the list</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>sublsc</span> <span class='ruff_arg'>list scalar</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
-<tr><td><code>scalar</code></td><td>Not documented.</td></tr>
+<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>List of values.</td></tr>
+<tr><td><code>scalar</code></td><td>Scalar value to subtract.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_sublsc' href="javascript:toggleSource('tcl_mathfunc_sublsc')">Show source</a></p>
 <div id='tcl_mathfunc_sublsc' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::sublsc {<b><font color=#ffa500>list</font></b> scalar} {
 
     <i><font color=#76a396># Subtracts scalar value from each element of the list</font></i>
+    <i><font color=#76a396>#  list - list of values</font></i>
+    <i><font color=#76a396>#  scalar - scalar value to subtract</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>foreach</font></b> value <font color=#f1b479>$list</font> {
@@ -311,14 +339,16 @@
 <p class='ruff'>Sums each element of the list1 with each element of list2</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>sumll</span> <span class='ruff_arg'>list1 list2</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code>list1</code></td><td>Not documented.</td></tr>
-<tr><td><code>list2</code></td><td>Not documented.</td></tr>
+<tr><td><code>list1</code></td><td>First list of values.</td></tr>
+<tr><td><code>list2</code></td><td>Second list of values.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_sumll' href="javascript:toggleSource('tcl_mathfunc_sumll')">Show source</a></p>
 <div id='tcl_mathfunc_sumll' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::sumll {list1 list2} {
 
     <i><font color=#76a396># Sums each element of the list1 with each element of list2</font></i>
+    <i><font color=#76a396>#  list1 - first list of values</font></i>
+    <i><font color=#76a396>#  list2 - second list of values</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>if</font></b> {[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list1</font>]!=[<b><font color=#ffa500>llength</font></b> <font color=#f1b479>$list2</font>]} {
@@ -334,14 +364,16 @@
 <p class='ruff'>Adds scalar value to each element of the list</p>
 <div class='ruff_synopsis'><span class='ruff_cmd'>sumlsc</span> <span class='ruff_arg'>list scalar</span></div>
 <h5 class='ruff'>Parameters</h5><table class='ruff_deflist'>
-<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>Not documented.</td></tr>
-<tr><td><code>scalar</code></td><td>Not documented.</td></tr>
+<tr><td><code><b><font color=#ffa500>list</font></b></code></td><td>List of values.</td></tr>
+<tr><td><code>scalar</code></td><td>Scalar value to add.</td></tr>
 </table>
 <h5 class='ruff'>Return value</h5><p class='ruff'>list</p>
 <div class='ruff_source'><p class='ruff_source_link'><a id='l_tcl_mathfunc_sumlsc' href="javascript:toggleSource('tcl_mathfunc_sumlsc')">Show source</a></p>
 <div id='tcl_mathfunc_sumlsc' class='ruff_dyn_src'><pre><b><font color=#fe6efe>proc</font></b> ::tcl::mathfunc::sumlsc {<b><font color=#ffa500>list</font></b> scalar} {
 
     <i><font color=#76a396># Adds scalar value to each element of the list</font></i>
+    <i><font color=#76a396>#  list - list of values</font></i>
+    <i><font color=#76a396>#  scalar - scalar value to add</font></i>
     <i><font color=#76a396># Returns: list</font></i>
     <b><font color=#ffa500>set</font></b> result [<b><font color=#ffa500>list</font></b>]
     <b><font color=#ffa500>foreach</font></b> value <font color=#f1b479>$list</font> {
@@ -360,12 +392,15 @@
 <li class='ruff-toc1'><a class='ruff-highlight' href='index-tcl-mathfunc.html'>tcl::mathfunc</a></li>
 <hr><li class='ruff-toc2'><a href='#::tcl::mathfunc-Commands'>Commands</a></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::divll'>divll</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;divll&lt;/span&gt; &lt;span class='ruff_arg'&gt;list1 list2&lt;/span&gt;</pre>Divides each element of the list1 to each element of list2
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::divlsc'>divlsc</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;divlsc&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> scalar&lt;/span&gt;</pre>Divides each element of the list to scalar value
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::exactone'>exactone</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;exactone&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Returns true if only exactly one element is true  boolean
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::exactone'>exactone</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;exactone&lt;/span&gt; &lt;span class='ruff_arg'&gt;?args?&lt;/span&gt;</pre>Calculates boolean function that returns <code>true</code> if only exactly one element is <code>true</code>
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::li'>li</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;li&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> index ?args?&lt;/span&gt;</pre>Wraps <code><b><font color=#ffa500>lindex</font></b></code> command into expr function
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::lindex'>lindex</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#ffa500>lindex</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> index ?args?&lt;/span&gt;</pre>Wraps <code><b><font color=#ffa500>lindex</font></b></code> command into expr function
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::llength'>llength</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#ffa500>llength</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b>&lt;/span&gt;</pre>Wraps <code><b><font color=#ffa500>llength</font></b></code> command into expr function
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::logb'>logb</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;logb&lt;/span&gt; &lt;span class='ruff_arg'&gt;value base&lt;/span&gt;</pre></span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::lrange'>lrange</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#ffa500>lrange</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> first last&lt;/span&gt;</pre>Wraps <code><b><font color=#ffa500>lrange</font></b></code> command into expr function
-</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::maxl'>maxl</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;maxl&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b>&lt;/span&gt;</pre></span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::minl'>minl</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;minl&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b>&lt;/span&gt;</pre></span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::mulll'>mulll</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;mulll&lt;/span&gt; &lt;span class='ruff_arg'&gt;list1 list2&lt;/span&gt;</pre>Multiplies each element of the list1 to each element of list2
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::logb'>logb</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;logb&lt;/span&gt; &lt;span class='ruff_arg'&gt;value base&lt;/span&gt;</pre>Implements logarithm function with arbitary base
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::lrange'>lrange</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;<b><font color=#ffa500>lrange</font></b>&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> first last&lt;/span&gt;</pre>Wraps <code><b><font color=#ffa500>lrange</font></b></code> command into expr function
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::maxl'>maxl</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;maxl&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b>&lt;/span&gt;</pre>Wraps ::tcl::mathfunc::max command to accept single list instead of expanded one
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::minl'>minl</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;minl&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b>&lt;/span&gt;</pre>Wraps ::tcl::mathfunc::min command to accept single list instead of expanded one
+</span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::mulll'>mulll</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;mulll&lt;/span&gt; &lt;span class='ruff_arg'&gt;list1 list2&lt;/span&gt;</pre>Multiplies each element of the list1 to each element of list2
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::mullsc'>mullsc</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;mullsc&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> scalar&lt;/span&gt;</pre>Multiplies each element of the list to scalar value
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::powll'>powll</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;powll&lt;/span&gt; &lt;span class='ruff_arg'&gt;list1 list2&lt;/span&gt;</pre>Exponentiates each element of the list1 in each element of list2
 </span></li><li class='ruff-toc3 ruff-tip'><a href='index-tcl-mathfunc.html#::tcl::mathfunc::powlsc'>powlsc</a><span class='ruff-tiptext'><pre>&lt;span class='ruff_cmd'&gt;powlsc&lt;/span&gt; &lt;span class='ruff_arg'&gt;<b><font color=#ffa500>list</font></b> scalar&lt;/span&gt;</pre>Exponentiates each element of the list in scalar value

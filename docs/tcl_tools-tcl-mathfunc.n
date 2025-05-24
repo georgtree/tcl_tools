@@ -57,10 +57,10 @@ Divides each element of the list1 to each element of list2
 .RS 4n
 .TP
 list1
-Not documented\&.
+First list of values\&.
 .TP
 list2
-Not documented\&.
+Second list of values\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -80,10 +80,10 @@ Divides each element of the list to scalar value
 .RS 4n
 .TP
 list
-Not documented\&.
+List of values\&.
 .TP
 scalar
-Not documented\&.
+Scalar divider\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -94,19 +94,20 @@ list
 \fBexactone\fR (::tcl::mathfunc)
 .RE
 .PP
-Returns true if only exactly one element is true
-boolean
+Calculates boolean function that returns true if only exactly one element is true
 .RS 4n\fBexactone\fP \fI?args?\fP
 .br
 .RE
 .PP
 \fBParameters\fR
 .RS 4n
+.TP
+args
+Boolean values\&.
 .RE
 .PP
 \fBReturn value\fR
 .PP
-Returns true if only exactly one element is true
 boolean
 .PP
 .RS -4n
@@ -166,6 +167,8 @@ Not documented\&.
 .RS -4n
 \fBlogb\fR (::tcl::mathfunc)
 .RE
+.PP
+Implements logarithm function with arbitary base
 .RS 4n\fBlogb\fP \fIvalue base\fP
 .br
 .RE
@@ -174,11 +177,15 @@ Not documented\&.
 .RS 4n
 .TP
 value
-Not documented\&.
+Value to calculate the logarithm from\&.
 .TP
 base
-Not documented\&.
+Logarithm base\&.
 .RE
+.PP
+\fBReturn value\fR
+.PP
+value of logarithm
 .PP
 .RS -4n
 \fBlrange\fR (::tcl::mathfunc)
@@ -205,6 +212,8 @@ Not documented\&.
 .RS -4n
 \fBmaxl\fR (::tcl::mathfunc)
 .RE
+.PP
+Wraps ::tcl::mathfunc::max command to accept single list instead of expanded one
 .RS 4n\fBmaxl\fP \fIlist\fP
 .br
 .RE
@@ -219,6 +228,8 @@ Not documented\&.
 .RS -4n
 \fBminl\fR (::tcl::mathfunc)
 .RE
+.PP
+Wraps ::tcl::mathfunc::min command to accept single list instead of expanded one
 .RS 4n\fBminl\fP \fIlist\fP
 .br
 .RE
@@ -243,10 +254,10 @@ Multiplies each element of the list1 to each element of list2
 .RS 4n
 .TP
 list1
-Not documented\&.
+First list of values\&.
 .TP
 list2
-Not documented\&.
+Second list of values\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -266,10 +277,10 @@ Multiplies each element of the list to scalar value
 .RS 4n
 .TP
 list
-Not documented\&.
+List of values\&.
 .TP
 scalar
-Not documented\&.
+Scalar multiplier\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -289,10 +300,10 @@ Exponentiates each element of the list1 in each element of list2
 .RS 4n
 .TP
 list1
-Not documented\&.
+First list of values\&.
 .TP
 list2
-Not documented\&.
+Second list of values\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -312,10 +323,10 @@ Exponentiates each element of the list in scalar value
 .RS 4n
 .TP
 list
-Not documented\&.
+List of values\&.
 .TP
 scalar
-Not documented\&.
+Scalar power value\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -335,10 +346,10 @@ Subtracts each element of the list2 from each element of list1
 .RS 4n
 .TP
 list1
-Not documented\&.
+First list of values\&.
 .TP
 list2
-Not documented\&.
+Second list of values\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -358,10 +369,10 @@ Subtracts scalar value from each element of the list
 .RS 4n
 .TP
 list
-Not documented\&.
+List of values\&.
 .TP
 scalar
-Not documented\&.
+Scalar value to subtract\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -381,10 +392,10 @@ Sums each element of the list1 with each element of list2
 .RS 4n
 .TP
 list1
-Not documented\&.
+First list of values\&.
 .TP
 list2
-Not documented\&.
+Second list of values\&.
 .RE
 .PP
 \fBReturn value\fR
@@ -404,10 +415,10 @@ Adds scalar value to each element of the list
 .RS 4n
 .TP
 list
-Not documented\&.
+List of values\&.
 .TP
 scalar
-Not documented\&.
+Scalar value to add\&.
 .RE
 .PP
 \fBReturn value\fR
