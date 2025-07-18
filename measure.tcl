@@ -886,7 +886,7 @@ proc ::measure::Avg {x y xstart xend} {
 }
 
 proc ::measure::Rms {x y xstart xend} {
-    set ySq [= {mulll($y,$y)}]
+    set ySq [= {mul($y,$y)}]
     set integral [Integ $x $ySq $xstart $xend]
     return [= {sqrt($integral/($xend-$xstart))}]
 }
