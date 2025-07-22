@@ -2,4 +2,3 @@ package ifneeded touchstoneutil 0.1 [list source [file join $dir touchstoneutil.
 package ifneeded rfutil 0.1 [list source [file join $dir rfutil.tcl]]
 package ifneeded gnuplotutil 0.1 [list source [file join $dir gnuplotutil.tcl]]
 package ifneeded mathutil 0.1 [list source [file join $dir mathutil.tcl]]
-package ifneeded measure 0.1 [list source [file join $dir measure.tcl]]
