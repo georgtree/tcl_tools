@@ -15,7 +15,7 @@ TEA_ADD_INCLUDES([])
 TEA_ADD_LIBS([])
 TEA_ADD_CFLAGS([])
 TEA_ADD_STUB_SOURCES([])
-TEA_ADD_TCL_SOURCES([gnuplotutil.tcl mathutil.tcl measure.tcl rfutil.tcl touchstoneutil.tcl])
+TEA_ADD_TCL_SOURCES([gnuplotutil.tcl mathutil.tcl rfutil.tcl touchstoneutil.tcl])
 TEA_PROG_TCLSH
 AC_SUBST(TCLLIBPATH)
 AC_CONFIG_FILES([Makefile pkgIndex.tcl])

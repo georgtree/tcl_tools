@@ -15,9 +15,6 @@ This package provides different Tcl tools:
 \fISome math function\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-mathutil\&.html] - "src/mathutil\&.tcl"
 .TP
 \(bu
-\fIMeasure - implementation of \&.meas statement\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-measure\&.html] - "src/measure\&.tcl"
-.TP
-\(bu
 \fIBasic procedure to read touchstone \&.s2p files\fP [URL: https://georgtree\&.github\&.io/tcl_tools/index-touchstoneutil\&.html] - "src/touchstoneutil\&.tcl"
 .TP
 \(bu
